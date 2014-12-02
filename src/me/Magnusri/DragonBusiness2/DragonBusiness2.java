@@ -11,11 +11,15 @@ public class DragonBusiness2 extends JavaPlugin{
 	
 	public final Logger logger = Logger.getLogger("Minecraft");
 	
+	public DBConnection DBcon;
+	
 	@Override
 	public void onEnable() {
 		super.onEnable();
 		this.logger.info("DragonBusiness2 has been enabled!");
 		this.saveDefaultConfig();
+		
+		DBcon = new DBConnection();
 	}
 	
 	@Override

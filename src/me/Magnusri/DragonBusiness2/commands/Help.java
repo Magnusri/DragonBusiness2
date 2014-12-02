@@ -13,6 +13,7 @@ public class Help {
 		this.plugin = plugin;
 	}
 	public boolean execute(){
+		//EXECUTE HELP PROGRAM HERE
 		player.sendMessage("Help Executed!");
 		return true;
 	}

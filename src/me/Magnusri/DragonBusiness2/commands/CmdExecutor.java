@@ -15,18 +15,18 @@ public class CmdExecutor {
 		if (args.length != 0){
 			switch (args[0]){
 			case "help":
-				//Instantiate commands and supply information
+				//Instantiate command
 				help = new Help(plugin, player);
 				help.execute();
 				break;
 			case "default":
-				//Instantiate commands and supply information
+				//Instantiate command
 				help = new Help(plugin, player);
 				help.execute();
 				break;
 			}
 		} else {
-			//Instantiate commands and supply information
+			//Instantiate command
 			help = new Help(plugin, player);
 			help.execute();
 		}

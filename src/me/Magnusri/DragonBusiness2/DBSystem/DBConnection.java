@@ -1,4 +1,4 @@
-package me.Magnusri.DragonBusiness2;
+package me.Magnusri.DragonBusiness2.DBSystem;
 
 public class DBConnection {
 	//DB Constructor

@@ -2,6 +2,7 @@ package me.Magnusri.DragonBusiness2;
 
 import java.util.logging.Logger;
 
+import me.Magnusri.DragonBusiness2.DBSystem.DBHandler;
 import me.Magnusri.DragonBusiness2.commands.CmdExecutor;
 
 import org.bukkit.command.Command;
@@ -13,7 +14,7 @@ public class DragonBusiness2 extends JavaPlugin{
 	
 	public final Logger logger = Logger.getLogger("Minecraft");
 	
-	public DBConnection DBcon;
+	public DBHandler db;
 	
 	@Override
 	public void onEnable() {
@@ -21,7 +22,7 @@ public class DragonBusiness2 extends JavaPlugin{
 		this.logger.info("DragonBusiness2 has been enabled!");
 		this.saveDefaultConfig();
 		
-		DBcon = new DBConnection();
+		db = new DBHandler();
 	}
 	
 	@Override

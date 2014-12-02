@@ -12,6 +12,7 @@ public class DragonBusiness2 extends JavaPlugin{
 	public final Logger logger = Logger.getLogger("Minecraft");
 	
 	public DBConnection DBcon;
+	public CommandInterface cmds;
 	
 	@Override
 	public void onEnable() {
@@ -20,6 +21,7 @@ public class DragonBusiness2 extends JavaPlugin{
 		this.saveDefaultConfig();
 		
 		DBcon = new DBConnection();
+		cmds = new CommandInterface(this);
 	}
 	
 	@Override
@@ -38,6 +40,8 @@ public class DragonBusiness2 extends JavaPlugin{
 		Player player = (Player) sender;
 		if (commandLabel.equalsIgnoreCase("company") && player.hasPermission("DragonBusiness2.player")){
 			player.sendMessage("Command sent!");
+			
+			cmds.cmd.execute(args[0], player, args);
 		} else {
 			player.sendMessage("You do not have permission to use this command!");
 		}

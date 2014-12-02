@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 import me.Magnusri.DragonBusiness2.commands.CmdExecutor;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -42,7 +41,7 @@ public class DragonBusiness2 extends JavaPlugin{
 		if (cmd.getName().equalsIgnoreCase("company") && player.hasPermission("DragonBusiness2.player")){
 			
 			player.sendMessage("Command sent!");
-			CmdExecutor exec = new CmdExecutor(this, player, cmd, args);
+			CmdExecutor exec = new CmdExecutor(this, player, cmd, allArgs);
 			
 		} else {
 			player.sendMessage("You do not have permission to use this command!");

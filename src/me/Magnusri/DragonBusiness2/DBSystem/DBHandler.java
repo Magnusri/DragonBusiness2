@@ -26,7 +26,7 @@ public class DBHandler {
 	  public boolean insertPlayer(Plugin plugin, Player player, Double balance) throws ClassNotFoundException, SQLException{
 		  
 		  for (DBPlayer dbPlayer : getPlayerList()){
-			  if (dbPlayer.getUuid().equals(player.getUniqueId())){
+			  if (dbPlayer.getUuid().equals(player.getUniqueId().toString())){
 				  return false;
 			  }
 		  }

@@ -23,7 +23,7 @@ public class DBHandler {
 	  private PreparedStatement preparedStatement = null;
 	  private ResultSet resultSet = null;
 	  
-	  public boolean insertPlayer(Plugin plugin, Player player, Double balance) throws ClassNotFoundException, SQLException{
+	  public boolean insertPlayer(Plugin plugin, Player player, Double balance){
 		  
 		  for (DBPlayer dbPlayer : getPlayerList()){
 			  if (dbPlayer.getUuid().equals(player.getUniqueId().toString())){
@@ -31,32 +31,40 @@ public class DBHandler {
 			  }
 		  }
 		  
-		  Class.forName("com.mysql.jdbc.Driver");
+		  try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	      
-	      connect = DriverManager
-	    		  .getConnection("jdbc:mysql://localhost/dragonbusiness?"
-	    				  + "user=minecraft&password=minecraftpass");
-	      
-	      preparedStatement = connect
-		          .prepareStatement("INSERT INTO player (player_uuid, player_name, player_rank, player_earned) VALUES (?, ?, 'none', ?)");
-	      
-	      preparedStatement.setString(1, player.getUniqueId().toString());
-	      preparedStatement.setString(2, player.getName());
-	      preparedStatement.setString(3, Double.toString(balance));
-	      
-	      preparedStatement.executeUpdate();
+	      try {
+			connect = DriverManager
+					  .getConnection("jdbc:mysql://localhost/dragonbusiness?"
+							  + "user=minecraft&password=minecraftpass");
+			  
+			  preparedStatement = connect
+			          .prepareStatement("INSERT INTO player (player_uuid, player_name, player_rank, player_earned) VALUES (?, ?, 'none', ?)");
+			  
+			  preparedStatement.setString(1, player.getUniqueId().toString());
+			  preparedStatement.setString(2, player.getName());
+			  preparedStatement.setString(3, Double.toString(balance));
+			  
+			  preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	      
 	      close();
 		  return true;
 	  }
-	  public boolean insertPlayer(Plugin plugin, Player player) throws ClassNotFoundException, SQLException{
+	  public boolean insertPlayer(Plugin plugin, Player player){
 		  
 		  insertPlayer(plugin, player, 0.0);
 		  
 		  return true;
 	  }
 	  
-	  public boolean insertCompany(Plugin plugin, String companyName, String info) throws ClassNotFoundException, SQLException{
+	  public boolean insertCompany(Plugin plugin, String companyName, String info){
 		  
 		  for (DBCompany dbCompany : getCompanyList()){
 			  if (dbCompany.getName().equals(companyName)){
@@ -64,78 +72,108 @@ public class DBHandler {
 			  }
 		  }
 		  
-		  Class.forName("com.mysql.jdbc.Driver");
+		  try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	      
-	      connect = DriverManager
-	    		  .getConnection("jdbc:mysql://localhost/dragonbusiness?"
-	    				  + "user=minecraft&password=minecraftpass");
-	      
-	      preparedStatement = connect
-		          .prepareStatement("INSERT INTO company (company_name, company_value, company_info) VALUES (?, ?, ?)");
-	      
-	      preparedStatement.setString(1, companyName);
-	      preparedStatement.setInt(2, 0);
-	      preparedStatement.setString(3, info);
-	      
-	      preparedStatement.executeUpdate();
+	      try {
+			connect = DriverManager
+					  .getConnection("jdbc:mysql://localhost/dragonbusiness?"
+							  + "user=minecraft&password=minecraftpass");
+			  
+			  preparedStatement = connect
+			          .prepareStatement("INSERT INTO company (company_name, company_value, company_info) VALUES (?, ?, ?)");
+			  
+			  preparedStatement.setString(1, companyName);
+			  preparedStatement.setInt(2, 0);
+			  preparedStatement.setString(3, info);
+			  
+			  preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	      
 	      close();
 		  return true;
 	  }
-	  public boolean insertCompany(Plugin plugin, String companyName) throws ClassNotFoundException, SQLException{
+	  public boolean insertCompany(Plugin plugin, String companyName){
 		  
 		  insertCompany(plugin, companyName, "");
 		  
 		  return true;
 	  }
 	  
-	  public ArrayList<DBCompany> getCompanyList() throws ClassNotFoundException, SQLException{
+	  public ArrayList<DBCompany> getCompanyList(){
 		  
-		  Class.forName("com.mysql.jdbc.Driver");
+		  try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		  
-		  connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/dragonbusiness?"
-		              + "user=minecraft&password=minecraftpass");
+		  ArrayList<DBCompany> companyList = null;
+		try {
+			connect = DriverManager
+			          .getConnection("jdbc:mysql://localhost/dragonbusiness?"
+			              + "user=minecraft&password=minecraftpass");
 
-	      statement = connect.createStatement();
-	      
-	      resultSet = statement
-	          .executeQuery("select * from company");
-	      ArrayList<DBCompany> companyList = makeCompanyList(resultSet);
+			  statement = connect.createStatement();
+			  
+			  resultSet = statement
+			      .executeQuery("select * from company");
+			  companyList = makeCompanyList(resultSet);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	      close();
 	      return companyList;
 	  }
 	  
-	  public ArrayList<DBPlayer> getPlayerList() throws ClassNotFoundException, SQLException{
+	  public ArrayList<DBPlayer> getPlayerList(){
 		  
-		  Class.forName("com.mysql.jdbc.Driver");
+		  try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		  
-		  connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/dragonbusiness?"
-		              + "user=minecraft&password=minecraftpass");
+		  ArrayList<DBPlayer> playerList = null;
+		try {
+			connect = DriverManager
+			          .getConnection("jdbc:mysql://localhost/dragonbusiness?"
+			              + "user=minecraft&password=minecraftpass");
 
-	      statement = connect.createStatement();
-	      
-	      resultSet = statement
-	          .executeQuery("select * from player");
-	      ArrayList<DBPlayer> playerList = makePlayerList(resultSet);
+			  statement = connect.createStatement();
+			  
+			  resultSet = statement
+			      .executeQuery("select * from player");
+			  playerList = makePlayerList(resultSet);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	      close();
 	      return playerList;
 	  }
 
-	  private ArrayList<DBPlayer> makePlayerList(ResultSet resultSet) throws SQLException {
+	  private ArrayList<DBPlayer> makePlayerList(ResultSet resultSet){
 		  	ArrayList<DBPlayer> dbPlayerList = new ArrayList<DBPlayer>();
-		    while (resultSet.next()) {
-		      int id = resultSet.getInt("player_id");
-		      String uuid = resultSet.getString("player_uuid");
-		      String name = resultSet.getString("player_name");
-		      String rank = resultSet.getString("player_rank");
-		      int companyid = resultSet.getInt("company_company_id");
-		      Double earned = resultSet.getDouble("player_earned");
-		      
-		      DBPlayer dbPlayer = new DBPlayer(id, uuid, name, rank, companyid, earned);
-		      dbPlayerList.add(dbPlayer);
-		    }
+		    try {
+				while (resultSet.next()) {
+				  int id = resultSet.getInt("player_id");
+				  String uuid = resultSet.getString("player_uuid");
+				  String name = resultSet.getString("player_name");
+				  String rank = resultSet.getString("player_rank");
+				  int companyid = resultSet.getInt("company_company_id");
+				  Double earned = resultSet.getDouble("player_earned");
+				  
+				  DBPlayer dbPlayer = new DBPlayer(id, uuid, name, rank, companyid, earned);
+				  dbPlayerList.add(dbPlayer);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		    return dbPlayerList;
 	  }
 	  

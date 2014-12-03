@@ -1,7 +1,5 @@
 package me.Magnusri.DragonBusiness2.commands;
 
-import java.sql.SQLException;
-
 import me.Magnusri.DragonBusiness2.DBSystem.DBHandler;
 
 import org.bukkit.command.Command;
@@ -24,22 +22,10 @@ public class CmdExecutor {
 				help.execute();
 				break;
 			case "insertme":
-				try {
-					db.insertPlayer(plugin, player);
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+				db.insertPlayer(plugin, player);
 				break;
 			case "insertco":
-				try {
-					db.insertCompany(plugin, "ThatCO!", "This is the informative description");
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+				db.insertCompany(plugin, "ThatCO!", "This is the informative description");
 				break;
 			case "default":
 				//Instantiate command

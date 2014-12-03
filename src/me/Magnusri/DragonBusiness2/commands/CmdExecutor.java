@@ -3,7 +3,6 @@ package me.Magnusri.DragonBusiness2.commands;
 import java.sql.SQLException;
 
 import me.Magnusri.DragonBusiness2.DBSystem.DBHandler;
-import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
@@ -27,6 +26,15 @@ public class CmdExecutor {
 			case "insertme":
 				try {
 					db.insertPlayer(plugin, player);
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				break;
+			case "insertco":
+				try {
+					db.insertCompany(plugin, "ThatCO!", "This is the informative description");
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				} catch (SQLException e) {

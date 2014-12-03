@@ -56,6 +56,56 @@ public class DBHandler {
 		  return true;
 	  }
 	  
+	  public boolean insertCompany(Plugin plugin, String companyName, String info) throws ClassNotFoundException, SQLException{
+		  
+		  for (DBCompany dbCompany : getCompanyList()){
+			  if (dbCompany.getName().equals(companyName)){
+				  return false;
+			  }
+		  }
+		  
+		  Class.forName("com.mysql.jdbc.Driver");
+	      
+	      connect = DriverManager
+	    		  .getConnection("jdbc:mysql://localhost/dragonbusiness?"
+	    				  + "user=minecraft&password=minecraftpass");
+	      
+	      preparedStatement = connect
+		          .prepareStatement("INSERT INTO company (company_name, company_value, company_info) VALUES (?, ?, ?)");
+	      
+	      preparedStatement.setString(1, companyName);
+	      preparedStatement.setInt(2, 0);
+	      preparedStatement.setString(3, info);
+	      
+	      preparedStatement.executeUpdate();
+	      
+	      close();
+		  return true;
+	  }
+	  public boolean insertCompany(Plugin plugin, String companyName) throws ClassNotFoundException, SQLException{
+		  
+		  insertCompany(plugin, companyName, "");
+		  
+		  return true;
+	  }
+	  
+	  public ArrayList<DBCompany> getCompanyList() throws ClassNotFoundException, SQLException{
+		  
+		  Class.forName("com.mysql.jdbc.Driver");
+		  
+		  connect = DriverManager
+		          .getConnection("jdbc:mysql://localhost/dragonbusiness?"
+		              + "user=minecraft&password=minecraftpass");
+
+	      statement = connect.createStatement();
+	      
+	      resultSet = statement
+	          .executeQuery("select * from company");
+	      ArrayList<DBCompany> companyList = makeCompanyList(resultSet);
+	      close();
+	      return companyList;
+	  }
+	  
 	  public ArrayList<DBPlayer> getPlayerList() throws ClassNotFoundException, SQLException{
 		  
 		  Class.forName("com.mysql.jdbc.Driver");
@@ -87,6 +137,20 @@ public class DBHandler {
 		      dbPlayerList.add(dbPlayer);
 		    }
 		    return dbPlayerList;
+	  }
+	  
+	  private ArrayList<DBCompany> makeCompanyList(ResultSet resultSet) throws SQLException {
+		  	ArrayList<DBCompany> dbCompanyList = new ArrayList<DBCompany>();
+		    while (resultSet.next()) {
+		      int id = resultSet.getInt("company_id");
+		      String name = resultSet.getString("company_name");
+		      int value = resultSet.getInt("company_value");
+		      String info = resultSet.getString("company_info");
+		      
+		      DBCompany dbCompany = new DBCompany(id, name, value, info);
+		      dbCompanyList.add(dbCompany);
+		    }
+		    return dbCompanyList;
 	  }
 
 	  // you need to close all three to make sure

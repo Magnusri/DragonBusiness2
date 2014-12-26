@@ -12,9 +12,19 @@ public class Help {
 		this.player = player;
 		this.plugin = plugin;
 	}
-	public boolean execute(){
+	public boolean all(){
 		//EXECUTE HELP PROGRAM HERE
 		player.sendMessage("Help Executed!");
+		return true;
+	}
+	public boolean createCo(){
+		//EXECUTE CREATECO HELP PROGRAM HERE
+		player.sendMessage("Help CreateCo Executed!");
+		return true;
+	}
+	public boolean disbandCo() {
+		//EXECUTE DISBAND HELP PROGRAM HERE
+		player.sendMessage("Help DisbandCo Executed!");
 		return true;
 	}
 }

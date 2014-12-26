@@ -83,7 +83,6 @@ public class DragonBusiness2 extends JavaPlugin{
 			allArgs = new String[]{"help"};
 		if (cmd.getName().equalsIgnoreCase("company") && player.hasPermission("DragonBusiness2.player")){
 			
-			player.sendMessage("Command sent!");
 			CmdExecutor exec = new CmdExecutor(this, player, cmd, allArgs, db);
 			
 		} else {

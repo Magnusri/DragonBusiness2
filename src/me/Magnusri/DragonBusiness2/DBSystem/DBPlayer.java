@@ -6,18 +6,24 @@ public class DBPlayer {
 	String name;
 	String rank;
 	int companyid;
+	String pendingInvite;
 	Double earned;
 	
-	public DBPlayer(int id, String uuid, String name, String rank,int companyid, Double earned) {
+	public DBPlayer(int id, String uuid, String name, String rank,int companyid, String pendingInvite, Double earned) {
 		super();
 		this.id = id;
 		this.uuid = uuid;
 		this.name = name;
 		this.rank = rank;
 		this.companyid = companyid;
+		this.pendingInvite = pendingInvite;
 		this.earned = earned;
 	}
 
+	public String toString(){
+		return name;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -56,6 +62,14 @@ public class DBPlayer {
 
 	public void setCompanyid(int companyid) {
 		this.companyid = companyid;
+	}
+
+	public String getPendingInvite() {
+		return pendingInvite;
+	}
+
+	public void setPendingInvite(String pendingInvite) {
+		this.pendingInvite = pendingInvite;
 	}
 
 	public Double getEarned() {

@@ -102,7 +102,6 @@ public class DBHandler {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			  player.sendMessage(ChatColor.AQUA + "You joined " + companyName + "!");
 		      
 		      close();
 			  return true;
@@ -144,24 +143,29 @@ public class DBHandler {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			  player.sendMessage(ChatColor.AQUA + "Your company rank is now " + rank);
 		      
 		      close();
 			  return true;
 	  }
 	  
-	  public boolean removePlayerFromCompany(Plugin plugin, Player player){
+	  public boolean setPlayerInvite(Plugin plugin, String player, String companyInvite){
 		  
 		  boolean playerInDB = false;
 		  
 		  for (DBPlayer dbPlayer : getPlayerList()){
-			  if (dbPlayer.getUuid().equals(player.getUniqueId().toString())){
+			  if (dbPlayer.getName().equals(player)){
 				  playerInDB = true;
 			  }
 		  }
+		  Player onlinePlayer = null;
+		  if (plugin.getServer().getPlayer(player) != null){
+			  onlinePlayer = plugin.getServer().getPlayer(player);
+		  } else {
+			  return false;
+		  }
 		  
 		  if (!playerInDB){
-			  insertPlayer(plugin, player);
+			  insertPlayer(plugin, onlinePlayer);
 		  }
 		  
 		  
@@ -177,18 +181,95 @@ public class DBHandler {
 								  + "user=minecraft&password=minecraftpass");
 				  
 				  preparedStatement = connect
-				          .prepareStatement("UPDATE player SET company_company_id=NULL WHERE player_uuid=?");
+				          .prepareStatement("UPDATE player SET player_pendingInvite=? WHERE player_name=?");
 				  
-				  preparedStatement.setString(1, player.getUniqueId().toString());
+				  preparedStatement.setString(1, companyInvite);
+				  preparedStatement.setString(2, player);
 				  
 				  preparedStatement.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			  player.sendMessage(ChatColor.AQUA + "You left the company!");
 		      
 		      close();
 			  return true;
+	  }
+	  
+	  public boolean removePlayerFromCompany(Plugin plugin, String player){
+		  
+		  try {
+				Class.forName("com.mysql.jdbc.Driver");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		      
+		      try {
+				connect = DriverManager
+						  .getConnection("jdbc:mysql://localhost/dragonbusiness?"
+								  + "user=minecraft&password=minecraftpass");
+				  
+				  preparedStatement = connect
+				          .prepareStatement("UPDATE player SET company_company_id=NULL WHERE player_name=?");
+				  
+				  preparedStatement.setString(1, player);
+				  
+				  preparedStatement.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		      
+		      close();
+			  return true;
+	  }
+	  
+	  public boolean removePlayerRank(Plugin plugin, String player){
+		  
+		  try {
+				Class.forName("com.mysql.jdbc.Driver");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		      
+		      try {
+				connect = DriverManager
+						  .getConnection("jdbc:mysql://localhost/dragonbusiness?"
+								  + "user=minecraft&password=minecraftpass");
+				  
+				  preparedStatement = connect
+				          .prepareStatement("UPDATE player SET player_rank='none' WHERE player_name=?");
+				  
+				  preparedStatement.setString(1, player);
+				  
+				  preparedStatement.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		      
+		      close();
+			  return true;
+	  }
+	  
+	  public boolean removeCompany(Plugin plugin, int companyId){
+		  try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	      
+	      try {
+			connect = DriverManager.getConnection("jdbc:mysql://localhost/dragonbusiness?" + "user=minecraft&password=minecraftpass");
+			  
+			  preparedStatement = connect.prepareStatement("DELETE FROM company WHERE company_id=?");
+			  
+			  preparedStatement.setInt(1, companyId);
+			  
+			  preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	      
+	      close();
+		  return true;
 	  }
 	  
 	  public boolean insertPlayer(Plugin plugin, Player player){
@@ -245,6 +326,132 @@ public class DBHandler {
 		  return true;
 	  }
 	  
+	  public DBPlayer getPlayer(Player player){
+		  
+		  try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			connect = DriverManager
+			          .getConnection("jdbc:mysql://localhost/dragonbusiness?"
+			              + "user=minecraft&password=minecraftpass");
+			  preparedStatement = connect.prepareStatement("select * from player where player_uuid=?");
+
+			  preparedStatement.setString(1, player.getUniqueId().toString());
+			  
+			  resultSet = preparedStatement.executeQuery();
+			  
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		DBPlayer dbPlayer = null;
+		
+		try {
+			while (resultSet.next()) {
+			  int id = resultSet.getInt("player_id");
+			  String uuid = resultSet.getString("player_uuid");
+			  String name = resultSet.getString("player_name");
+			  String rank = resultSet.getString("player_rank");
+			  int companyid = resultSet.getInt("company_company_id");
+			  String pendingInvite = resultSet.getString("player_pendingInvite");
+			  Double earned = resultSet.getDouble("player_earned");
+			  
+			  dbPlayer = new DBPlayer(id, uuid, name, rank, companyid, pendingInvite, earned);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	    close();
+	    return dbPlayer;
+	  }
+	  
+	  public DBCompany getCompany(String companyName){
+		  
+		  try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			connect = DriverManager
+			          .getConnection("jdbc:mysql://localhost/dragonbusiness?"
+			              + "user=minecraft&password=minecraftpass");
+			  preparedStatement = connect.prepareStatement("select * from company where company_name=?");
+
+			  preparedStatement.setString(1, companyName);
+			  
+			  resultSet = preparedStatement.executeQuery();
+			  
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		DBCompany dbCompany = null;
+		
+		try {
+			while (resultSet.next()) {
+			      int id = resultSet.getInt("company_id");
+			      String name = resultSet.getString("company_name");
+			      int value = resultSet.getInt("company_value");
+			      String info = resultSet.getString("company_info");
+			      
+			      dbCompany = new DBCompany(id, name, value, info);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	    close();
+	    return dbCompany;
+	  }
+	  
+	  public DBCompany getCompany(int companyID){
+		  
+		  try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			connect = DriverManager
+			          .getConnection("jdbc:mysql://localhost/dragonbusiness?"
+			              + "user=minecraft&password=minecraftpass");
+			  preparedStatement = connect.prepareStatement("select * from company where company_id=?");
+
+			  preparedStatement.setInt(1, companyID);
+			  
+			  resultSet = preparedStatement.executeQuery();
+			  
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		DBCompany dbCompany = null;
+		
+		try {
+			while (resultSet.next()) {
+			      int id = resultSet.getInt("company_id");
+			      String name = resultSet.getString("company_name");
+			      int value = resultSet.getInt("company_value");
+			      String info = resultSet.getString("company_info");
+			      
+			      dbCompany = new DBCompany(id, name, value, info);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	    close();
+	    return dbCompany;
+	  }
+	  
 	  public ArrayList<DBCompany> getCompanyList(){
 		  
 		  try {
@@ -263,6 +470,32 @@ public class DBHandler {
 			  
 			  resultSet = statement
 			      .executeQuery("select * from company");
+			  companyList = makeCompanyList(resultSet);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	      close();
+	      return companyList;
+	  }
+	  
+	  public ArrayList<DBCompany> getTopCompanyList(){
+		  
+		  try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		  
+		  ArrayList<DBCompany> companyList = null;
+		try {
+			connect = DriverManager
+			          .getConnection("jdbc:mysql://localhost/dragonbusiness?"
+			              + "user=minecraft&password=minecraftpass");
+
+			  statement = connect.createStatement();
+			  
+			  resultSet = statement
+			      .executeQuery("select * from company ORDER BY company_value*1 DESC LIMIT 10");
 			  companyList = makeCompanyList(resultSet);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -297,9 +530,7 @@ public class DBHandler {
 	      return playerList;
 	  }
 	  
-	  
-	  //NOT DONE
-	  public ArrayList<DBPlayer> getPlayerListInCompany(){
+	  public ArrayList<DBPlayer> getPlayerListInCompany(String company){
 		  
 		  try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -313,10 +544,11 @@ public class DBHandler {
 			          .getConnection("jdbc:mysql://localhost/dragonbusiness?"
 			              + "user=minecraft&password=minecraftpass");
 
-			  statement = connect.createStatement();
+			preparedStatement = connect.prepareStatement("select * from player where company_company_id = (select company_id from company where company_name = ?)");
 			  
-			  resultSet = statement
-			      .executeQuery("select * from player");
+			  preparedStatement.setString(1, company);
+			  
+			  resultSet = preparedStatement.executeQuery();
 			  playerList = makePlayerList(resultSet);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -324,7 +556,6 @@ public class DBHandler {
 	      close();
 	      return playerList;
 	  }
-	  
 	  
 	  private ArrayList<DBPlayer> makePlayerList(ResultSet resultSet){
 		  	ArrayList<DBPlayer> dbPlayerList = new ArrayList<DBPlayer>();
@@ -335,9 +566,10 @@ public class DBHandler {
 				  String name = resultSet.getString("player_name");
 				  String rank = resultSet.getString("player_rank");
 				  int companyid = resultSet.getInt("company_company_id");
+				  String pendingInvite = resultSet.getString("player_pendingInvite");
 				  Double earned = resultSet.getDouble("player_earned");
 				  
-				  DBPlayer dbPlayer = new DBPlayer(id, uuid, name, rank, companyid, earned);
+				  DBPlayer dbPlayer = new DBPlayer(id, uuid, name, rank, companyid, pendingInvite, earned);
 				  dbPlayerList.add(dbPlayer);
 				}
 			} catch (SQLException e) {

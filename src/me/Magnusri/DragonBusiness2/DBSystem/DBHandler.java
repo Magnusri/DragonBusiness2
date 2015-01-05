@@ -426,6 +426,50 @@ public class DBHandler {
 	    return dbPlayer;
 	  }
 	  
+	  public DBPlayer getPlayer(String playerName){
+		  
+		  try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			connect = DriverManager
+			          .getConnection("jdbc:mysql://localhost/dragonbusiness?"
+			              + "user=minecraft&password=minecraftpass");
+			  preparedStatement = connect.prepareStatement("select * from player where player_name=?");
+
+			  preparedStatement.setString(1, playerName);
+			  
+			  resultSet = preparedStatement.executeQuery();
+			  
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		DBPlayer dbPlayer = null;
+		
+		try {
+			while (resultSet.next()) {
+			  int id = resultSet.getInt("player_id");
+			  String uuid = resultSet.getString("player_uuid");
+			  String name = resultSet.getString("player_name");
+			  String rank = resultSet.getString("player_rank");
+			  int companyid = resultSet.getInt("company_company_id");
+			  String pendingInvite = resultSet.getString("player_pendingInvite");
+			  Double earned = resultSet.getDouble("player_earned");
+			  
+			  dbPlayer = new DBPlayer(id, uuid, name, rank, companyid, pendingInvite, earned);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	    close();
+	    return dbPlayer;
+	  }
+	  
 	  public DBCompany getCompany(String companyName){
 		  
 		  try {

@@ -20,7 +20,9 @@ public class CmdExecutor {
 	public CmdExecutor(Plugin plugin, Player player, Command cmd, String[] args, DBHandler db, Economy economy){
 		
 		tools = new Tools(db, player, plugin, economy);
-		config = new Config();
+		config = new Config(plugin);
+		
+		plugin.reloadConfig();
 		
 		if (args.length != 0){
 			switch (args[0]){

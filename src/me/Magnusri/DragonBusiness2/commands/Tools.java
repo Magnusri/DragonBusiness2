@@ -25,7 +25,7 @@ public class Tools {
 		this.db = db;
 		this.plugin = plugin;
 		this.player = player;
-		this.config = new Config();
+		this.config = new Config(plugin);
 		this.economy = economy;
 	}
 	

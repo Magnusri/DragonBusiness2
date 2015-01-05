@@ -13,7 +13,7 @@ public class Help {
 	public Help(Plugin plugin, Player player){
 		this.player = player;
 		this.plugin = plugin;
-		this.config = new Config();
+		this.config = new Config(plugin);
 	}
 	public boolean all(){
 		player.sendMessage(ChatColor.AQUA + "--- DragonBusiness 2.0 Help ---");

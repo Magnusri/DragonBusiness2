@@ -68,7 +68,7 @@ public class DragonBusiness2 extends JavaPlugin{
 		setupChat();
 		setupPermissions();
 		
-		config = new Config();
+		config = new Config(this);
 		db = new DBHandler();
 	}
 	
@@ -82,6 +82,9 @@ public class DragonBusiness2 extends JavaPlugin{
 		if (!(sender instanceof Player)){
 			if (cmd.getName().equalsIgnoreCase("paybonus")){
 				if (args.length != 1){
+					return false;
+				}
+				if (db.getPlayer(args[0]) == null || db.getPlayer(args[0]).getCompanyid() == 0){
 					return false;
 				}
 				economy.depositPlayer(args[0], config.getBonusAmount());

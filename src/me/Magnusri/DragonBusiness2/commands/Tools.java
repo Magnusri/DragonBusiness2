@@ -80,6 +80,10 @@ public class Tools {
 		return true;
 	}
 	
+	public boolean isNumeric(String str){
+		return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
+	}
+	
 	public boolean msgPlayersInCo(String company, String message){
 		for (DBPlayer player1 : db.getPlayerListInCompany(company)){
 			for (Player checkPlayer : plugin.getServer().getOnlinePlayers()){

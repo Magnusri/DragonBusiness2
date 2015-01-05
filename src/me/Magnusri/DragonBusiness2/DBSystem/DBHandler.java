@@ -195,6 +195,62 @@ public class DBHandler {
 			  return true;
 	  }
 	  
+	  public boolean setCompanyValue(Plugin plugin, String company, Double value){
+		  
+		  try {
+				Class.forName("com.mysql.jdbc.Driver");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		      
+		      try {
+				connect = DriverManager
+						  .getConnection("jdbc:mysql://localhost/dragonbusiness?"
+								  + "user=minecraft&password=minecraftpass");
+				  
+				  preparedStatement = connect
+				          .prepareStatement("UPDATE company SET company_value=? WHERE company_name=?");
+				  
+				  preparedStatement.setDouble(1, value);
+				  preparedStatement.setString(2, company);
+				  
+				  preparedStatement.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		      
+		      close();
+			  return true;
+	  }
+	  
+	  public boolean setCompanyInfo(Plugin plugin, String company, String info){
+		  
+		  try {
+				Class.forName("com.mysql.jdbc.Driver");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		      
+		      try {
+				connect = DriverManager
+						  .getConnection("jdbc:mysql://localhost/dragonbusiness?"
+								  + "user=minecraft&password=minecraftpass");
+				  
+				  preparedStatement = connect
+				          .prepareStatement("UPDATE company SET company_info=? WHERE company_name=?");
+				  
+				  preparedStatement.setString(1, info);
+				  preparedStatement.setString(2, company);
+				  
+				  preparedStatement.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		      
+		      close();
+			  return true;
+	  }
+	  
 	  public boolean removePlayerFromCompany(Plugin plugin, String player){
 		  
 		  try {
@@ -279,7 +335,7 @@ public class DBHandler {
 		  return true;
 	  }
 	  
-	  public boolean insertCompany(Plugin plugin, Player player, String companyName, String info){
+	  public boolean insertCompany(Plugin plugin, Player player, String companyName, String info, double value){
 		  
 		  for (DBCompany dbCompany : getCompanyList()){
 			  if (dbCompany.getName().equals(companyName)){
@@ -303,7 +359,7 @@ public class DBHandler {
 			          .prepareStatement("INSERT INTO company (company_name, company_value, company_info) VALUES (?, ?, ?)");
 			  
 			  preparedStatement.setString(1, companyName);
-			  preparedStatement.setInt(2, 0);
+			  preparedStatement.setDouble(2, value);
 			  preparedStatement.setString(3, info);
 			  
 			  preparedStatement.executeUpdate();
@@ -321,7 +377,7 @@ public class DBHandler {
 	  
 	  public boolean insertCompany(Plugin plugin, Player player, String companyName){
 		  
-		  insertCompany(plugin, player, companyName, "");
+		  insertCompany(plugin, player, companyName, "", 0);
 		  
 		  return true;
 	  }
@@ -398,7 +454,7 @@ public class DBHandler {
 			while (resultSet.next()) {
 			      int id = resultSet.getInt("company_id");
 			      String name = resultSet.getString("company_name");
-			      int value = resultSet.getInt("company_value");
+			      double value = resultSet.getDouble("company_value");
 			      String info = resultSet.getString("company_info");
 			      
 			      dbCompany = new DBCompany(id, name, value, info);
@@ -439,7 +495,7 @@ public class DBHandler {
 			while (resultSet.next()) {
 			      int id = resultSet.getInt("company_id");
 			      String name = resultSet.getString("company_name");
-			      int value = resultSet.getInt("company_value");
+			      double value = resultSet.getDouble("company_value");
 			      String info = resultSet.getString("company_info");
 			      
 			      dbCompany = new DBCompany(id, name, value, info);
@@ -583,7 +639,7 @@ public class DBHandler {
 		    while (resultSet.next()) {
 		      int id = resultSet.getInt("company_id");
 		      String name = resultSet.getString("company_name");
-		      int value = resultSet.getInt("company_value");
+		      double value = resultSet.getDouble("company_value");
 		      String info = resultSet.getString("company_info");
 		      
 		      DBCompany dbCompany = new DBCompany(id, name, value, info);

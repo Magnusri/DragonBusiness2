@@ -83,7 +83,7 @@ public class DragonBusiness2 extends JavaPlugin{
 			allArgs = new String[]{"help"};
 		if (cmd.getName().equalsIgnoreCase("company") && player.hasPermission("DragonBusiness2.player")){
 			
-			CmdExecutor exec = new CmdExecutor(this, player, cmd, allArgs, db);
+			CmdExecutor exec = new CmdExecutor(this, player, cmd, allArgs, db, economy);
 			
 		} else {
 			player.sendMessage("You do not have permission to use this command!");

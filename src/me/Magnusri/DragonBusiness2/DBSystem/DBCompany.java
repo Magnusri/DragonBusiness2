@@ -3,10 +3,10 @@ package me.Magnusri.DragonBusiness2.DBSystem;
 public class DBCompany {
 	int id;
 	String name;
-	int value;
+	double value;
 	String info;
 	
-	public DBCompany(int id, String name, int value2, String info) {
+	public DBCompany(int id, String name, double value2, String info) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -30,7 +30,7 @@ public class DBCompany {
 		this.name = name;
 	}
 
-	public int getValue() {
+	public double getValue() {
 		return value;
 	}
 

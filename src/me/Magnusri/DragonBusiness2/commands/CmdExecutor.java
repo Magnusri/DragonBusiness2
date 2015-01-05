@@ -3,6 +3,7 @@ package me.Magnusri.DragonBusiness2.commands;
 import me.Magnusri.DragonBusiness2.DBSystem.DBCompany;
 import me.Magnusri.DragonBusiness2.DBSystem.DBHandler;
 import me.Magnusri.DragonBusiness2.DBSystem.DBPlayer;
+import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -14,10 +15,12 @@ public class CmdExecutor {
 	//Prepare helpcenter
 	Help help;
 	Tools tools;
+	Config config;
 	
-	public CmdExecutor(Plugin plugin, Player player, Command cmd, String[] args, DBHandler db){
+	public CmdExecutor(Plugin plugin, Player player, Command cmd, String[] args, DBHandler db, Economy economy){
 		
 		tools = new Tools(db, player, plugin);
+		config = new Config();
 		
 		if (args.length != 0){
 			switch (args[0]){
@@ -28,10 +31,254 @@ public class CmdExecutor {
 				break;
 			case "test":
 				//TEST COMMAND
-				db.removeCompany(plugin, Integer.parseInt(args[1]));
+				
 				break;
 			case "changedesc":
-				player.sendMessage("This command is not yet implemented!");
+				if (db.getPlayer(player).getRank().equals("none")){
+					help = new Help(plugin, player);
+					help.ERRORnotInCo();
+					break;
+				}
+				if (!db.getPlayer(player).getRank().equals("CEO")){
+					player.sendMessage(ChatColor.RED + "Only the CEO can change the description!");
+					break;
+				}
+				if (args.length < 2){
+					help = new Help(plugin, player);
+					help.changedesc();
+					break;
+				} else {
+					DBPlayer dbPlayer = db.getPlayer(player);
+					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
+					
+					String infoLine = "";
+					
+					for (String word : args){
+						infoLine += (word + " ");
+					}
+					
+					db.setCompanyInfo(plugin, dbCompany.getName(), infoLine.substring(11));
+					
+					player.sendMessage(ChatColor.AQUA + "Company description changed to:");
+					player.sendMessage(ChatColor.GOLD + infoLine.substring(11));
+				}
+				break;
+			case "makeceo":
+				if (db.getPlayer(player).getRank().equals("none")){
+					help = new Help(plugin, player);
+					help.ERRORnotInCo();
+					break;
+				}
+				if (!db.getPlayer(player).getRank().equals("CEO")){
+					player.sendMessage(ChatColor.RED + "Only the CEO can do this!");
+					break;
+				}
+				if (args.length != 2){
+					help = new Help(plugin, player);
+					help.makeceo();
+					break;
+				} else {
+					DBPlayer dbPlayer = db.getPlayer(player);
+					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
+					
+					boolean sameCo = false;
+					
+					DBPlayer targetDbPlayer = null;
+					Player targetPlayer = null;
+					
+					for (Player playerSearch : plugin.getServer().getOnlinePlayers()){
+						if (playerSearch.getName().equals(args[1])){
+							targetPlayer = playerSearch;
+						}
+					}
+					for (DBPlayer dbPlayerSearch : db.getPlayerListInCompany(dbCompany.getName())){
+						if (dbPlayerSearch.getName().equals(args[1])){
+							sameCo = true;
+							targetDbPlayer = dbPlayerSearch;
+						}
+					}
+					
+					if (targetPlayer == null){
+						player.sendMessage(ChatColor.RED + "Target player must be online!");
+						break;
+					}
+					
+					if (sameCo){
+						db.setPlayerRank(plugin, targetPlayer, "CEO");
+						db.setPlayerRank(plugin, player, "Leader");
+						tools.msgPlayersInCo(dbCompany.getName(), ChatColor.AQUA + "Company leadership changed!");
+						tools.msgPlayersInCo(dbCompany.getName(), ChatColor.GOLD + targetPlayer.getName() + " is now the new CEO of the company!");
+					} else {
+						player.sendMessage(ChatColor.RED + "This player is not in your company!");
+					}
+				}
+				break;
+			case "demote":
+				if (db.getPlayer(player).getRank().equals("none")){
+					help = new Help(plugin, player);
+					help.ERRORnotInCo();
+					break;
+				}
+				if (!db.getPlayer(player).getRank().equals("CEO")){
+					player.sendMessage(ChatColor.RED + "Only the CEO can demote employees!");
+					break;
+				}
+				if (args.length != 2){
+					help = new Help(plugin, player);
+					help.promote();
+					break;
+				} else {
+					DBPlayer dbPlayer = db.getPlayer(player);
+					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
+					
+					boolean sameCo = false;
+					
+					DBPlayer targetDbPlayer = null;
+					Player targetPlayer = null;
+					
+					for (Player playerSearch : plugin.getServer().getOnlinePlayers()){
+						if (playerSearch.getName().equals(args[1])){
+							targetPlayer = playerSearch;
+						}
+					}
+					for (DBPlayer dbPlayerSearch : db.getPlayerListInCompany(dbCompany.getName())){
+						if (dbPlayerSearch.getName().equals(args[1])){
+							sameCo = true;
+							targetDbPlayer = dbPlayerSearch;
+						}
+					}
+					
+					if (targetPlayer == null){
+						player.sendMessage(ChatColor.RED + "Target player must be online!");
+						break;
+					}
+					
+					if (sameCo){
+						if (targetDbPlayer.getRank().equals("Leader")){
+							db.setPlayerRank(plugin, targetPlayer, "Employee");
+							tools.msgPlayersInCo(dbCompany.getName(), ChatColor.AQUA + args[1] + " has been demoted to Employee!");
+						} else {
+							player.sendMessage(ChatColor.RED + "Only Leaders can be demoted");
+						}
+					} else {
+						player.sendMessage(ChatColor.RED + "This player is not in your company!");
+					}
+				}
+				break;
+			case "promote":
+				if (db.getPlayer(player).getRank().equals("none")){
+					help = new Help(plugin, player);
+					help.ERRORnotInCo();
+					break;
+				}
+				if (!db.getPlayer(player).getRank().equals("CEO")){
+					player.sendMessage(ChatColor.RED + "Only the CEO can promote employees!");
+					break;
+				}
+				if (args.length != 2){
+					help = new Help(plugin, player);
+					help.promote();
+					break;
+				} else {
+					DBPlayer dbPlayer = db.getPlayer(player);
+					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
+					
+					boolean sameCo = false;
+					
+					DBPlayer targetDbPlayer = null;
+					Player targetPlayer = null;
+					
+					for (Player playerSearch : plugin.getServer().getOnlinePlayers()){
+						if (playerSearch.getName().equals(args[1])){
+							targetPlayer = playerSearch;
+						}
+					}
+					for (DBPlayer dbPlayerSearch : db.getPlayerListInCompany(dbCompany.getName())){
+						if (dbPlayerSearch.getName().equals(args[1])){
+							sameCo = true;
+							targetDbPlayer = dbPlayerSearch;
+						}
+					}
+					
+					if (targetPlayer == null){
+						player.sendMessage(ChatColor.RED + "Target player must be online!");
+						break;
+					}
+					
+					if (sameCo){
+						if (targetDbPlayer.getRank().equals("Employee")){
+							db.setPlayerRank(plugin, targetPlayer, "Leader");
+							tools.msgPlayersInCo(dbCompany.getName(), ChatColor.AQUA + args[1] + " has been promoted to Leader!");
+						} else {
+							player.sendMessage(ChatColor.RED + "Only Employees can be promoted");
+						}
+					} else {
+						player.sendMessage(ChatColor.RED + "This player is not in your company!");
+					}
+				}
+				break;
+			case "deposit":
+				if (db.getPlayer(player).getRank().equals("none")){
+					help = new Help(plugin, player);
+					help.ERRORnotInCo();
+					break;
+				}
+				if (args.length != 2 || !tools.isNumeric(args[1])){
+					help = new Help(plugin, player);
+					help.deposit();
+					break;
+				}
+				
+				if (economy.getBalance(player.getName()) < Double.parseDouble(args[1])){
+					player.sendMessage(ChatColor.RED + "You do not have this much money!");
+				} else {
+					DBPlayer dbPlayer = db.getPlayer(player);
+					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
+					
+					double oldValue = db.getCompany(dbCompany.getName()).getValue();
+					
+					oldValue += Double.parseDouble(args[1]) - (Double.parseDouble(args[1]) * config.getDepositFee());
+					
+					db.setCompanyValue(plugin, dbCompany.getName(), oldValue);
+					economy.withdrawPlayer(player.getName(), Double.parseDouble(args[1]));
+					player.sendMessage(ChatColor.RED + "You deposited " + args[1] + "$, with a fee of " + config.getDepositFee() + "%.");
+				}
+				break;
+			case "fire":
+				if (db.getPlayer(player).getRank().equals("none")){
+					help = new Help(plugin, player);
+					help.ERRORnotInCo();
+					break;
+				}
+				if (!(db.getPlayer(player).getRank().equals("CEO") || db.getPlayer(player).getRank().equals("Leader"))){
+					player.sendMessage(ChatColor.RED + "Only the CEO and Leaders can fire employees!");
+					break;
+				}
+				if (args.length != 2){
+					help = new Help(plugin, player);
+					help.fire();
+					break;
+				} else {
+					DBPlayer dbPlayer = db.getPlayer(player);
+					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
+					
+					boolean sameCo = false;
+				
+					for (DBPlayer dbPlayerSearch : db.getPlayerListInCompany(dbCompany.getName())){
+						if (dbPlayerSearch.getName().equals(args[1])){
+							sameCo = true;
+						}
+					}
+					
+					if (sameCo){
+						db.removePlayerFromCompany(plugin, args[1]);
+						db.removePlayerRank(plugin, args[1]);
+						tools.msgPlayersInCo(dbCompany.getName(), ChatColor.AQUA + args[1] + " has been fired from the company!");
+						tools.msgPlayerByName(args[1], ChatColor.RED + "You have been fired from the company! You are now unemployed!");
+					} else {
+						player.sendMessage(ChatColor.RED + "This player is not in your company!");
+					}
+				}
 				break;
 			case "top":
 				player.sendMessage(ChatColor.AQUA + "--- Top 10 companies ---");
@@ -58,6 +305,8 @@ public class CmdExecutor {
 					player.sendMessage(ChatColor.WHITE + tools.getCEOInCo(dbCompany).getName());
 					player.sendMessage(ChatColor.GOLD + "  - Description:");
 					player.sendMessage(ChatColor.WHITE + dbCompany.getInfo());
+					player.sendMessage(ChatColor.GOLD + "  - Value:");
+					player.sendMessage(ChatColor.WHITE + "" + dbCompany.getValue() + "$");
 					if (tools.getLeadersInCo(dbCompany).size() > 0){
 						player.sendMessage(ChatColor.GOLD + "  - Leaders:");
 						player.sendMessage(ChatColor.WHITE + tools.getLeadersInCo(dbCompany).toString());
@@ -97,9 +346,6 @@ public class CmdExecutor {
 					
 					break;
 				}
-				
-				
-				
 				break;
 			case "accept":
 				if (!db.getPlayer(player).getPendingInvite().equals("none")){
@@ -129,8 +375,8 @@ public class CmdExecutor {
 					help.ERRORnotInCo();
 					break;
 				}
-				if (!db.getPlayer(player).getRank().equals("CEO")){
-					player.sendMessage(ChatColor.RED + "Only the CEO can invite people to the company");
+				if (!(db.getPlayer(player).getRank().equals("CEO") || db.getPlayer(player).getRank().equals("Leader"))){
+					player.sendMessage(ChatColor.RED + "Only the CEO or Leaders can invite people to the company");
 					break;
 				}
 				if (args.length != 2){
@@ -138,7 +384,6 @@ public class CmdExecutor {
 					help.invite();
 					break;
 				}
-				
 				if (plugin.getServer().getPlayer(args[1]) != null){
 					if (db.getPlayer(plugin.getServer().getPlayer(args[1])) == null){
 						db.insertPlayer(plugin, plugin.getServer().getPlayer(args[1]));
@@ -149,14 +394,14 @@ public class CmdExecutor {
 					}
 					String companyName = db.getCompany(db.getPlayer(player).getCompanyid()).getName();
 					db.setPlayerInvite(plugin, args[1], companyName);
+					player.sendMessage(ChatColor.AQUA + "You have sent a company invite to " + args[1]);
 					tools.msgPlayerByName(args[1], ChatColor.AQUA + "You have been invited to join " + companyName);
-					tools.msgPlayerByName(args[1], ChatColor.GOLD + "To accept invite, type: /c acceptinvite");
+					tools.msgPlayerByName(args[1], ChatColor.GOLD + "To accept invite, type: /c accept");
 				} else {
 					help = new Help(plugin, player);
 					help.ERRORtargetNotOnline();
 					break;
 				}
-				
 				break;
 			case "leave":
 				if (!db.getPlayer(player).getRank().equals("none")){
@@ -186,6 +431,10 @@ public class CmdExecutor {
 				if (args.length == 1){
 					player.sendMessage(ChatColor.GOLD + "Enter: \"/c disband confirm\" to disband! This is permanent!");
 				}else if (args.length == 2 && args[1].equals("confirm")){
+					if (economy.getBalance(player.getName()) < config.getDisbandCost()){
+						player.sendMessage(ChatColor.RED + "You do not have enough money to disband your company.");
+						break;
+					}
 					int companyID = db.getPlayer(player).getCompanyid();
 					tools.msgPlayersInCo(db.getCompany(db.getPlayer(player).getCompanyid()).getName(), ChatColor.GOLD + "Your company was disbanded! You are now unemployed");
 					for (DBPlayer player1 : db.getPlayerListInCompany(db.getCompany(db.getPlayer(player).getCompanyid()).getName())){
@@ -193,6 +442,7 @@ public class CmdExecutor {
 						db.removePlayerRank(plugin, player1.getName());
 					}
 					db.removeCompany(plugin, companyID);
+					economy.withdrawPlayer(player.getName(), config.getDisbandCost());
 				}else{
 					help = new Help(plugin, player);
 					help.disbandCo();
@@ -204,7 +454,11 @@ public class CmdExecutor {
 					break;
 				}
 				if (args.length == 2){
-					db.insertCompany(plugin, player, args[1], "This is the informative description");
+					if (economy.getBalance(player.getName()) < config.getCreateCost()){
+						player.sendMessage(ChatColor.RED + "You do not have enough money to create a company.");
+						break;
+					}
+					db.insertCompany(plugin, player, args[1], "This is the informative description", config.getCreateCost());
 					player.sendMessage(ChatColor.AQUA + "--- " + args[1] + " was just created! ---");
 					player.sendMessage(ChatColor.GOLD + "  - Description:");
 					player.sendMessage(ChatColor.WHITE + db.getCompany(args[1]).getInfo());
@@ -214,23 +468,20 @@ public class CmdExecutor {
 					player.sendMessage(ChatColor.WHITE + "    - " + db.getPlayer(player).getRank());
 					player.sendMessage(ChatColor.AQUA + "---");
 					tools.msgOnlinePlayers(ChatColor.AQUA + player.getName() + " just created the company " + ChatColor.GOLD + args[1] + "!");
+					economy.withdrawPlayer(player.getName(), config.getCreateCost());
 				}else{
 					help = new Help(plugin, player);
 					help.createCo();
 				}
 				break;
 			default:
-				//Instantiate helpcenter
 				help = new Help(plugin, player);
 				help.all();
 				break;
 			}
 		} else {
-			//Instantiate command
 			help = new Help(plugin, player);
 			help.all();
 		}
-		
-		
 	}
 }

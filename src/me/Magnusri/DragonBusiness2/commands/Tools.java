@@ -2,6 +2,9 @@ package me.Magnusri.DragonBusiness2.commands;
 
 import java.util.ArrayList;
 
+import net.milkbowl.vault.economy.Economy;
+
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -15,11 +18,15 @@ public class Tools {
 	DBHandler db;
 	Plugin plugin;
 	Player player;
+	Config config;
+	Economy economy;
 	
-	public Tools (DBHandler db, Player player, Plugin plugin){
+	public Tools (DBHandler db, Player player, Plugin plugin, Economy economy){
 		this.db = db;
 		this.plugin = plugin;
 		this.player = player;
+		this.config = new Config();
+		this.economy = economy;
 	}
 	
 	public boolean isPlayerInCompany(){
@@ -93,5 +100,33 @@ public class Tools {
 			}
 		}
 		return true;
+	}
+	
+	public int sign(double f) {
+	    if (f != f) throw new IllegalArgumentException("NaN");
+	    if (f == 0) return 0;
+	    f *= Double.POSITIVE_INFINITY;
+	    if (f == Double.POSITIVE_INFINITY) return +1;
+	    if (f == Double.NEGATIVE_INFINITY) return -1;
+
+	    //this should never be reached, but I've been wrong before...
+	    throw new IllegalArgumentException("Unfathomed double");
+	}
+	
+	public boolean payBonusToPlayer(String playername){
+		economy.depositPlayer(playername, config.getBonusAmount());
+		msgPlayerByName(playername, ChatColor.AQUA + "You earned a company bonus of " + config.getBonusAmount() + "$");
+		return true;
+	}
+
+	public boolean doMilestones(String company, double oldValue, double newValue) {
+		double[] milestones = config.getMilestones();
+		for (int i = milestones.length - 1; i > 0; i--){
+			if (milestones[i] <= newValue && oldValue <= milestones[i]){
+				msgOnlinePlayers(ChatColor.GOLD + company + " reached the milestone of " + milestones[i] + "$!");
+				return true;
+			}
+		}
+		return false;
 	}
 }

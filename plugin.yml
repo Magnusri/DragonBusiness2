@@ -9,3 +9,4 @@ commands:
   company:
     aliases: [c, co]
     description: 
+  paybonus:

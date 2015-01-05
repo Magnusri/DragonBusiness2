@@ -19,13 +19,40 @@ public class CmdExecutor {
 	
 	public CmdExecutor(Plugin plugin, Player player, Command cmd, String[] args, DBHandler db, Economy economy){
 		
-		tools = new Tools(db, player, plugin);
+		tools = new Tools(db, player, plugin, economy);
 		config = new Config();
 		
 		if (args.length != 0){
 			switch (args[0]){
 			case "help":
-				//Instantiate helpcenter
+				if (args.length == 2){
+					help = new Help(plugin, player);
+					if (args[1].equals("create"))
+						help.createCo();
+					if (args[1].equals("disband"))
+						help.disbandCo();
+					if (args[1].equals("invite"))
+						help.invite();
+					if (args[1].equals("fire"))
+						help.fire();
+					if (args[1].equals("changedesc"))
+						help.changedesc();
+					if (args[1].equals("promote"))
+						help.promote();
+					if (args[1].equals("demote"))
+						help.demote();
+					if (args[1].equals("deposit"))
+						help.deposit();
+					if (args[1].equals("top"))
+						help.top();
+					if (args[1].equals("info"))
+						help.info();
+					if (args[1].equals("leave"))
+						help.leave();
+					if (args[1].equals("makeceo"))
+						help.makeceo();
+					break;
+				}
 				help = new Help(plugin, player);
 				help.all();
 				break;
@@ -232,14 +259,22 @@ public class CmdExecutor {
 				if (economy.getBalance(player.getName()) < Double.parseDouble(args[1])){
 					player.sendMessage(ChatColor.RED + "You do not have this much money!");
 				} else {
+					if (tools.sign(Double.parseDouble(args[1])) != +1){
+						player.sendMessage(ChatColor.RED + "The number has to be positive!");
+						break;
+					}
 					DBPlayer dbPlayer = db.getPlayer(player);
 					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
 					
 					double oldValue = db.getCompany(dbCompany.getName()).getValue();
 					
-					oldValue += Double.parseDouble(args[1]) - (Double.parseDouble(args[1]) * config.getDepositFee());
+					double newValue = oldValue + (Double.parseDouble(args[1]) - (Double.parseDouble(args[1]) * config.getDepositFee()));
 					
-					db.setCompanyValue(plugin, dbCompany.getName(), oldValue);
+					if (config.isMilestonesEnabled()){
+						tools.doMilestones(dbCompany.getName(), oldValue, newValue);
+					}
+					
+					db.setCompanyValue(plugin, dbCompany.getName(), newValue);
 					economy.withdrawPlayer(player.getName(), Double.parseDouble(args[1]));
 					player.sendMessage(ChatColor.RED + "You deposited " + args[1] + "$, with a fee of " + config.getDepositFee() + "%.");
 				}

@@ -4,10 +4,13 @@ import java.util.logging.Logger;
 
 import me.Magnusri.DragonBusiness2.DBSystem.DBHandler;
 import me.Magnusri.DragonBusiness2.commands.CmdExecutor;
+import me.Magnusri.DragonBusiness2.commands.Config;
+import me.Magnusri.DragonBusiness2.commands.Tools;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,6 +22,7 @@ public class DragonBusiness2 extends JavaPlugin{
 	public final Logger logger = Logger.getLogger("Minecraft");
 	
 	public DBHandler db;
+	public Config config;
 	
 	public static Permission permission = null;
     public static Economy economy = null;
@@ -64,6 +68,7 @@ public class DragonBusiness2 extends JavaPlugin{
 		setupChat();
 		setupPermissions();
 		
+		config = new Config();
 		db = new DBHandler();
 	}
 	
@@ -74,6 +79,19 @@ public class DragonBusiness2 extends JavaPlugin{
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
+		if (!(sender instanceof Player)){
+			if (cmd.getName().equalsIgnoreCase("paybonus")){
+				if (args.length != 1){
+					return false;
+				}
+				economy.depositPlayer(args[0], config.getBonusAmount());
+				for (Player player : this.getServer().getOnlinePlayers()){
+					if (player.getName().equals(args[0])){
+						player.sendMessage(ChatColor.AQUA + "You earned a company bonus of " + config.getBonusAmount() + "$");
+					}
+				}
+			}
+		}
 		if (!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 		String[] allArgs;

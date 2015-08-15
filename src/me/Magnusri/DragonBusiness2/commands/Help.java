@@ -19,9 +19,9 @@ public class Help {
 		player.sendMessage(ChatColor.AQUA + "--- DragonBusiness 2.0 Help ---");
 		player.sendMessage(ChatColor.WHITE + "For information on a command, do /c help <command>");
 		player.sendMessage(ChatColor.GOLD + " - /c create <companyname>");
-		player.sendMessage(ChatColor.RED + "    - Cost: " + config.getCreateCost() + "$");
+		player.sendMessage(ChatColor.RED + "    - Cost: $" + config.getCreateCost());
 		player.sendMessage(ChatColor.GOLD + " - /c disband");
-		player.sendMessage(ChatColor.RED + "    - Cost: " + config.getDisbandCost() + "$");
+		player.sendMessage(ChatColor.RED + "    - Cost: $" + config.getDisbandCost());
 		player.sendMessage(ChatColor.GOLD + " - /c invite <playername>");
 		player.sendMessage(ChatColor.GOLD + " - /c fire <playername>");
 		player.sendMessage(ChatColor.GOLD + " - /c changedesc <new description>");
@@ -38,13 +38,13 @@ public class Help {
 	public boolean createCo(){
 		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
 		player.sendMessage(ChatColor.GOLD + " - /c create <companyname>");
-		player.sendMessage(ChatColor.WHITE + "Creates a new company with the specified name. Cost: " + config.getCreateCost() + "$.");
+		player.sendMessage(ChatColor.WHITE + "Creates a new company with the specified name. Cost: $" + config.getCreateCost());
 		return true;
 	}
 	public boolean disbandCo() {
 		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
 		player.sendMessage(ChatColor.GOLD + " - /c disband");
-		player.sendMessage(ChatColor.WHITE + "Disbands your company. This is permanent, and only for CEOs. Cost: " + config.getDisbandCost() + "$.");
+		player.sendMessage(ChatColor.WHITE + "Disbands your company. This is permanent, and only for CEOs. Cost: $" + config.getDisbandCost());
 		return true;
 	}
 	public boolean invite() {

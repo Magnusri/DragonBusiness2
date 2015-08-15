@@ -1,4 +1,4 @@
-main: me.Magnusri.DragonBusiness2.DragonBusiness2
+main: me.Magnusri.DragonBusiness2
 name: DragonBusiness2
 version: 1
 author: Magnusri
@@ -8,5 +8,4 @@ depend: [Vault]
 commands:
   company:
     aliases: [c, co]
-    description: 
-  paybonus:
+    description:

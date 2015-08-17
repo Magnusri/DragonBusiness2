@@ -5,13 +5,15 @@ public class DBCompany {
 	String name;
 	double value;
 	String info;
+	boolean bankrupt;
 	
-	public DBCompany(int id, String name, double value2, String info) {
+	public DBCompany(int id, String name, double value2, String info, boolean bankrupt) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.value = value2;
 		this.info = info;
+		this.bankrupt = bankrupt;
 	}
 
 	public int getId() {
@@ -44,5 +46,13 @@ public class DBCompany {
 
 	public void setInfo(String info) {
 		this.info = info;
+	}
+
+	public boolean getBankrupt() {
+		return bankrupt;
+	}
+
+	public void setBankrupt(boolean bankrupt) {
+		this.bankrupt = bankrupt;
 	}
 }

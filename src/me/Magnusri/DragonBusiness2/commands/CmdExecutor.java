@@ -338,6 +338,8 @@ public class CmdExecutor {
 					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
 					
 					player.sendMessage(ChatColor.AQUA + "--- " + dbCompany.getName() + " ---");
+					if (dbCompany.getBankrupt())
+						player.sendMessage(ChatColor.RED + "This company is bankrupt, and available on the open market!");
 					player.sendMessage(ChatColor.GOLD + "  - CEO:");
 					player.sendMessage(ChatColor.WHITE + tools.getCEOInCo(dbCompany).getName());
 					player.sendMessage(ChatColor.GOLD + "  - Description:");

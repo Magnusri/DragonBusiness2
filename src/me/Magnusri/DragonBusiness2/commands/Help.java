@@ -28,6 +28,7 @@ public class Help {
 		player.sendMessage(ChatColor.GOLD + " - /c promote <playername>");
 		player.sendMessage(ChatColor.GOLD + " - /c demote <playername>");
 		player.sendMessage(ChatColor.GOLD + " - /c deposit <amount>");
+		player.sendMessage(ChatColor.GOLD + " - /c sell");
 		player.sendMessage(ChatColor.GOLD + " - /c top");
 		player.sendMessage(ChatColor.GOLD + " - /c info");
 		player.sendMessage(ChatColor.GOLD + " - /c leave");
@@ -117,6 +118,12 @@ public class Help {
 		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
 		player.sendMessage(ChatColor.GOLD + " - /c leave");
 		player.sendMessage(ChatColor.WHITE + "Leave the company you are in.");
+		return true;
+	}
+	public boolean sell() {
+		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
+		player.sendMessage(ChatColor.GOLD + " - /c sell");
+		player.sendMessage(ChatColor.WHITE + "Sell items on behalf of your company.");
 		return true;
 	}
 }

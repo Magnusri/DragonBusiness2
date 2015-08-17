@@ -129,4 +129,46 @@ public class Tools {
 		}
 		return false;
 	}
+
+	public boolean doCompanyDecay(String company, double oldValue, double newValue) {
+		
+		double companyValue = db.getCompany(company).getValue();
+		
+		if(companyValue < 1000 && companyValue >= 0){
+            //for every 1 day - $10
+			db.setCompanyValue(plugin, company, companyValue - 10);
+        }
+        if(companyValue < 10000 && companyValue > 1000){
+            //for every 1 day - $100
+			db.setCompanyValue(plugin, company, companyValue - 100);
+        }
+        if(companyValue < 100000 && companyValue > 10000){
+            //for every 1 day - $1000
+			db.setCompanyValue(plugin, company, companyValue - 1000);
+        }
+        if(companyValue < 1000000 && companyValue > 100000){
+            //for every 1 day - $10000
+			db.setCompanyValue(plugin, company, companyValue - 10000);
+        }
+        if(companyValue < 10000000 && companyValue > 1000000){
+            //for every 1 day - $100000
+			db.setCompanyValue(plugin, company, companyValue - 100000);
+        }   
+        if(companyValue < 100000000 && companyValue > 10000000){
+            //for every 1 day - $1000000
+			db.setCompanyValue(plugin, company, companyValue - 1000000);
+        }   
+        if(companyValue < 1000000000 && companyValue > 100000000){
+            //for every 1 day - $10000000
+			db.setCompanyValue(plugin, company, companyValue - 10000000);
+        }       
+ 
+        if(companyValue <= 0){
+            // DO BANKRUPT
+        	// WARN ALL ONLINE THAT THIS CO WENT BANKRUPT
+        	db.setCompanyBankrupt(plugin, company, true);
+        }
+		
+		return false;
+	}
 }

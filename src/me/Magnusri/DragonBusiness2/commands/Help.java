@@ -31,6 +31,7 @@ public class Help {
 		player.sendMessage(ChatColor.GOLD + " - /c sell");
 		player.sendMessage(ChatColor.GOLD + " - /c top");
 		player.sendMessage(ChatColor.GOLD + " - /c info");
+		player.sendMessage(ChatColor.GOLD + " - /c pinfo");
 		player.sendMessage(ChatColor.GOLD + " - /c leave");
 		player.sendMessage(ChatColor.GOLD + " - /c makeceo <playername>");
 		player.sendMessage(ChatColor.AQUA + "--- DragonBusiness 2.0 Help ---");
@@ -112,6 +113,12 @@ public class Help {
 		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
 		player.sendMessage(ChatColor.GOLD + " - /c info <Optional:companyname>");
 		player.sendMessage(ChatColor.WHITE + "Displays information about your, or target company.");
+		return true;
+	}
+	public boolean pinfo() {
+		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
+		player.sendMessage(ChatColor.GOLD + " - /c info <playername>");
+		player.sendMessage(ChatColor.WHITE + "Displays information about the player specified.");
 		return true;
 	}
 	public boolean leave() {

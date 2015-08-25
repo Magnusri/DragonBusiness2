@@ -49,6 +49,8 @@ public class CmdExecutor {
 						help.top();
 					if (args[1].equals("info"))
 						help.info();
+					if (args[1].equals("pinfo"))
+						help.pinfo();
 					if (args[1].equals("leave"))
 						help.leave();
 					if (args[1].equals("makeceo"))

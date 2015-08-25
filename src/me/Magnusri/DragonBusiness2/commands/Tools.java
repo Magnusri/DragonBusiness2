@@ -124,7 +124,9 @@ public class Tools {
 		DBPlayer dbplayer = db.getPlayer(player);
 		DBCompany company = db.getCompany(dbplayer.getCompanyid());
 		
-		db.setPlayerEarned(plugin, dbplayer.getName(), dbplayer.getEarned() + amount);
+		
+		
+		dbplayer.setEarned(dbplayer.getEarned() + amount);
 		
 		return true;
 	}

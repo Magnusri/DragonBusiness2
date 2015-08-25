@@ -80,6 +80,7 @@ public class DBPlayer {
 
 	public void setPendingInvite(String pendingInvite) {
 		this.pendingInvite = pendingInvite;
+		db.setPlayerInvite(plugin, getName(), pendingInvite);
 	}
 
 	public Double getEarned() {
@@ -88,6 +89,7 @@ public class DBPlayer {
 
 	public void setEarned(Double earned) {
 		this.earned = earned;
+		db.setPlayerEarned(plugin, getName(), earned);
 	}
 
 	public double getLevel() {
@@ -96,6 +98,7 @@ public class DBPlayer {
 
 	public void setLevel(double level) {
 		this.level = level;
+		db.setPlayerLevel(plugin, getName(), level);
 	}
 	
 	

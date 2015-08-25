@@ -2,7 +2,7 @@ main: me.Magnusri.DragonBusiness2.DragonBusiness2
 name: DragonBusiness2
 version: 1
 author: Magnusri
-description: Business Plugin!
+description: Creates Businesses
 depend: [Vault]
 
 commands:

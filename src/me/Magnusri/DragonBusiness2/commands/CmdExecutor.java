@@ -432,10 +432,10 @@ public class CmdExecutor {
 				}
 				break;
 			case "pinfo":
-				if (args.length == 1){
+				if (args.length == 2){
 					if (db.getPlayer(player).getRank().equals("none")){
 						help = new Help(plugin, player);
-						help.ERRORnotInCo();
+						help.pinfo();
 						player.sendMessage(ChatColor.AQUA + "/c pinfo <playername>");
 						break;
 					}
@@ -448,6 +448,7 @@ public class CmdExecutor {
 					player.sendMessage(ChatColor.WHITE + "Earned: " + dbPlayer.getEarned());
 					//player.sendMessage(ChatColor.AQUA + "Level: " + dbPlayer.getLevel());
 				}				
+				break;
 			case "accept":
 				if (!db.getPlayer(player).getPendingInvite().equals("none")){
 					String company = db.getPlayer(player).getPendingInvite();

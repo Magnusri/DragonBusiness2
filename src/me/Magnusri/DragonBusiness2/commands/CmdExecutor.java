@@ -443,9 +443,9 @@ public class CmdExecutor {
 					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
 					
 					player.sendMessage(ChatColor.AQUA + "--- " + dbPlayer.getName() + " ---");
-					player.sendMessage(ChatColor.WHITE + "Company: " + dbPlayer.getCompanyid());
-					player.sendMessage(ChatColor.AQUA + "Rank: " + dbPlayer.getRank());
-					player.sendMessage(ChatColor.WHITE + "Earned: " + dbPlayer.getEarned());
+					player.sendMessage(ChatColor.AQUA + "Company: " + ChatColor.WHITE + dbPlayer.getCompanyid());
+					player.sendMessage(ChatColor.AQUA + "Rank: " + ChatColor.WHITE + dbPlayer.getRank());
+					player.sendMessage(ChatColor.AQUA + "Earned: " + ChatColor.WHITE + dbPlayer.getEarned());
 					//player.sendMessage(ChatColor.AQUA + "Level: " + dbPlayer.getLevel());
 				}				
 				break;

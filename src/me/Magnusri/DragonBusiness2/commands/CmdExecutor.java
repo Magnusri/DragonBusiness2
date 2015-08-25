@@ -8,6 +8,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 
 public class CmdExecutor {
@@ -289,14 +290,11 @@ public class CmdExecutor {
 					help.ERRORnotInCo();
 					break;
 				}
-				if (args.length != 2 || !tools.isNumeric(args[1])){
-					help = new Help(plugin, player);
-					help.sell();
-					break;
-				}
 				
-				
-				
+				Inventory inventory = plugin.getServer().createInventory(player, 36, "Sell Items");
+			    player.openInventory(inventory);
+			    
+			    player.sendMessage("Items has been sold!");
 				
 				/* CHECK BELOW 
 				if (economy.getBalance(player.getName()) < Double.parseDouble(args[1])){

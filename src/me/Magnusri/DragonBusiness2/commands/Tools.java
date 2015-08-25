@@ -115,7 +115,7 @@ public class Tools {
 	
 	public boolean payBonusToPlayer(String playername){
 		economy.depositPlayer(playername, config.getBonusAmount());
-		msgPlayerByName(playername, ChatColor.AQUA + "You earned a company bonus of " + config.getBonusAmount() + "$");
+		msgPlayerByName(playername, ChatColor.AQUA + "You earned a company bonus of $" + config.getBonusAmount());
 		return true;
 	}
 
@@ -123,7 +123,7 @@ public class Tools {
 		double[] milestones = config.getMilestones();
 		for (int i = milestones.length - 1; i > 0; i--){
 			if (milestones[i] <= newValue && oldValue <= milestones[i]){
-				msgOnlinePlayers(ChatColor.GOLD + company + " reached the milestone of " + milestones[i] + "$!");
+				msgOnlinePlayers(ChatColor.GOLD + company + " reached the milestone of $" + milestones[i]);
 				return true;
 			}
 		}

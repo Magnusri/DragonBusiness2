@@ -9,13 +9,13 @@ public class DBPlayer {
 	String rank;
 	int companyid;
 	String pendingInvite;
-	double level;
+	int level;
 	Double earned;
 	
 	DBHandler db;
 	Plugin plugin;
 	
-	public DBPlayer(Plugin plugin, DBHandler db, int id, String uuid, String name, String rank,int companyid, String pendingInvite, Double earned, double level) {
+	public DBPlayer(Plugin plugin, DBHandler db, int id, String uuid, String name, String rank,int companyid, String pendingInvite, Double earned, int level) {
 		super();
 		this.id = id;
 		this.uuid = uuid;
@@ -92,11 +92,11 @@ public class DBPlayer {
 		db.setPlayerEarned(plugin, getName(), earned);
 	}
 
-	public double getLevel() {
+	public int getLevel() {
 		return level;
 	}
 
-	public void setLevel(double level) {
+	public void setLevel(int level) {
 		this.level = level;
 		db.setPlayerLevel(plugin, getName(), level);
 	}

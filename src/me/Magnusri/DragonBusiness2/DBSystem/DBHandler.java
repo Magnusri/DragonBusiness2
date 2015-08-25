@@ -546,7 +546,7 @@ public class DBHandler {
 			  int companyid = resultSet.getInt("company_company_id");
 			  String pendingInvite = resultSet.getString("player_pendingInvite");
 			  Double earned = resultSet.getDouble("player_earned");
-			  Double level = resultSet.getDouble("player_level");
+			  int level = resultSet.getInt("player_level");
 			  
 			  dbPlayer = new DBPlayer(plugin, this, id, uuid, name, rank, companyid, pendingInvite, earned, level);
 			}
@@ -591,7 +591,7 @@ public class DBHandler {
 			  int companyid = resultSet.getInt("company_company_id");
 			  String pendingInvite = resultSet.getString("player_pendingInvite");
 			  Double earned = resultSet.getDouble("player_earned");
-			  Double level = resultSet.getDouble("player_level");
+			  int level = resultSet.getInt("player_level");
 			  
 			  dbPlayer = new DBPlayer(plugin, this, id, uuid, name, rank, companyid, pendingInvite, earned, level);
 			}
@@ -813,7 +813,7 @@ public class DBHandler {
 				  int companyid = resultSet.getInt("company_company_id");
 				  String pendingInvite = resultSet.getString("player_pendingInvite");
 				  Double earned = resultSet.getDouble("player_earned");
-				  Double level = resultSet.getDouble("player_level");
+				  int level = resultSet.getInt("player_level");
 				  
 				  DBPlayer dbPlayer = new DBPlayer(plugin, this, id, uuid, name, rank, companyid, pendingInvite, earned, level);
 				  dbPlayerList.add(dbPlayer);

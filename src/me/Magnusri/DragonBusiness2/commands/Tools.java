@@ -124,9 +124,63 @@ public class Tools {
 		DBPlayer dbplayer = db.getPlayer(player);
 		DBCompany company = db.getCompany(dbplayer.getCompanyid());
 		
-		
-		
 		dbplayer.setEarned(dbplayer.getEarned() + amount);
+		doPlayerLevel(player);
+		
+		return true;
+	}
+	
+	public boolean doPlayerLevel(Player player){
+		
+		DBPlayer dbplayer = db.getPlayer(player);
+		DBCompany company = db.getCompany(dbplayer.getCompanyid());
+		
+		double percentage = (company.getValue() * dbplayer.getEarned()) / 100;
+		
+		if (percentage < 5){
+			dbplayer.setLevel(0);
+			return true;
+		}
+		if (percentage < 10){
+			dbplayer.setLevel(1);
+			return true;
+		}
+		if (percentage < 20){
+			dbplayer.setLevel(2);
+			return true;
+		}
+		if (percentage < 30){
+			dbplayer.setLevel(3);
+			return true;
+		}
+		if (percentage < 40){
+			dbplayer.setLevel(4);
+			return true;
+		}
+		if (percentage < 50){
+			dbplayer.setLevel(5);
+			return true;
+		}
+		if (percentage < 60){
+			dbplayer.setLevel(6);
+			return true;
+		}
+		if (percentage < 70){
+			dbplayer.setLevel(7);
+			return true;
+		}
+		if (percentage < 80){
+			dbplayer.setLevel(8);
+			return true;
+		}
+		if (percentage < 90){
+			dbplayer.setLevel(9);
+			return true;
+		}
+		if (percentage < 100){
+			dbplayer.setLevel(10);
+			return true;
+		}
 		
 		return true;
 	}

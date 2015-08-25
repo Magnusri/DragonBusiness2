@@ -1,5 +1,7 @@
 package me.Magnusri.DragonBusiness2.DBSystem;
 
+import org.bukkit.plugin.Plugin;
+
 public class DBPlayer {
 	int id;
 	String uuid;
@@ -7,9 +9,13 @@ public class DBPlayer {
 	String rank;
 	int companyid;
 	String pendingInvite;
+	double level;
 	Double earned;
 	
-	public DBPlayer(int id, String uuid, String name, String rank,int companyid, String pendingInvite, Double earned) {
+	DBHandler db;
+	Plugin plugin;
+	
+	public DBPlayer(Plugin plugin, DBHandler db, int id, String uuid, String name, String rank,int companyid, String pendingInvite, Double earned, double level) {
 		super();
 		this.id = id;
 		this.uuid = uuid;
@@ -17,7 +23,10 @@ public class DBPlayer {
 		this.rank = rank;
 		this.companyid = companyid;
 		this.pendingInvite = pendingInvite;
+		this.level = level;
 		this.earned = earned;
+		this.db = db;
+		this.plugin = plugin;
 	}
 
 	public String toString(){
@@ -54,6 +63,7 @@ public class DBPlayer {
 
 	public void setRank(String rank) {
 		this.rank = rank;
+		db.setPlayerRank(plugin, plugin.getServer().getPlayer(getUuid()), rank);
 	}
 
 	public int getCompanyid() {
@@ -79,6 +89,16 @@ public class DBPlayer {
 	public void setEarned(Double earned) {
 		this.earned = earned;
 	}
+
+	public double getLevel() {
+		return level;
+	}
+
+	public void setLevel(double level) {
+		this.level = level;
+	}
+	
+	
 	
 	
 }

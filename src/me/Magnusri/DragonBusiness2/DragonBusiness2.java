@@ -69,7 +69,7 @@ public class DragonBusiness2 extends JavaPlugin{
 		setupPermissions();
 		
 		config = new Config(this);
-		db = new DBHandler();
+		db = new DBHandler(this);
 	}
 	
 	@Override

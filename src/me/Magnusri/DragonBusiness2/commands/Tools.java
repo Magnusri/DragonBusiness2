@@ -118,6 +118,16 @@ public class Tools {
 		msgPlayerByName(playername, ChatColor.AQUA + "You earned a company bonus of $" + config.getBonusAmount());
 		return true;
 	}
+	
+	public boolean playerIncome(Player player, double amount){
+		
+		DBPlayer dbplayer = db.getPlayer(player);
+		DBCompany company = db.getCompany(dbplayer.getCompanyid());
+		
+		db.setPlayerEarned(plugin, dbplayer.getName(), dbplayer.getEarned() + amount);
+		
+		return true;
+	}
 
 	public boolean doMilestones(String company, double oldValue, double newValue) {
 		double[] milestones = config.getMilestones();

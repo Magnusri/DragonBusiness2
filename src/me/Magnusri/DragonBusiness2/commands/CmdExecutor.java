@@ -427,6 +427,23 @@ public class CmdExecutor {
 					break;
 				}
 				break;
+			case "pinfo":
+				if (args.length == 1){
+					if (db.getPlayer(player).getRank().equals("none")){
+						help = new Help(plugin, player);
+						help.ERRORnotInCo();
+						player.sendMessage(ChatColor.AQUA + "/c pinfo <playername>");
+						break;
+					}
+					DBPlayer dbPlayer = db.getPlayer(player);
+					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
+					
+					player.sendMessage(ChatColor.AQUA + "--- " + dbPlayer.getName() + " ---");
+					player.sendMessage(ChatColor.WHITE + "Company: " + dbPlayer.getCompanyid());
+					player.sendMessage(ChatColor.AQUA + "Rank: " + dbPlayer.getRank());
+					player.sendMessage(ChatColor.WHITE + "Earned: " + dbPlayer.getEarned());
+					//player.sendMessage(ChatColor.AQUA + "Level: " + dbPlayer.getLevel());
+				}				
 			case "accept":
 				if (!db.getPlayer(player).getPendingInvite().equals("none")){
 					String company = db.getPlayer(player).getPendingInvite();

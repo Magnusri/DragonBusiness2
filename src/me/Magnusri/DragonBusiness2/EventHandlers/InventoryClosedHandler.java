@@ -20,6 +20,7 @@ public class InventoryClosedHandler implements Listener {
 		this.config = config;
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler(ignoreCancelled=true, priority=EventPriority.MONITOR)
 	public void onInventoryClose(InventoryCloseEvent event) {
 		//ERROR CHECKS
@@ -35,11 +36,30 @@ public class InventoryClosedHandler implements Listener {
 			return;
 		}
 		
+		
 		//ACTUAL SALES AND INVENTORY HANDLING BELOW
+		String[] priceList = config.getPricelist();
 		
+		boolean itemsSold = false;
 		
-		
-		localPlayer.sendMessage("Items has been sold!");
+		for (int j = 0; j < localInventory.getSize(); j++){
+			if (localInventory.getItem(j) != null){
+				boolean sellable = false;
+				
+				for (int i = 0; i < priceList.length; i++){
+					if (priceList[i].split("-")[0].equals(localInventory.getItem(j).getTypeId())){
+						itemsSold = true;
+						
+						//localInventory.getItem(j) HAS BEEN CLEARED FOR SALE IN HERE. CALC PRICE, AND SELL.
+						
+					}
+				}
+			}
+		}
+		if (itemsSold)
+			localPlayer.sendMessage("Items has been sold!");
+		else
+			localPlayer.sendMessage("No items could be sold!");
 	}
 }
 

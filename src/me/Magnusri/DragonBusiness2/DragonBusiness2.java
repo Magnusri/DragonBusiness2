@@ -3,6 +3,7 @@ package me.Magnusri.DragonBusiness2;
 import java.util.logging.Logger;
 
 import me.Magnusri.DragonBusiness2.DBSystem.DBHandler;
+import me.Magnusri.DragonBusiness2.EventHandlers.InventoryClosedHandler;
 import me.Magnusri.DragonBusiness2.commands.CmdExecutor;
 import me.Magnusri.DragonBusiness2.commands.Config;
 import me.Magnusri.DragonBusiness2.commands.Tools;
@@ -69,6 +70,8 @@ public class DragonBusiness2 extends JavaPlugin implements Listener{
 		this.logger.info("DragonBusiness2 has been enabled!");
 		this.saveDefaultConfig();
 		
+		getServer().getPluginManager().registerEvents(new InventoryClosedHandler(this), this);
+		
 		setupEconomy();
 		setupChat();
 		setupPermissions();
@@ -81,25 +84,6 @@ public class DragonBusiness2 extends JavaPlugin implements Listener{
 	public void onDisable() {
 		super.onDisable();
 		this.logger.info("DragonBusiness2 has been disabled!");
-	}
-
-	@EventHandler(ignoreCancelled=true, priority=EventPriority.MONITOR)
-	public void onInventoryClose(InventoryCloseEvent event) {
-		if (!(event.getPlayer() instanceof Player)) {
-			return;
-		}
-		Player localPlayer = (Player)event.getPlayer();
-		Inventory localInventory = localPlayer.getInventory();
-		if (localInventory == null) {
-			return;
-		}
-		if (!event.getInventory().getTitle().equals("Sell Items")){
-			return;
-		}
-		
-		Player player = (Player) event.getPlayer();
-		player.sendMessage("Items has been sold!");
-		
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){

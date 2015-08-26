@@ -8,6 +8,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import me.Magnusri.DragonBusiness2.DragonBusiness2;
 import me.Magnusri.DragonBusiness2.commands.Config;
@@ -42,29 +43,32 @@ public class InventoryClosedHandler implements Listener {
 		boolean itemsSold = false;
 		double income = 0.0;
 		
-		for (int j = 0; j < event.getInventory().getSize(); j++){
-			if (event.getInventory().getItem(j) != null){
-				for (int i = 0; i < priceList.length; i++){
-					if (priceList[i].split("-")[0].equals(Integer.toString(event.getInventory().getItem(j).getTypeId()))){
+		for (int i = 0; i < event.getInventory().getSize(); i++){
+			if (event.getInventory().getItem(i) != null){
+				boolean giveback = false;
+				boolean stackSold = false;
+				ItemStack stack = event.getInventory().getItem(i);
+				for (int j = 0; j < priceList.length; j++){
+					if (stack.getTypeId() == Integer.parseInt(priceList[j].split("-")[0])){
 						itemsSold = true;
+						stackSold = true;
+						giveback = false;
 						
-						int amount = event.getInventory().getItem(j).getAmount();
-						double unitPrice = Double.parseDouble(priceList[i].split("-")[1]) * amount;
+						int amount = event.getInventory().getItem(i).getAmount();
+						double unitPrice = Double.parseDouble(priceList[j].split("-")[1]) * amount;
 						
 						income += unitPrice;
-						
-						//event.getInventory().remove(event.getInventory().getItem(j));
-						
-						//event.getInventory().getItem(j) THIS STACK HAS BEEN CLEARED FOR SALE. CALC PRICE, AND SELL.
-						
 					}
-					if (!priceList[i].split("-")[0].equals(Integer.toString(event.getInventory().getItem(j).getTypeId()))){
-						plugin.getServer().getPlayer(event.getPlayer().getName()).getWorld().dropItem(event.getPlayer().getLocation(), event.getInventory().getItem(j));
-						//event.getInventory().remove(event.getInventory().getItem(j));
+					if (!(stack.getTypeId() == Integer.parseInt(priceList[j].split("-")[0]))){
+						if (!stackSold)
+							giveback = true;
 					}
 				}
+				if (giveback)
+					plugin.getServer().getPlayer(event.getPlayer().getName()).getWorld().dropItem(event.getPlayer().getLocation(), stack);
 			}
 		}
+		
 		if (itemsSold){
 			localPlayer.sendMessage(ChatColor.GREEN + "Items were sold!");
 			plugin.tools.playerIncome(localPlayer, income);

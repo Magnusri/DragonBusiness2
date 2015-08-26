@@ -301,33 +301,6 @@ public class CmdExecutor {
 				Inventory inventory = plugin.getServer().createInventory(player, 36, "Sell Items");
 			    player.openInventory(inventory);
 			    
-			    
-				
-				/* CHECK BELOW 
-				if (economy.getBalance(player.getName()) < Double.parseDouble(args[1])){
-					player.sendMessage(ChatColor.RED + "You do not have this much money!");
-				} else {
-					if (tools.sign(Double.parseDouble(args[1])) != +1){
-						player.sendMessage(ChatColor.RED + "The number has to be positive!");
-						break;
-					}
-					DBPlayer dbPlayer = db.getPlayer(player);
-					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
-					
-					double oldValue = db.getCompany(dbCompany.getName()).getValue();
-					
-					double newValue = oldValue + (Double.parseDouble(args[1]) - (Double.parseDouble(args[1]) * config.getDepositFee()));
-					
-					if (config.isMilestonesEnabled()){
-						tools.doMilestones(dbCompany.getName(), oldValue, newValue);
-					}
-					
-					db.setCompanyValue(plugin, dbCompany.getName(), newValue);
-					economy.withdrawPlayer(player.getName(), Double.parseDouble(args[1]));
-					player.sendMessage(ChatColor.RED + "You deposited " + args[1] + "$, with a fee of " + config.getDepositFee() + "%.");
-				}
-				
-				 CHECK */
 				break;
 			case "fire":
 				if (db.getPlayer(player).getRank().equals("none")){

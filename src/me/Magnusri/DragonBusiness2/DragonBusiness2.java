@@ -29,6 +29,7 @@ public class DragonBusiness2 extends JavaPlugin implements Listener{
 	
 	public DBHandler db;
 	public Config config;
+	public Tools tools;
 	
 	public static Permission permission = null;
     public static Economy economy = null;
@@ -70,7 +71,7 @@ public class DragonBusiness2 extends JavaPlugin implements Listener{
 		this.logger.info("DragonBusiness2 has been enabled!");
 		this.saveDefaultConfig();
 		
-		getServer().getPluginManager().registerEvents(new InventoryClosedHandler(this, config), this);
+		getServer().getPluginManager().registerEvents(new InventoryClosedHandler(this), this);
 		
 		setupEconomy();
 		setupChat();
@@ -113,7 +114,7 @@ public class DragonBusiness2 extends JavaPlugin implements Listener{
 		if (cmd.getName().equalsIgnoreCase("company") && player.hasPermission("DragonBusiness2.player")){
 			
 			CmdExecutor exec = new CmdExecutor(this, player, cmd, allArgs, db, economy);
-			
+			tools = new Tools(db, player, this, economy);
 		} else {
 			player.sendMessage("You do not have permission to use this command!");
 		}

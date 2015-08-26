@@ -21,6 +21,14 @@ public class Tools {
 	Config config;
 	Economy economy;
 	
+	public Tools (DBHandler db, Plugin plugin, Economy economy){
+		this.db = db;
+		this.plugin = plugin;
+		this.player = player;
+		this.config = new Config(plugin);
+		this.economy = economy;
+	}
+	
 	public Tools (DBHandler db, Player player, Plugin plugin, Economy economy){
 		this.db = db;
 		this.plugin = plugin;

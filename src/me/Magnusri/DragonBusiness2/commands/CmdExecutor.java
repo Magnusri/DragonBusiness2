@@ -363,7 +363,7 @@ public class CmdExecutor {
 						player.sendMessage(ChatColor.RED + "This company is bankrupt, and available on the open market!");
 					player.sendMessage(ChatColor.GOLD + "CEO: "+ChatColor.WHITE + tools.getCEOInCo(dbCompany).getName());
 					player.sendMessage(ChatColor.GOLD + "Description: "+ ChatColor.WHITE + dbCompany.getInfo());
-					player.sendMessage(ChatColor.GOLD + "Value: $" +ChatColor.WHITE + "" + dbCompany.getValue());
+					player.sendMessage(ChatColor.GOLD + "Value: " +ChatColor.WHITE + "$" + dbCompany.getValue());
 					if (tools.getLeadersInCo(dbCompany).size() > 0){
 						player.sendMessage(ChatColor.GOLD + "Leaders: "+ChatColor.WHITE + tools.getLeadersInCo(dbCompany).toString());
 					}
@@ -385,7 +385,7 @@ public class CmdExecutor {
 					if (tools.getCEOInCo(dbCompany) != null)
 						player.sendMessage(ChatColor.GOLD + "CEO: "+ChatColor.WHITE + tools.getCEOInCo(dbCompany).getName());
 					player.sendMessage(ChatColor.GOLD + "Description: "+ ChatColor.WHITE + dbCompany.getInfo());
-					player.sendMessage(ChatColor.GOLD + "Value: $"+ChatColor.WHITE + Double.toString(dbCompany.getValue()));
+					player.sendMessage(ChatColor.GOLD + "Value: "+ChatColor.WHITE +"$"+ Double.toString(dbCompany.getValue()));
 					if (tools.getLeadersInCo(dbCompany).size() > 0){
 						player.sendMessage(ChatColor.GOLD + "Leaders: "+ChatColor.WHITE + tools.getLeadersInCo(dbCompany).toString());
 					}
@@ -414,7 +414,7 @@ public class CmdExecutor {
 					player.sendMessage(ChatColor.AQUA + "--- " + ChatColor.WHITE + dbPlayer.getName() + ChatColor.AQUA + " ---");
 					player.sendMessage(ChatColor.GOLD + "Company: " + ChatColor.WHITE + dbCompany.getName());
 					player.sendMessage(ChatColor.GOLD + "Rank: " + ChatColor.WHITE + dbPlayer.getRank());
-					player.sendMessage(ChatColor.GOLD + "Earned: " + ChatColor.WHITE + dbPlayer.getEarned());
+					player.sendMessage(ChatColor.GOLD + "Earned: " + ChatColor.WHITE +"$"+ dbPlayer.getEarned());
 					player.sendMessage(ChatColor.GOLD + "Level: " + ChatColor.WHITE + dbPlayer.getLevel());
 					//}
 					}
@@ -424,7 +424,7 @@ public class CmdExecutor {
 				player.sendMessage(ChatColor.AQUA + "--- " + ChatColor.WHITE + dbPlayer.getName() + ChatColor.AQUA + " ---");
 				player.sendMessage(ChatColor.GOLD + "Company: " + ChatColor.WHITE + dbCompany.getName());
 				player.sendMessage(ChatColor.GOLD + "Rank: " + ChatColor.WHITE + dbPlayer.getRank());
-				player.sendMessage(ChatColor.GOLD + "Earned: " + ChatColor.WHITE + dbPlayer.getEarned());
+				player.sendMessage(ChatColor.GOLD + "Earned: " + ChatColor.WHITE +"$"+ dbPlayer.getEarned());
 				player.sendMessage(ChatColor.GOLD + "Level: " + ChatColor.WHITE + dbPlayer.getLevel());
 								
 				break;

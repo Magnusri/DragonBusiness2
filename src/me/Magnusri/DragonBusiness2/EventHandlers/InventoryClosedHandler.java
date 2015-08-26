@@ -8,13 +8,16 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 
 import me.Magnusri.DragonBusiness2.DragonBusiness2;
+import me.Magnusri.DragonBusiness2.commands.Config;
 
 public class InventoryClosedHandler implements Listener {
 
 	private DragonBusiness2 plugin;
+	private Config config;
 	
-	public InventoryClosedHandler(DragonBusiness2 dragonbusiness){
+	public InventoryClosedHandler(DragonBusiness2 dragonbusiness, Config config){
 		this.plugin = dragonbusiness;
+		this.config = config;
 	}
 	
 	@EventHandler(ignoreCancelled=true, priority=EventPriority.MONITOR)
@@ -28,16 +31,15 @@ public class InventoryClosedHandler implements Listener {
 		if (localInventory == null) {
 			return;
 		}
-		if (!event.getInventory().getTitle().equals("Sell Items")){
+		if (!localInventory.getTitle().equals("Sell Items")){
 			return;
 		}
 		
 		//ACTUAL SALES AND INVENTORY HANDLING BELOW
-		Player player = (Player) event.getPlayer();
-		player.sendMessage("Items has been sold!");
 		
 		
 		
+		localPlayer.sendMessage("Items has been sold!");
 	}
 }
 

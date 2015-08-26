@@ -117,7 +117,7 @@ public class Help {
 	}
 	public boolean pinfo() {
 		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
-		player.sendMessage(ChatColor.GOLD + " - /c info <playername>");
+		player.sendMessage(ChatColor.GOLD + " - /c pinfo <playername>");
 		player.sendMessage(ChatColor.WHITE + "Displays information about the player specified.");
 		return true;
 	}

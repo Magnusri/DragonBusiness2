@@ -70,7 +70,7 @@ public class DragonBusiness2 extends JavaPlugin implements Listener{
 		this.logger.info("DragonBusiness2 has been enabled!");
 		this.saveDefaultConfig();
 		
-		getServer().getPluginManager().registerEvents(new InventoryClosedHandler(this), this);
+		getServer().getPluginManager().registerEvents(new InventoryClosedHandler(this, config), this);
 		
 		setupEconomy();
 		setupChat();

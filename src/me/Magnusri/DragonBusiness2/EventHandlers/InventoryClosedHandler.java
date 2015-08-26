@@ -11,14 +11,15 @@ import me.Magnusri.DragonBusiness2.DragonBusiness2;
 
 public class InventoryClosedHandler implements Listener {
 
-	private DragonBusiness2 dragonbusiness;
+	private DragonBusiness2 plugin;
 	
 	public InventoryClosedHandler(DragonBusiness2 dragonbusiness){
-		this.dragonbusiness = dragonbusiness;
+		this.plugin = dragonbusiness;
 	}
 	
 	@EventHandler(ignoreCancelled=true, priority=EventPriority.MONITOR)
 	public void onInventoryClose(InventoryCloseEvent event) {
+		//ERROR CHECKS
 		if (!(event.getPlayer() instanceof Player)) {
 			return;
 		}
@@ -31,8 +32,37 @@ public class InventoryClosedHandler implements Listener {
 			return;
 		}
 		
+		//ACTUAL SALES AND INVENTORY HANDLING BELOW
 		Player player = (Player) event.getPlayer();
 		player.sendMessage("Items has been sold!");
 		
+		
+		
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

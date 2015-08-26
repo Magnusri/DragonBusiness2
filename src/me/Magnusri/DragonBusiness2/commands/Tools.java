@@ -186,11 +186,13 @@ public class Tools {
 	}
 
 	public boolean doMilestones(String company, double oldValue, double newValue) {
-		double[] milestones = config.getMilestones();
-		for (int i = milestones.length - 1; i > 0; i--){
-			if (milestones[i] <= newValue && oldValue <= milestones[i]){
-				msgOnlinePlayers(ChatColor.GOLD + company + " reached the milestone of $" + milestones[i]);
-				return true;
+		if (config.isMilestonesEnabled()){
+			double[] milestones = config.getMilestones();
+			for (int i = milestones.length - 1; i > 0; i--){
+				if (milestones[i] <= newValue && oldValue <= milestones[i]){
+					msgOnlinePlayers(ChatColor.GOLD + company + " reached the milestone of $" + milestones[i]);
+					return true;
+				}
 			}
 		}
 		return false;

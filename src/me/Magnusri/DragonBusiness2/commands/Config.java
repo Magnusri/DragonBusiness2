@@ -12,11 +12,13 @@ public class Config {
 	double depositFee;
 	double bonusAmount;
 	boolean milestonesEnabled;
+	boolean sellingInvEnabled;
 	double[] milestones;
+	String[] pricelist;
 	
 	Plugin plugin;
 	
-	public Config(double createCost, double disbandCost, double depositFee, boolean milestonesEnabled, double[] milestones, double bonusAmount, Plugin plugin) {
+	public Config(double createCost, double disbandCost, double depositFee, boolean milestonesEnabled, boolean sellingInvEnabled, double[] milestones, String[] pricelist, double bonusAmount, Plugin plugin) {
 		
 		//LOAD CONFIGS FROM FILE HERE, IF NO FILE; SET DEFAULTS.
 		
@@ -25,7 +27,9 @@ public class Config {
 		this.disbandCost = disbandCost;
 		this.depositFee = depositFee;
 		this.milestonesEnabled = milestonesEnabled;
+		this.sellingInvEnabled = sellingInvEnabled;
 		this.milestones = milestones;
+		this.pricelist = pricelist;
 		this.bonusAmount = bonusAmount;
 		this.plugin = plugin;
 	}
@@ -34,15 +38,17 @@ public class Config {
 		super();
 		this.plugin = plugin;
 		
+		FileConfiguration config = plugin.getConfig();
+		
 		//LOAD CONFIGS FROM FILE HERE, IF NO FILE; SET DEFAULTS.
 		if (!plugin.getConfig().contains("configSet")){
-			
-			FileConfiguration config = plugin.getConfig();
 			
 			config.set("config.createCost", 1000);
 			config.set("config.disbandCost", 200);
 			config.set("config.depositFee", 0);
 			config.set("config.milestonesEnabled", true);
+			config.set("config.sellingInvEnabled", true);
+			config.set("config.bonusAmount", 20);
 
 			ArrayList<Double> milestonesList = new ArrayList<>();
 			milestonesList.add((double) 5000);
@@ -58,23 +64,34 @@ public class Config {
 			milestonesList.add((double) 2000000);
 			milestonesList.add((double) 5000000);
 			milestonesList.add((double) 10000000);
-			
 			config.set("config.milestones", milestonesList);
-			config.set("config.bonusAmount", 20);
+			
+			ArrayList<String> priceList = new ArrayList<>();
+			priceList.add("4-0.5");
+			priceList.add("5-0.6");
+			config.set("config.pricelist", priceList);
+			
 			plugin.saveConfig();
-			
-			this.createCost = config.getDouble("config.createCost");
-			this.disbandCost = config.getDouble("config.disbandCost");
-			this.depositFee = config.getDouble("config.depositFee");
-			this.milestonesEnabled = config.getBoolean("config.milestonesEnabled");
-			
-			List<Double> list = config.getDoubleList("config.milestones");
-			double[] array = new double[config.getDoubleList("config.milestones").size()];
-			for(int i = 0; i < list.size(); i++) array[i] = list.get(i);
-			this.milestones = array;
-			
-			this.bonusAmount = config.getDouble("config.bonusAmount");
 		}
+		
+		//READ OUT THE CONFIG
+		this.createCost = config.getDouble("config.createCost");
+		this.disbandCost = config.getDouble("config.disbandCost");
+		this.depositFee = config.getDouble("config.depositFee");
+		this.milestonesEnabled = config.getBoolean("config.milestonesEnabled");
+		this.sellingInvEnabled = config.getBoolean("config.sellingInvEnabled");
+		
+		List<Double> list = config.getDoubleList("config.milestones");
+		double[] array = new double[config.getDoubleList("config.milestones").size()];
+		for(int i = 0; i < list.size(); i++) array[i] = list.get(i);
+		this.milestones = array;
+		
+		List<String> list1 = config.getStringList("config.pricelist");
+		String[] array1 = new String[config.getStringList("config.pricelist").size()];
+		for(int i = 0; i < list1.size(); i++) array1[i] = list1.get(i);
+		this.pricelist = array1;
+		
+		this.bonusAmount = config.getDouble("config.bonusAmount");
 	}
 
 	public double getBonusAmount() {
@@ -114,5 +131,16 @@ public class Config {
 	public double[] getMilestones() {
 		return milestones;
 	}
-	
+	public boolean isSellingInvEnabled() {
+		return sellingInvEnabled;
+	}
+	public void setSellingInvEnabled(boolean sellingInvEnabled) {
+		this.sellingInvEnabled = sellingInvEnabled;
+	}
+	public String[] getPricelist() {
+		return pricelist;
+	}
+	public void setPricelist(String[] pricelist) {
+		this.pricelist = pricelist;
+	}
 }

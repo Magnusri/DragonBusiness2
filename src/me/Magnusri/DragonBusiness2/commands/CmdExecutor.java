@@ -285,6 +285,13 @@ public class CmdExecutor {
 				}
 				break;
 			case "sell":
+				if (!config.isSellingInvEnabled())
+					break;
+				if (args.length != 1){
+						help = new Help(plugin, player);
+						help.sell();
+						break;
+					}
 				if (db.getPlayer(player).getRank().equals("none")){
 					help = new Help(plugin, player);
 					help.ERRORnotInCo();

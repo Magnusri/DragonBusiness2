@@ -28,7 +28,7 @@ public class Help {
 		player.sendMessage(ChatColor.GOLD + " - /c promote <playername>");
 		player.sendMessage(ChatColor.GOLD + " - /c demote <playername>");
 		player.sendMessage(ChatColor.GOLD + " - /c deposit <amount>");
-		player.sendMessage(ChatColor.GOLD + " - /c sell");
+		if (config.isSellingInvEnabled()) player.sendMessage(ChatColor.GOLD + " - /c sell");
 		player.sendMessage(ChatColor.GOLD + " - /c top");
 		player.sendMessage(ChatColor.GOLD + " - /c info");
 		player.sendMessage(ChatColor.GOLD + " - /c pinfo");

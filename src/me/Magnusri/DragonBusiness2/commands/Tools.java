@@ -1,6 +1,7 @@
 package me.Magnusri.DragonBusiness2.commands;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.milkbowl.vault.economy.Economy;
 
@@ -135,6 +136,19 @@ public class Tools {
 		dbplayer.setEarned(dbplayer.getEarned() + amount);
 		doPlayerLevel(player);
 		
+		List<DBPlayer> players = db.getPlayerListInCompany(company.getName());
+		
+		double moneyforco = amount;
+		
+		for (int i = 0; i < players.size(); i++){
+			double payout = amount * ((double)players.get(i).getLevel() / (double)100.0);
+			economy.depositPlayer(players.get(i).getName(), payout);
+			moneyforco -= payout;
+			msgPlayerByName(players.get(i).getName(), ChatColor.GREEN + "You earned " + payout + " from the last company sale!");
+		}
+		
+		db.setCompanyValue(plugin, company.getName(), company.getValue() + moneyforco);
+		
 		return true;
 	}
 	
@@ -143,7 +157,7 @@ public class Tools {
 		DBPlayer dbplayer = db.getPlayer(player);
 		DBCompany company = db.getCompany(dbplayer.getCompanyid());
 		
-		double percentage = (company.getValue() * dbplayer.getEarned()) / 100;
+		double percentage = (dbplayer.getEarned() / company.getValue()) * 100;
 		
 		if (percentage < 5){
 			dbplayer.setLevel(0);
@@ -186,6 +200,10 @@ public class Tools {
 			return true;
 		}
 		if (percentage < 100){
+			dbplayer.setLevel(10);
+			return true;
+		}
+		if (percentage > 100){
 			dbplayer.setLevel(10);
 			return true;
 		}

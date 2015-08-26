@@ -36,7 +36,7 @@ public class DBCompany {
 		return value;
 	}
 
-	public void setValue(int value) {
+	public void setValue(double value) {
 		this.value = value;
 	}
 

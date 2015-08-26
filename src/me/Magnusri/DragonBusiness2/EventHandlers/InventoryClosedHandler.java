@@ -53,21 +53,25 @@ public class InventoryClosedHandler implements Listener {
 						
 						income += unitPrice;
 						
+						//event.getInventory().remove(event.getInventory().getItem(j));
+						
 						//event.getInventory().getItem(j) THIS STACK HAS BEEN CLEARED FOR SALE. CALC PRICE, AND SELL.
 						
-					} else {
-						localPlayer.getInventory().addItem(event.getInventory().getItem(j));
+					}
+					if (!priceList[i].split("-")[0].equals(Integer.toString(event.getInventory().getItem(j).getTypeId()))){
+						plugin.getServer().getPlayer(event.getPlayer().getName()).getWorld().dropItem(event.getPlayer().getLocation(), event.getInventory().getItem(j));
+						//event.getInventory().remove(event.getInventory().getItem(j));
 					}
 				}
 			}
 		}
 		if (itemsSold){
-			plugin.tools.playerIncome(localPlayer, income);
 			localPlayer.sendMessage(ChatColor.GREEN + "Items were sold!");
+			plugin.tools.playerIncome(localPlayer, income);
 		} else {
 			localPlayer.sendMessage("No items could be sold!");
 		}
-		
+		event.getInventory().clear();
 	}
 }
 

@@ -17,6 +17,7 @@ public class Config {
 	String[] pricelist;
 	
 	Plugin plugin;
+	FileConfiguration config;
 	
 	public Config(double createCost, double disbandCost, double depositFee, boolean milestonesEnabled, boolean sellingInvEnabled, double[] milestones, String[] pricelist, double bonusAmount, Plugin plugin) {
 		
@@ -38,7 +39,7 @@ public class Config {
 		super();
 		this.plugin = plugin;
 		
-		FileConfiguration config = plugin.getConfig();
+		this.config = plugin.getConfig();
 		
 		//LOAD CONFIGS FROM FILE HERE, IF NO FILE; SET DEFAULTS.
 		if (!plugin.getConfig().contains("configSet")){
@@ -100,6 +101,7 @@ public class Config {
 	
 	public void setBonusAmount(double bonusAmount) {
 		this.bonusAmount = bonusAmount;
+		config.set("config.bonusAmount", bonusAmount);
 	}
 	
 	public double getCreateCost() {
@@ -108,6 +110,7 @@ public class Config {
 
 	public void setCreateCost(float createCost) {
 		this.createCost = createCost;
+		config.set("config.createCost", createCost);
 	}
 
 	public double getDepositFee() {
@@ -116,6 +119,7 @@ public class Config {
 
 	public void setDepositFee(float depositFee) {
 		this.depositFee = depositFee;
+		config.set("config.depositFee", depositFee);
 	}
 
 	public double getDisbandCost() {
@@ -124,9 +128,14 @@ public class Config {
 
 	public void setDisbandCost(float disbandCost) {
 		this.disbandCost = disbandCost;
+		config.set("config.disbandCost", disbandCost);
 	}
 	public boolean isMilestonesEnabled() {
 		return milestonesEnabled;
+	}
+	public void setMilestonesEnabled(boolean milestonesEnabled) {
+		this.milestonesEnabled = milestonesEnabled;
+		config.set("config.milestonesEnabled", milestonesEnabled);
 	}
 	public double[] getMilestones() {
 		return milestones;
@@ -136,6 +145,7 @@ public class Config {
 	}
 	public void setSellingInvEnabled(boolean sellingInvEnabled) {
 		this.sellingInvEnabled = sellingInvEnabled;
+		config.set("config.sellingInvEnabled", sellingInvEnabled);
 	}
 	public String[] getPricelist() {
 		return pricelist;

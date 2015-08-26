@@ -294,10 +294,6 @@ public class CmdExecutor {
 				Inventory inventory = plugin.getServer().createInventory(player, 36, "Sell Items");
 			    player.openInventory(inventory);
 			    
-			    player.sendMessage(ChatColor.GREEN + "Items has been sold!");
-			    
-			    
-			    
 			    
 				
 				/* CHECK BELOW 

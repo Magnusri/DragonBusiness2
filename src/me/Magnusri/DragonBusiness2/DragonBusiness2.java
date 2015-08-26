@@ -14,10 +14,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class DragonBusiness2 extends JavaPlugin{
+public class DragonBusiness2 extends JavaPlugin implements Listener{
 	
 	public final Logger logger = Logger.getLogger("Minecraft");
 	
@@ -76,6 +81,25 @@ public class DragonBusiness2 extends JavaPlugin{
 	public void onDisable() {
 		super.onDisable();
 		this.logger.info("DragonBusiness2 has been disabled!");
+	}
+
+	@EventHandler(ignoreCancelled=true, priority=EventPriority.MONITOR)
+	public void onInventoryClose(InventoryCloseEvent event) {
+		if (!(event.getPlayer() instanceof Player)) {
+			return;
+		}
+		Player localPlayer = (Player)event.getPlayer();
+		Inventory localInventory = localPlayer.getInventory();
+		if (localInventory == null) {
+			return;
+		}
+		if (!event.getInventory().getTitle().equals("Sell Items")){
+			return;
+		}
+		
+		Player player = (Player) event.getPlayer();
+		player.sendMessage("Items has been sold!");
+		
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){

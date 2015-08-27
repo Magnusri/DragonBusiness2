@@ -29,7 +29,7 @@ public class CmdExecutor {
 			switch (args[0]){
 			case "help":
 				if (args.length == 2){
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					if (args[1].equals("create"))
 						help.createCo();
 					if (args[1].equals("disband"))
@@ -58,7 +58,7 @@ public class CmdExecutor {
 						help.makeceo();
 					break;
 				}
-				help = new Help(plugin, player);
+				help = new Help(plugin, player, tools, db);
 				help.all();
 				break;
 			case "test":
@@ -67,7 +67,7 @@ public class CmdExecutor {
 				break;
 			case "changedesc":
 				if (db.getPlayer(player).getRank().equals("none")){
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.ERRORnotInCo();
 					break;
 				}
@@ -76,7 +76,7 @@ public class CmdExecutor {
 					break;
 				}
 				if (args.length < 2){
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.changedesc();
 					break;
 				} else {
@@ -97,7 +97,7 @@ public class CmdExecutor {
 				break;
 			case "makeceo":
 				if (db.getPlayer(player).getRank().equals("none")){
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.ERRORnotInCo();
 					break;
 				}
@@ -106,7 +106,7 @@ public class CmdExecutor {
 					break;
 				}
 				if (args.length != 2){
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.makeceo();
 					break;
 				} else {
@@ -145,9 +145,51 @@ public class CmdExecutor {
 					}
 				}
 				break;
+			case "hiring":
+				if (args.length == 1){
+					player.sendMessage(ChatColor.AQUA + "--- "+ChatColor.WHITE + "Hiring Companies" + ChatColor.AQUA + " ---");
+					for (DBCompany dbCompany : db.getCompanyList()){
+						if (dbCompany.isHiring()){
+							player.sendMessage(ChatColor.GOLD + "  - " + dbCompany.getName());
+						}
+					}
+					player.sendMessage(ChatColor.AQUA + "--- "+ChatColor.WHITE + "Hiring Companies" + ChatColor.AQUA + " ---");
+					break;
+				}
+				if (db.getPlayer(player).getRank().equals("none")){
+					help = new Help(plugin, player, tools, db);
+					help.ERRORnotInCo();
+					break;
+				}
+				if (!db.getPlayer(player).getRank().equals("CEO")){
+					player.sendMessage(ChatColor.RED + "Only the CEO can do this!");
+					break;
+				}
+				if (args.length == 2) {
+					DBPlayer dbPlayer = db.getPlayer(player);
+					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
+					
+					if (args[1].equals("on")){
+						//db.setCompanyHiring(plugin, dbCompany.getName(), true);
+						dbCompany.setHiring(true);
+						player.sendMessage(ChatColor.GREEN + "Your company is now hiring!");
+					} else if (args[1].equals("off")){
+						//db.setCompanyHiring(plugin, dbCompany.getName(), false);
+						dbCompany.setHiring(false);
+						player.sendMessage(ChatColor.GREEN + "Your company is no longer hiring!");
+					} else {
+						help = new Help(plugin, player, tools, db);
+						help.hiring();
+					}
+					break;
+				} else {
+					help = new Help(plugin, player, tools, db);
+					help.hiring();
+					break;
+				}
 			case "demote":
 				if (db.getPlayer(player).getRank().equals("none")){
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.ERRORnotInCo();
 					break;
 				}
@@ -156,7 +198,7 @@ public class CmdExecutor {
 					break;
 				}
 				if (args.length != 2){
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.promote();
 					break;
 				} else {
@@ -199,7 +241,7 @@ public class CmdExecutor {
 				break;
 			case "promote":
 				if (db.getPlayer(player).getRank().equals("none")){
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.ERRORnotInCo();
 					break;
 				}
@@ -208,7 +250,7 @@ public class CmdExecutor {
 					break;
 				}
 				if (args.length != 2){
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.promote();
 					break;
 				} else {
@@ -251,12 +293,12 @@ public class CmdExecutor {
 				break;
 			case "deposit":
 				if (db.getPlayer(player).getRank().equals("none")){
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.ERRORnotInCo();
 					break;
 				}
 				if (args.length != 2 || !tools.isNumeric(args[1])){
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.deposit();
 					break;
 				}
@@ -288,12 +330,12 @@ public class CmdExecutor {
 				if (!config.isSellingInvEnabled())
 					break;
 				if (args.length != 1){
-						help = new Help(plugin, player);
+						help = new Help(plugin, player, tools, db);
 						help.sell();
 						break;
 					}
 				if (db.getPlayer(player).getRank().equals("none")){
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.ERRORnotInCo();
 					break;
 				}
@@ -304,7 +346,7 @@ public class CmdExecutor {
 				break;
 			case "fire":
 				if (db.getPlayer(player).getRank().equals("none")){
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.ERRORnotInCo();
 					break;
 				}
@@ -313,7 +355,7 @@ public class CmdExecutor {
 					break;
 				}
 				if (args.length != 2){
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.fire();
 					break;
 				} else {
@@ -350,7 +392,7 @@ public class CmdExecutor {
 			case "info":
 				if (args.length == 1){
 					if (db.getPlayer(player).getRank().equals("none")){
-						help = new Help(plugin, player);
+						help = new Help(plugin, player, tools, db);
 						help.ERRORnotInCo();
 						player.sendMessage(ChatColor.AQUA + "If you were looking for another company, please add company name!");
 						break;
@@ -437,7 +479,7 @@ public class CmdExecutor {
 					db.setPlayerRank(plugin, player, "Employee");
 					tools.msgPlayersInCo(company, ChatColor.AQUA + player.getName() + " joined the company!");
 				} else {
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.ERRORnoInvitesPending();
 				}
 				break;
@@ -446,13 +488,13 @@ public class CmdExecutor {
 					player.sendMessage(ChatColor.AQUA + "You declined the invite from " + db.getPlayer(player).getPendingInvite());
 					db.setPlayerInvite(plugin, player.getName(), "none");
 				} else {
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.ERRORnoInvitesPending();
 				}
 				break;
 			case "invite":
 				if (db.getPlayer(player).getRank().equals("none")){
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.ERRORnotInCo();
 					break;
 				}
@@ -461,7 +503,7 @@ public class CmdExecutor {
 					break;
 				}
 				if (args.length != 2){
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.invite();
 					break;
 				}
@@ -479,7 +521,7 @@ public class CmdExecutor {
 					tools.msgPlayerByName(args[1], ChatColor.AQUA + "You have been invited to join " + companyName);
 					tools.msgPlayerByName(args[1], ChatColor.GOLD + "To accept invite, type: /c accept");
 				} else {
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.ERRORtargetNotOnline();
 					break;
 				}
@@ -495,13 +537,13 @@ public class CmdExecutor {
 						player.sendMessage(ChatColor.RED + "  or make someone else the new CEO first!");
 					}
 				} else {
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.ERRORnotInCo();
 				}
 				break;
 			case "disband":
 				if (db.getPlayer(player).getRank().equals("none")){
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.ERRORnotInCo();
 					break;
 				}
@@ -525,7 +567,7 @@ public class CmdExecutor {
 					db.removeCompany(plugin, companyID);
 					economy.withdrawPlayer(player.getName(), config.getDisbandCost());
 				}else{
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.disbandCo();
 				}
 				break;
@@ -552,17 +594,17 @@ public class CmdExecutor {
 					tools.msgOnlinePlayers(ChatColor.AQUA + player.getName() + " just created the company " + ChatColor.GOLD + args[1] + "!");
 					economy.withdrawPlayer(player.getName(), config.getCreateCost());
 				}else{
-					help = new Help(plugin, player);
+					help = new Help(plugin, player, tools, db);
 					help.createCo();
 				}
 				break;
 			default:
-				help = new Help(plugin, player);
+				help = new Help(plugin, player, tools, db);
 				help.all();
 				break;
 			}
 		} else {
-			help = new Help(plugin, player);
+			help = new Help(plugin, player, tools, db);
 			help.all();
 		}
 	}

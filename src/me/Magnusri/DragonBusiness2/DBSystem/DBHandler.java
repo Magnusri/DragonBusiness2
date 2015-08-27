@@ -349,6 +349,37 @@ public class DBHandler {
 		      close();
 			  return true;
 	  }
+
+	  public boolean setCompanyHiring(Plugin plugin, String company, boolean hiring){
+		  
+		  try {
+				Class.forName("com.mysql.jdbc.Driver");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		      
+		      try {
+				connect = DriverManager
+						  .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
+							  + "user=dragonbusiness&password=dragonbusiness123");
+				  
+				  preparedStatement = connect
+				          .prepareStatement("UPDATE company SET company_hiring=? WHERE company_name=?");
+				  if (hiring)
+					  preparedStatement.setString(1, "true");
+				  else
+					  preparedStatement.setString(1, "false");
+					  
+				  preparedStatement.setString(2, company);
+				  
+				  preparedStatement.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		      
+		      close();
+			  return true;
+	  }
 	  
 	  public boolean setCompanyInfo(Plugin plugin, String company, String info){
 		  
@@ -634,13 +665,17 @@ public class DBHandler {
 			      double value = resultSet.getDouble("company_value");
 			      String info = resultSet.getString("company_info");
 			      boolean bankrupt = false;
+			      boolean hiring = true;
 			      
 			      if (resultSet.getString("company_bankrupt").equals("false"))
 			    	  bankrupt = false;
 			      else
 			    	  bankrupt = true;
 			      
-			      dbCompany = new DBCompany(id, name, value, info, bankrupt);
+			      if (resultSet.getString("company_hiring").equals("false"))
+			    	  hiring = false;
+			      
+			      dbCompany = new DBCompany(id, name, value, info, bankrupt, hiring, plugin, this);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -681,13 +716,17 @@ public class DBHandler {
 			      double value = resultSet.getDouble("company_value");
 			      String info = resultSet.getString("company_info");
 			      boolean bankrupt = false;
+			      boolean hiring = true;
 			      
 			      if (resultSet.getString("company_bankrupt").equals("false"))
 			    	  bankrupt = false;
 			      else
 			    	  bankrupt = true;
 			      
-			      dbCompany = new DBCompany(id, name, value, info, bankrupt);
+			      if (resultSet.getString("company_hiring").equals("false"))
+			    	  hiring = false;
+			      
+			      dbCompany = new DBCompany(id, name, value, info, bankrupt, hiring, plugin, this);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -832,13 +871,17 @@ public class DBHandler {
 		      double value = resultSet.getDouble("company_value");
 		      String info = resultSet.getString("company_info");
 		      boolean bankrupt = false;
+		      boolean hiring = true;
 		      
 		      if (resultSet.getString("company_bankrupt").equals("false"))
 		    	  bankrupt = false;
 		      else
 		    	  bankrupt = true;
 		      
-		      DBCompany dbCompany = new DBCompany(id, name, value, info, bankrupt);
+		      if (resultSet.getString("company_hiring").equals("false"))
+		    	  hiring = false;
+		      
+		      DBCompany dbCompany = new DBCompany(id, name, value, info, bankrupt, hiring, plugin, this);
 		      dbCompanyList.add(dbCompany);
 		    }
 		    return dbCompanyList;

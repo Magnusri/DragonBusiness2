@@ -4,36 +4,51 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import me.Magnusri.DragonBusiness2.DBSystem.DBHandler;
+
 public class Help {
 	
 	Player player;
 	Plugin plugin;
 	Config config;
+	Tools tools;
+	DBHandler db;
 	
-	public Help(Plugin plugin, Player player){
+	public Help(Plugin plugin, Player player, Tools tools, DBHandler db){
 		this.player = player;
 		this.plugin = plugin;
 		this.config = new Config(plugin);
+		this.tools = tools;
+		this.db = db;
 	}
 	public boolean all(){
 		player.sendMessage(ChatColor.AQUA + "--- DragonBusiness 2.0 Help ---");
 		player.sendMessage(ChatColor.WHITE + "For information on a command, do /c help <command>");
 		player.sendMessage(ChatColor.GOLD + " - /c create <companyname>");
 		player.sendMessage(ChatColor.RED + "    - Cost: $" + config.getCreateCost());
-		player.sendMessage(ChatColor.GOLD + " - /c disband");
-		player.sendMessage(ChatColor.RED + "    - Cost: $" + config.getDisbandCost());
+		if (db.getPlayer(player).getRank().equals("CEO"))
+			player.sendMessage(ChatColor.GOLD + " - /c disband");
+		if (db.getPlayer(player).getRank().equals("CEO"))
+			player.sendMessage(ChatColor.RED + "    - Cost: $" + config.getDisbandCost());
 		player.sendMessage(ChatColor.GOLD + " - /c invite <playername>");
 		player.sendMessage(ChatColor.GOLD + " - /c fire <playername>");
-		player.sendMessage(ChatColor.GOLD + " - /c changedesc <new description>");
-		player.sendMessage(ChatColor.GOLD + " - /c promote <playername>");
-		player.sendMessage(ChatColor.GOLD + " - /c demote <playername>");
+		if (db.getPlayer(player).getRank().equals("CEO"))
+			player.sendMessage(ChatColor.GOLD + " - /c changedesc <new description>");
+		if (db.getPlayer(player).getRank().equals("CEO"))
+			player.sendMessage(ChatColor.GOLD + " - /c promote <playername>");
+		if (db.getPlayer(player).getRank().equals("CEO"))
+			player.sendMessage(ChatColor.GOLD + " - /c demote <playername>");
 		player.sendMessage(ChatColor.GOLD + " - /c deposit <amount>");
+		if (db.getPlayer(player).getRank().equals("CEO"))
+			player.sendMessage(ChatColor.GOLD + " - /c hiring <on/off>");
+		player.sendMessage(ChatColor.GOLD + " - /c hiring ");
 		if (config.isSellingInvEnabled()) player.sendMessage(ChatColor.GOLD + " - /c sell");
-		player.sendMessage(ChatColor.GOLD + " - /c top");
+			player.sendMessage(ChatColor.GOLD + " - /c top");
 		player.sendMessage(ChatColor.GOLD + " - /c info");
 		player.sendMessage(ChatColor.GOLD + " - /c pinfo");
 		player.sendMessage(ChatColor.GOLD + " - /c leave");
-		player.sendMessage(ChatColor.GOLD + " - /c makeceo <playername>");
+		if (db.getPlayer(player).getRank().equals("CEO"))
+			player.sendMessage(ChatColor.GOLD + " - /c makeceo <playername>");
 		player.sendMessage(ChatColor.AQUA + "--- DragonBusiness 2.0 Help ---");
 		return true;
 	}
@@ -131,6 +146,17 @@ public class Help {
 		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
 		player.sendMessage(ChatColor.GOLD + " - /c sell");
 		player.sendMessage(ChatColor.WHITE + "Sell items on behalf of your company.");
+		return true;
+	}
+	public boolean hiring() {
+		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
+		if (db.getPlayer(player).getRank().equals("CEO"))
+			player.sendMessage(ChatColor.GOLD + " - /c hiring <on/off>");
+		if (db.getPlayer(player).getRank().equals("CEO"))
+			player.sendMessage(ChatColor.WHITE + "Choose if your company should appear as hiring.");
+		player.sendMessage(ChatColor.AQUA + " - ");
+		player.sendMessage(ChatColor.GOLD + " - /c hiring");
+		player.sendMessage(ChatColor.WHITE + "Show a list of companies that are hiring.");
 		return true;
 	}
 }

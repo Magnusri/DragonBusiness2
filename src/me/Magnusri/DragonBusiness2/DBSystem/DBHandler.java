@@ -61,12 +61,12 @@ public class DBHandler {
 		  return true;
 	  }
 	  
-	  public boolean addPlayerToCompany(Plugin plugin, Player player, String companyName){
+	  public boolean addPlayerToCompany(Plugin plugin, DBPlayer player, String companyName){
 		  
 		  boolean playerInDB = false;
 		  
 		  for (DBPlayer dbPlayer : getPlayerList()){
-			  if (dbPlayer.getUuid().equals(player.getUniqueId().toString())){
+			  if (dbPlayer.getUuid().equals(player.getUuid().toString())){
 				  playerInDB = true;
 			  }
 		  }
@@ -79,9 +79,8 @@ public class DBHandler {
 		  }
 		  
 		  if (!playerInDB){
-			  insertPlayer(plugin, player);
+			  insertPlayer(plugin, plugin.getServer().getPlayer(player.getUuid()));
 		  }
-		  
 		  
 		  try {
 				Class.forName("com.mysql.jdbc.Driver");
@@ -98,7 +97,7 @@ public class DBHandler {
 				          .prepareStatement("UPDATE player SET company_company_id=? WHERE player_uuid=?");
 				  
 				  preparedStatement.setInt(1, companyId);
-				  preparedStatement.setString(2, player.getUniqueId().toString());
+				  preparedStatement.setString(2, player.getUuid().toString());
 				  
 				  preparedStatement.executeUpdate();
 			} catch (SQLException e) {
@@ -109,18 +108,18 @@ public class DBHandler {
 			  return true;
 	  }
 	  
-	  public boolean setPlayerRank(Plugin plugin, Player player, String rank){
+	  public boolean setPlayerRank(Plugin plugin, DBPlayer player, String rank){
 		  
 		  boolean playerInDB = false;
 		  
 		  for (DBPlayer dbPlayer : getPlayerList()){
-			  if (dbPlayer.getUuid().equals(player.getUniqueId().toString())){
+			  if (dbPlayer.getUuid().equals(player.getUuid().toString())){
 				  playerInDB = true;
 			  }
 		  }
 		  
 		  if (!playerInDB){
-			  insertPlayer(plugin, player);
+			  insertPlayer(plugin, plugin.getServer().getPlayer(player.getUuid()));
 		  }
 		  
 		  
@@ -139,7 +138,7 @@ public class DBHandler {
 				          .prepareStatement("UPDATE player SET player_rank=? WHERE player_uuid=?");
 				  
 				  preparedStatement.setString(1, rank);
-				  preparedStatement.setString(2, player.getUniqueId().toString());
+				  preparedStatement.setString(2, player.getUuid().toString());
 				  
 				  preparedStatement.executeUpdate();
 			} catch (SQLException e) {
@@ -206,17 +205,10 @@ public class DBHandler {
 				  playerInDB = true;
 			  }
 		  }
-		  Player onlinePlayer = null;
-		  if (plugin.getServer().getPlayer(player) != null){
-			  onlinePlayer = plugin.getServer().getPlayer(player);
-		  } else {
-			  return false;
-		  }
 		  
 		  if (!playerInDB){
-			  insertPlayer(plugin, onlinePlayer);
+			  insertPlayer(plugin, plugin.getServer().getPlayer(player));
 		  }
-		  
 		  
 		  try {
 				Class.forName("com.mysql.jdbc.Driver");
@@ -497,11 +489,13 @@ public class DBHandler {
 		  return true;
 	  }
 	  
-	  public boolean insertCompany(Plugin plugin, Player player, String companyName, String info, double value){
+	  public boolean insertCompany(Plugin plugin, DBPlayer player, String companyName, String info, double value){
+		  
+		  Player realPlayer = plugin.getServer().getPlayer(player.getUuid());
 		  
 		  for (DBCompany dbCompany : getCompanyList()){
 			  if (dbCompany.getName().equals(companyName)){
-				  player.sendMessage(ChatColor.RED + "A company named " + companyName + " already exists!");
+				  realPlayer.sendMessage(ChatColor.RED + "A company named " + companyName + " already exists!");
 				  return false;
 			  }
 		  }
@@ -537,7 +531,7 @@ public class DBHandler {
 		  return true;
 	  }
 	  
-	  public boolean insertCompany(Plugin plugin, Player player, String companyName){
+	  public boolean insertCompany(Plugin plugin, DBPlayer player, String companyName){
 		  
 		  insertCompany(plugin, player, companyName, "", 0);
 		  

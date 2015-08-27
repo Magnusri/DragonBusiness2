@@ -5,6 +5,8 @@ import me.Magnusri.DragonBusiness2.DBSystem.DBHandler;
 import me.Magnusri.DragonBusiness2.DBSystem.DBPlayer;
 import net.milkbowl.vault.economy.Economy;
 
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
@@ -50,6 +52,10 @@ public class CmdExecutor {
 						help.top();
 					if (args[1].equals("hiring"))
 						help.hiring();
+					if (args[1].equals("market"))
+						help.market();
+					if (args[1].equals("buyout"))
+						help.buyout();
 					if (args[1].equals("sell"))
 						help.sell();
 					if (args[1].equals("info"))
@@ -140,8 +146,8 @@ public class CmdExecutor {
 					}
 					
 					if (sameCo){
-						db.setPlayerRank(plugin, targetPlayer, "CEO");
-						db.setPlayerRank(plugin, player, "Leader");
+						db.setPlayerRank(plugin, db.getPlayer(targetPlayer), "CEO");
+						db.setPlayerRank(plugin, db.getPlayer(player), "Leader");
 						tools.msgPlayersInCo(dbCompany.getName(), ChatColor.AQUA + "Company leadership changed!");
 						tools.msgPlayersInCo(dbCompany.getName(), ChatColor.WHITE + targetPlayer.getName() + " is now the new CEO of the company!");
 					} else {
@@ -233,7 +239,7 @@ public class CmdExecutor {
 					
 					if (sameCo){
 						if (targetDbPlayer.getRank().equals("Leader")){
-							db.setPlayerRank(plugin, targetPlayer, "Employee");
+							db.setPlayerRank(plugin, targetDbPlayer, "Employee");
 							tools.msgPlayersInCo(dbCompany.getName(), ChatColor.AQUA + args[1] + " has been demoted to Employee!");
 						} else {
 							player.sendMessage(ChatColor.RED + "Only Leaders can be demoted");
@@ -285,7 +291,7 @@ public class CmdExecutor {
 					
 					if (sameCo){
 						if (targetDbPlayer.getRank().equals("Employee")){
-							db.setPlayerRank(plugin, targetPlayer, "Leader");
+							db.setPlayerRank(plugin, targetDbPlayer, "Leader");
 							tools.msgPlayersInCo(dbCompany.getName(), ChatColor.AQUA + args[1] + " has been promoted to Leader!");
 						} else {
 							player.sendMessage(ChatColor.RED + "Only Employees can be promoted");
@@ -293,6 +299,106 @@ public class CmdExecutor {
 					} else {
 						player.sendMessage(ChatColor.RED + "This player is not in your company!");
 					}
+				}
+				break;
+			case "buyout":
+				if (db.getPlayer(player).getRank().equals("none")){
+					help = new Help(plugin, player, tools, db);
+					help.ERRORnotInCo();
+					break;
+				}
+				if (!db.getPlayer(player).getRank().equals("CEO")){
+					player.sendMessage(ChatColor.RED + "Only the CEO can buyout companies!");
+					break;
+				}
+				if (args.length == 1 || args.length > 3){
+					help = new Help(plugin, player, tools, db);
+					help.buyout();
+					break;
+				}
+				if (args.length == 2){
+					DBCompany targetCompany = db.getCompany(args[1]);
+					int targetCompanyEmployees = db.getPlayerListInCompany(targetCompany.getName()).size();
+					double targetCompanyPrice = config.getBuyoutEmployeePrice() * (double)targetCompanyEmployees;
+					
+					if (!targetCompany.getBankrupt()){
+						player.sendMessage(ChatColor.RED + "This company is not bankrupt, or on the market!");
+						break;
+					}
+					
+					if (economy.getBalance(player.getName()) < targetCompanyPrice){
+						player.sendMessage(ChatColor.RED + "This company costs $" + targetCompanyPrice + ". You only have $" + economy.getBalance(player.getName()) + ".");
+					} else {
+						player.sendMessage(ChatColor.RED + "This company has " + targetCompanyEmployees + " employees, and will cost you $" + targetCompanyPrice + " to buyout.");
+						player.sendMessage(ChatColor.DARK_AQUA + "To buyout this company, type /c buyout " + targetCompany.getName() + " confirm");
+					}
+					break;
+				}
+				if (args.length == 3 && args[2].equals("confirm")){
+					DBCompany targetCompany = db.getCompany(args[1]);
+					int targetCompanyEmployees = db.getPlayerListInCompany(targetCompany.getName()).size();
+					double targetCompanyPrice = config.getBuyoutEmployeePrice() * (double)targetCompanyEmployees;
+					
+					if (!targetCompany.getBankrupt()){
+						player.sendMessage(ChatColor.RED + "This company is not bankrupt, or on the market!");
+						break;
+					}
+					
+					if (economy.getBalance(player.getName()) < targetCompanyPrice){
+						player.sendMessage(ChatColor.RED + "This company costs $" + targetCompanyPrice + ". You only have $" + economy.getBalance(player.getName()) + ".");
+					} else {
+						List<DBPlayer> targetPlayers = db.getPlayerListInCompany(targetCompany.getName());
+						DBCompany company = db.getCompany(db.getPlayer(player.getName()).getCompanyid());
+						
+						economy.depositPlayer(tools.getCEOInCo(targetCompany).getName(), targetCompanyPrice);
+						tools.msgPlayerByName(tools.getCEOInCo(targetCompany).getName(), "Your company was bought out by " + company.getName() + ". You earned $" + targetCompanyPrice);
+						
+						int targetCompanyID = targetCompany.getId();
+						tools.msgPlayersInCo(db.getCompany(targetCompany.getId()).getName(), ChatColor.GOLD + "Your company was bought out. You are now part of " + company.getName() + "!");
+						for (DBPlayer player1 : db.getPlayerListInCompany(targetCompany.getName())){
+							db.removePlayerFromCompany(plugin, player1.getName());
+						}
+						db.removeCompany(plugin, targetCompanyID);
+						
+						for (DBPlayer player2 : targetPlayers){
+							db.addPlayerToCompany(plugin, player2, company.getName());
+							db.setPlayerInvite(plugin, player2.getName(), "none");
+							db.setPlayerRank(plugin, player2, "Employee");
+						}
+						tools.msgOnlinePlayers(company.getName() + " has bought out " + targetCompany.getName() + "!");
+					}
+					break;
+				}
+				
+				break;
+			case "market":
+				if (db.getPlayer(player).getRank().equals("none")){
+					help = new Help(plugin, player, tools, db);
+					help.ERRORnotInCo();
+					break;
+				}
+				if (!db.getPlayer(player).getRank().equals("CEO") && !db.getPlayer(player).getRank().equals("Leader")){
+					player.sendMessage(ChatColor.RED + "Only CEO and Leaders can see the market!");
+					break;
+				}
+				if (args.length != 1){
+					help = new Help(plugin, player, tools, db);
+					help.market();
+					break;
+				} else {
+					DBPlayer dbPlayer = db.getPlayer(player);
+					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
+					
+					List<DBCompany> bankruptCompanies = db.getCompanyList();
+					
+					player.sendMessage(ChatColor.AQUA + "--- "+ "Market" + " ---");
+					for (DBCompany bankruptDBCompany : bankruptCompanies){
+						if (bankruptDBCompany.getBankrupt()){
+							player.sendMessage(ChatColor.DARK_AQUA + " " + bankruptDBCompany.getName());
+						}
+					}
+					player.sendMessage(ChatColor.AQUA + "--- "+ "Market" + " ---");
+					
 				}
 				break;
 			case "deposit":
@@ -406,7 +512,7 @@ public class CmdExecutor {
 					
 					player.sendMessage(ChatColor.AQUA + "--- " + dbCompany.getName() + " ---");
 					if (dbCompany.getBankrupt())
-						player.sendMessage(ChatColor.RED + "This company is bankrupt, and available on the open market!");
+						player.sendMessage(ChatColor.RED + "This company is bankrupt, and available on the market!");
 					player.sendMessage(ChatColor.DARK_AQUA + "CEO: "+ChatColor.WHITE + tools.getCEOInCo(dbCompany).getName());
 					player.sendMessage(ChatColor.DARK_AQUA + "Description: "+ ChatColor.WHITE + dbCompany.getInfo());
 					if (dbCompany.isHiring())
@@ -488,9 +594,9 @@ public class CmdExecutor {
 				if (!db.getPlayer(player).getPendingInvite().equals("none")){
 					String company = db.getPlayer(player).getPendingInvite();
 					player.sendMessage(ChatColor.AQUA + "You joined " + company + "!");
-					db.addPlayerToCompany(plugin, player, company);
+					db.addPlayerToCompany(plugin, db.getPlayer(player), company);
 					db.setPlayerInvite(plugin, player.getName(), "none");
-					db.setPlayerRank(plugin, player, "Employee");
+					db.setPlayerRank(plugin, db.getPlayer(player), "Employee");
 					tools.msgPlayersInCo(company, ChatColor.AQUA + player.getName() + " joined the company!");
 				} else {
 					help = new Help(plugin, player, tools, db);
@@ -595,7 +701,7 @@ public class CmdExecutor {
 						player.sendMessage(ChatColor.RED + "You do not have enough money to create a company.");
 						break;
 					}
-					db.insertCompany(plugin, player, args[1], "This is the informative description", config.getCreateCost());
+					db.insertCompany(plugin, db.getPlayer(player), args[1], "This is the informative description", config.getCreateCost());
 					player.sendMessage(ChatColor.AQUA + "--- " + args[1] + " was just created! ---");
 					player.sendMessage(ChatColor.GOLD + "  - Description:");
 					player.sendMessage(ChatColor.WHITE + db.getCompany(args[1]).getInfo());

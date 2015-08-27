@@ -11,6 +11,7 @@ public class Config {
 	double disbandCost;
 	double depositFee;
 	double bonusAmount;
+	double buyoutEmployeePrice;
 	boolean milestonesEnabled;
 	boolean sellingInvEnabled;
 	double[] milestones;
@@ -19,7 +20,7 @@ public class Config {
 	Plugin plugin;
 	FileConfiguration config;
 	
-	public Config(double createCost, double disbandCost, double depositFee, boolean milestonesEnabled, boolean sellingInvEnabled, double[] milestones, String[] pricelist, double bonusAmount, Plugin plugin) {
+	public Config(double createCost, double disbandCost, double depositFee, boolean milestonesEnabled, boolean sellingInvEnabled, double[] milestones, String[] pricelist, double bonusAmount, double buyoutEmployeePrice, Plugin plugin) {
 		
 		//LOAD CONFIGS FROM FILE HERE, IF NO FILE; SET DEFAULTS.
 		
@@ -33,6 +34,7 @@ public class Config {
 		this.pricelist = pricelist;
 		this.bonusAmount = bonusAmount;
 		this.plugin = plugin;
+		this.buyoutEmployeePrice = buyoutEmployeePrice;
 	}
 	public Config(Plugin plugin) {
 		
@@ -47,6 +49,7 @@ public class Config {
 			config.set("config.createCost", 1000);
 			config.set("config.disbandCost", 200);
 			config.set("config.depositFee", 0);
+			config.set("config.buyoutEmployeePrice", 100);
 			config.set("config.milestonesEnabled", true);
 			config.set("config.sellingInvEnabled", true);
 			config.set("config.bonusAmount", 20);
@@ -79,8 +82,10 @@ public class Config {
 		this.createCost = config.getDouble("config.createCost");
 		this.disbandCost = config.getDouble("config.disbandCost");
 		this.depositFee = config.getDouble("config.depositFee");
+		this.buyoutEmployeePrice = config.getDouble("config.buyoutEmployeePrice");
 		this.milestonesEnabled = config.getBoolean("config.milestonesEnabled");
 		this.sellingInvEnabled = config.getBoolean("config.sellingInvEnabled");
+		this.bonusAmount = config.getDouble("config.bonusAmount");
 		
 		List<Double> list = config.getDoubleList("config.milestones");
 		double[] array = new double[config.getDoubleList("config.milestones").size()];
@@ -91,8 +96,6 @@ public class Config {
 		String[] array1 = new String[config.getStringList("config.pricelist").size()];
 		for(int i = 0; i < list1.size(); i++) array1[i] = list1.get(i);
 		this.pricelist = array1;
-		
-		this.bonusAmount = config.getDouble("config.bonusAmount");
 	}
 
 	public double getBonusAmount() {
@@ -152,5 +155,11 @@ public class Config {
 	}
 	public void setPricelist(String[] pricelist) {
 		this.pricelist = pricelist;
+	}
+	public double getBuyoutEmployeePrice() {
+		return buyoutEmployeePrice;
+	}
+	public void setBuyoutEmployeePrice(double buyoutEmployeePrice) {
+		this.buyoutEmployeePrice = buyoutEmployeePrice;
 	}
 }

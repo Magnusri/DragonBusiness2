@@ -57,6 +57,9 @@ public class Help {
 		if (db.getPlayer(player).getRank().equals("Leader") || db.getPlayer(player).getRank().equals("CEO"))
 			player.sendMessage(ChatColor.DARK_AQUA + " /c hiring ");
 		
+		if (db.getPlayer(player).getRank().equals("Leader") || db.getPlayer(player).getRank().equals("CEO"))
+			player.sendMessage(ChatColor.DARK_AQUA + " /c market ");
+		
 		if (config.isSellingInvEnabled() && !db.getPlayer(player).getRank().equals("none")) 
 			player.sendMessage(ChatColor.DARK_AQUA + " /c sell");
 		
@@ -163,6 +166,16 @@ public class Help {
 			player.sendMessage(ChatColor.WHITE + "Choose if your company should appear as hiring.");
 		player.sendMessage(ChatColor.AQUA + " - /c hiring");
 		player.sendMessage(ChatColor.WHITE + "Show a list of companies that are hiring.");
+		return true;
+	}
+	public boolean market() {
+		player.sendMessage(ChatColor.AQUA + " - /c market");
+		player.sendMessage(ChatColor.WHITE + "Get a list of the companies that are bankrupt, and available on the market.");
+		return true;
+	}
+	public boolean buyout() {
+		player.sendMessage(ChatColor.AQUA + " - /c buyout <companyname");
+		player.sendMessage(ChatColor.WHITE + "Buyout the chosen company. This will cost you $" + config.getBuyoutEmployeePrice() + " per employee in that company.");
 		return true;
 	}
 }

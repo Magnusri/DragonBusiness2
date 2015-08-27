@@ -63,7 +63,7 @@ public class DBPlayer {
 
 	public void setRank(String rank) {
 		this.rank = rank;
-		db.setPlayerRank(plugin, plugin.getServer().getPlayer(getUuid()), rank);
+		db.setPlayerRank(plugin, this, rank);
 	}
 
 	public int getCompanyid() {

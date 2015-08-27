@@ -445,34 +445,40 @@ public class CmdExecutor {
 				break;
 			case "pinfo":
 				if (args.length == 1){
+					DBPlayer dbPlayer = db.getPlayer(player);
+					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
 					if (db.getPlayer(player).getRank().equals("none")){
-						DBPlayer dbPlayer = db.getPlayer(player);
 						player.sendMessage(ChatColor.AQUA + "--- " + dbPlayer.getName() + " ---");
-						player.sendMessage(ChatColor.RED + "This player is not in a company");
+						player.sendMessage(ChatColor.RED + "You are not in a company!");
 						break;
+					} else {
+						player.sendMessage(ChatColor.AQUA + "--- " + dbPlayer.getName() + " ---");
+						player.sendMessage(ChatColor.DARK_AQUA + "Company: " + ChatColor.WHITE + dbCompany.getName());
+						player.sendMessage(ChatColor.DARK_AQUA + "Rank: " + ChatColor.WHITE + dbPlayer.getRank());
+						player.sendMessage(ChatColor.DARK_AQUA + "Earned: " + ChatColor.WHITE +"$"+ dbPlayer.getEarned());
+						player.sendMessage(ChatColor.DARK_AQUA + "Level: " + ChatColor.WHITE + dbPlayer.getLevel());
 					}
-					}
+					break;
+				}
 				if (args.length == 2){
-					//if (tools.isPlayerinCompany()){
 					DBPlayer dbPlayer = db.getPlayer(player);
 					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
 					
-					player.sendMessage(ChatColor.AQUA + "--- " + dbPlayer.getName() + " ---");
-					player.sendMessage(ChatColor.DARK_AQUA + "Company: " + ChatColor.WHITE + dbCompany.getName());
-					player.sendMessage(ChatColor.DARK_AQUA + "Rank: " + ChatColor.WHITE + dbPlayer.getRank());
-					player.sendMessage(ChatColor.DARK_AQUA + "Earned: " + ChatColor.WHITE +"$"+ dbPlayer.getEarned());
-					player.sendMessage(ChatColor.DARK_AQUA + "Level: " + ChatColor.WHITE + dbPlayer.getLevel());
-					//}
+					if (!tools.isPlayerInCompany(args[1])){
+						player.sendMessage(ChatColor.AQUA + "--- " + args[1] + " ---");
+						player.sendMessage(ChatColor.RED + "This player is not in a company!");
+						break;
 					}
-				DBPlayer dbPlayer = db.getPlayer(player);
-				DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
-				
-					player.sendMessage(ChatColor.AQUA + "--- " + dbPlayer.getName() + " ---");
-					player.sendMessage(ChatColor.DARK_AQUA + "Company: " + ChatColor.WHITE + dbCompany.getName());
-					player.sendMessage(ChatColor.DARK_AQUA + "Rank: " + ChatColor.WHITE + dbPlayer.getRank());
-					player.sendMessage(ChatColor.DARK_AQUA + "Earned: " + ChatColor.WHITE +"$"+ dbPlayer.getEarned());
-					player.sendMessage(ChatColor.DARK_AQUA + "Level: " + ChatColor.WHITE + dbPlayer.getLevel());
-								
+
+					DBPlayer targetDBPlayer = db.getPlayer(args[1]);
+					DBCompany targetDBCompany = db.getCompany(targetDBPlayer.getCompanyid());
+					
+					player.sendMessage(ChatColor.AQUA + "--- " + targetDBPlayer.getName() + " ---");
+					player.sendMessage(ChatColor.DARK_AQUA + "Company: " + ChatColor.WHITE + targetDBCompany.getName());
+					player.sendMessage(ChatColor.DARK_AQUA + "Rank: " + ChatColor.WHITE + targetDBPlayer.getRank());
+					player.sendMessage(ChatColor.DARK_AQUA + "Earned: " + ChatColor.WHITE +"$"+ targetDBPlayer.getEarned());
+					player.sendMessage(ChatColor.DARK_AQUA + "Level: " + ChatColor.WHITE + targetDBPlayer.getLevel());
+				}
 				break;
 			case "accept":
 				if (!db.getPlayer(player).getPendingInvite().equals("none")){
@@ -595,6 +601,7 @@ public class CmdExecutor {
 					player.sendMessage(ChatColor.WHITE + "    - " + db.getPlayer(player).getRank());
 					player.sendMessage(ChatColor.AQUA + "---");
 					db.setPlayerEarned(plugin, player.getName(), db.getPlayer(player).getEarned() + 1000.0);
+					tools.doPlayerLevel(db.getPlayer(player));
 					tools.msgOnlinePlayers(ChatColor.AQUA + player.getName() + " just created the company " + ChatColor.GOLD + args[1] + "!");
 					economy.withdrawPlayer(player.getName(), config.getCreateCost());
 				}else{

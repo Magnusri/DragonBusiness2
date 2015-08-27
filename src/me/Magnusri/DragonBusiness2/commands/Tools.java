@@ -52,6 +52,20 @@ public class Tools {
 		return false;
 	}
 	
+	public boolean isPlayerInCompany(String player){
+		ArrayList<DBPlayer> playerList = db.getPlayerList();
+		
+		for (DBPlayer dbplayer : playerList){
+			if (dbplayer.getName().equals(player)){
+				if (dbplayer.getCompanyid() != 0){
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 	public boolean msgPlayerByName(String playerName, String message){
 		for (Player player : plugin.getServer().getOnlinePlayers()){
 			if (player.getName().equals(playerName)){

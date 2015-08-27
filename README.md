@@ -36,3 +36,14 @@ ToDo:
 
 Implement decay
 
+
+New Feature:
+
+Add:
+
+$10 (config?) * Amount of employees
+
+To company value daily
+
+
+

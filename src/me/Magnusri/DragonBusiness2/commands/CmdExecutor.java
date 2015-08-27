@@ -92,7 +92,7 @@ public class CmdExecutor {
 					db.setCompanyInfo(plugin, dbCompany.getName(), infoLine.substring(11));
 					
 					player.sendMessage(ChatColor.AQUA + "Company description changed to:");
-					player.sendMessage(ChatColor.GOLD + infoLine.substring(11));
+					player.sendMessage(ChatColor.WHITE + infoLine.substring(11));
 				}
 				break;
 			case "makeceo":
@@ -139,7 +139,7 @@ public class CmdExecutor {
 						db.setPlayerRank(plugin, targetPlayer, "CEO");
 						db.setPlayerRank(plugin, player, "Leader");
 						tools.msgPlayersInCo(dbCompany.getName(), ChatColor.AQUA + "Company leadership changed!");
-						tools.msgPlayersInCo(dbCompany.getName(), ChatColor.GOLD + targetPlayer.getName() + " is now the new CEO of the company!");
+						tools.msgPlayersInCo(dbCompany.getName(), ChatColor.WHITE + targetPlayer.getName() + " is now the new CEO of the company!");
 					} else {
 						player.sendMessage(ChatColor.RED + "This player is not in your company!");
 					}
@@ -147,13 +147,13 @@ public class CmdExecutor {
 				break;
 			case "hiring":
 				if (args.length == 1){
-					player.sendMessage(ChatColor.AQUA + "--- "+ChatColor.WHITE + "Hiring Companies" + ChatColor.AQUA + " ---");
+					player.sendMessage(ChatColor.AQUA + "--- "+ "Hiring Companies" + " ---");
 					for (DBCompany dbCompany : db.getCompanyList()){
 						if (dbCompany.isHiring()){
-							player.sendMessage(ChatColor.GOLD + "  - " + dbCompany.getName());
+							player.sendMessage(ChatColor.DARK_AQUA + "  - " + dbCompany.getName());
 						}
 					}
-					player.sendMessage(ChatColor.AQUA + "--- "+ChatColor.WHITE + "Hiring Companies" + ChatColor.AQUA + " ---");
+					player.sendMessage(ChatColor.AQUA + "--- "+ "Hiring Companies" + " ---");
 					break;
 				}
 				if (db.getPlayer(player).getRank().equals("none")){
@@ -381,13 +381,13 @@ public class CmdExecutor {
 				}
 				break;
 			case "top":
-				player.sendMessage(ChatColor.AQUA + "--- "+ChatColor.WHITE + "Top 10 Companies" + ChatColor.AQUA + " ---");
+				player.sendMessage(ChatColor.AQUA + "--- Top 10 Companies ---");
 				int counter = 1;
 				for (DBCompany dbCompany : db.getTopCompanyList()){
-					player.sendMessage(ChatColor.GOLD + "  - " + counter + ". " + dbCompany.getName() + " - $" + dbCompany.getValue());
+					player.sendMessage(ChatColor.DARK_AQUA + "" + counter + ". " + dbCompany.getName() + ChatColor.WHITE + " - $" + dbCompany.getValue());
 					counter++;
 				}
-				player.sendMessage(ChatColor.AQUA + "--- "+ChatColor.WHITE + "Top 10 Companies" + ChatColor.AQUA + " ---");
+				player.sendMessage(ChatColor.AQUA + "--- Top 10 Companies ---");
 				break;
 			case "info":
 				if (args.length == 1){
@@ -403,6 +403,7 @@ public class CmdExecutor {
 					player.sendMessage(ChatColor.AQUA + "--- " + dbCompany.getName() + " ---");
 					if (dbCompany.getBankrupt())
 						player.sendMessage(ChatColor.RED + "This company is bankrupt, and available on the open market!");
+<<<<<<< HEAD
 					player.sendMessage(ChatColor.GOLD + "CEO: "+ChatColor.WHITE + tools.getCEOInCo(dbCompany).getName());
 					player.sendMessage(ChatColor.GOLD + "Description: "+ ChatColor.WHITE + dbCompany.getInfo());
 					if (dbCompany.isHiring())
@@ -410,13 +411,18 @@ public class CmdExecutor {
 					if (!dbCompany.isHiring())
 						player.sendMessage(ChatColor.GOLD + "Hiring: "+ ChatColor.WHITE + "No");
 					player.sendMessage(ChatColor.GOLD + "Value: " +ChatColor.WHITE + "$" + dbCompany.getValue());
+=======
+					player.sendMessage(ChatColor.DARK_AQUA + "CEO: "+ChatColor.WHITE + tools.getCEOInCo(dbCompany).getName());
+					player.sendMessage(ChatColor.DARK_AQUA + "Description: "+ ChatColor.WHITE + dbCompany.getInfo());
+					player.sendMessage(ChatColor.DARK_AQUA + "Value: " +ChatColor.WHITE + "$" + dbCompany.getValue());
+>>>>>>> origin/master
 					if (tools.getLeadersInCo(dbCompany).size() > 0){
-						player.sendMessage(ChatColor.GOLD + "Leaders: "+ChatColor.WHITE + tools.getLeadersInCo(dbCompany).toString());
+						player.sendMessage(ChatColor.DARK_AQUA + "Leaders: "+ChatColor.WHITE + tools.getLeadersInCo(dbCompany).toString());
 					}
 					if (tools.getEmployeesInCo(dbCompany).size() > 0){
-						player.sendMessage(ChatColor.GOLD + "Employees: "+ChatColor.WHITE + tools.getEmployeesInCo(dbCompany).toString());
+						player.sendMessage(ChatColor.DARK_AQUA + "Employees: "+ChatColor.WHITE + tools.getEmployeesInCo(dbCompany).toString());
 					}
-					player.sendMessage(ChatColor.AQUA + "--- "+ChatColor.WHITE + dbCompany.getName() + ChatColor.AQUA + " ---");
+					player.sendMessage(ChatColor.AQUA + "--- " + dbCompany.getName() + " ---");
 					
 					break;
 				}
@@ -427,18 +433,18 @@ public class CmdExecutor {
 						break;
 					}
 					
-					player.sendMessage(ChatColor.AQUA + "--- "+ChatColor.WHITE + dbCompany.getName() + ChatColor.AQUA + " ---");
+					player.sendMessage(ChatColor.AQUA + "--- " + dbCompany.getName() + " ---");
 					if (tools.getCEOInCo(dbCompany) != null)
-						player.sendMessage(ChatColor.GOLD + "CEO: "+ChatColor.WHITE + tools.getCEOInCo(dbCompany).getName());
-					player.sendMessage(ChatColor.GOLD + "Description: "+ ChatColor.WHITE + dbCompany.getInfo());
-					player.sendMessage(ChatColor.GOLD + "Value: "+ChatColor.WHITE +"$"+ Double.toString(dbCompany.getValue()));
+						player.sendMessage(ChatColor.DARK_AQUA + "CEO: "+ChatColor.WHITE + tools.getCEOInCo(dbCompany).getName());
+					player.sendMessage(ChatColor.DARK_AQUA + "Description: "+ ChatColor.WHITE + dbCompany.getInfo());
+					player.sendMessage(ChatColor.DARK_AQUA + "Value: "+ChatColor.WHITE +"$"+ Double.toString(dbCompany.getValue()));
 					if (tools.getLeadersInCo(dbCompany).size() > 0){
-						player.sendMessage(ChatColor.GOLD + "Leaders: "+ChatColor.WHITE + tools.getLeadersInCo(dbCompany).toString());
+						player.sendMessage(ChatColor.DARK_AQUA + "Leaders: "+ChatColor.WHITE + tools.getLeadersInCo(dbCompany).toString());
 					}
 					if (tools.getEmployeesInCo(dbCompany).size() > 0){
 						player.sendMessage(ChatColor.GOLD + "Employees: "+ChatColor.WHITE + tools.getEmployeesInCo(dbCompany).toString());
 					}
-					player.sendMessage(ChatColor.AQUA + "--- "+ChatColor.WHITE + dbCompany.getName() + ChatColor.AQUA + " ---");
+					player.sendMessage(ChatColor.AQUA + "--- " + dbCompany.getName() + " ---");
 					
 					break;
 				}
@@ -457,21 +463,21 @@ public class CmdExecutor {
 					DBPlayer dbPlayer = db.getPlayer(player);
 					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
 					
-					player.sendMessage(ChatColor.AQUA + "--- " + ChatColor.WHITE + dbPlayer.getName() + ChatColor.AQUA + " ---");
-					player.sendMessage(ChatColor.GOLD + "Company: " + ChatColor.WHITE + dbCompany.getName());
-					player.sendMessage(ChatColor.GOLD + "Rank: " + ChatColor.WHITE + dbPlayer.getRank());
-					player.sendMessage(ChatColor.GOLD + "Earned: " + ChatColor.WHITE +"$"+ dbPlayer.getEarned());
-					player.sendMessage(ChatColor.GOLD + "Level: " + ChatColor.WHITE + dbPlayer.getLevel());
+					player.sendMessage(ChatColor.AQUA + "--- " + dbPlayer.getName() + " ---");
+					player.sendMessage(ChatColor.DARK_AQUA + "Company: " + ChatColor.WHITE + dbCompany.getName());
+					player.sendMessage(ChatColor.DARK_AQUA + "Rank: " + ChatColor.WHITE + dbPlayer.getRank());
+					player.sendMessage(ChatColor.DARK_AQUA + "Earned: " + ChatColor.WHITE +"$"+ dbPlayer.getEarned());
+					player.sendMessage(ChatColor.DARK_AQUA + "Level: " + ChatColor.WHITE + dbPlayer.getLevel());
 					//}
 					}
 				DBPlayer dbPlayer = db.getPlayer(player);
 				DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
 				
-				player.sendMessage(ChatColor.AQUA + "--- " + ChatColor.WHITE + dbPlayer.getName() + ChatColor.AQUA + " ---");
-				player.sendMessage(ChatColor.GOLD + "Company: " + ChatColor.WHITE + dbCompany.getName());
-				player.sendMessage(ChatColor.GOLD + "Rank: " + ChatColor.WHITE + dbPlayer.getRank());
-				player.sendMessage(ChatColor.GOLD + "Earned: " + ChatColor.WHITE +"$"+ dbPlayer.getEarned());
-				player.sendMessage(ChatColor.GOLD + "Level: " + ChatColor.WHITE + dbPlayer.getLevel());
+					player.sendMessage(ChatColor.AQUA + "--- " + dbPlayer.getName() + " ---");
+					player.sendMessage(ChatColor.DARK_AQUA + "Company: " + ChatColor.WHITE + dbCompany.getName());
+					player.sendMessage(ChatColor.DARK_AQUA + "Rank: " + ChatColor.WHITE + dbPlayer.getRank());
+					player.sendMessage(ChatColor.DARK_AQUA + "Earned: " + ChatColor.WHITE +"$"+ dbPlayer.getEarned());
+					player.sendMessage(ChatColor.DARK_AQUA + "Level: " + ChatColor.WHITE + dbPlayer.getLevel());
 								
 				break;
 			case "accept":

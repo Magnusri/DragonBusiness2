@@ -405,6 +405,10 @@ public class CmdExecutor {
 						player.sendMessage(ChatColor.RED + "This company is bankrupt, and available on the open market!");
 					player.sendMessage(ChatColor.GOLD + "CEO: "+ChatColor.WHITE + tools.getCEOInCo(dbCompany).getName());
 					player.sendMessage(ChatColor.GOLD + "Description: "+ ChatColor.WHITE + dbCompany.getInfo());
+					if (dbCompany.isHiring())
+						player.sendMessage(ChatColor.GOLD + "Hiring: "+ ChatColor.WHITE + "Yes");
+					if (!dbCompany.isHiring())
+						player.sendMessage(ChatColor.GOLD + "Hiring: "+ ChatColor.WHITE + "No");
 					player.sendMessage(ChatColor.GOLD + "Value: " +ChatColor.WHITE + "$" + dbCompany.getValue());
 					if (tools.getLeadersInCo(dbCompany).size() > 0){
 						player.sendMessage(ChatColor.GOLD + "Leaders: "+ChatColor.WHITE + tools.getLeadersInCo(dbCompany).toString());

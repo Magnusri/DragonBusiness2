@@ -366,6 +366,7 @@ public class CmdExecutor {
 							db.setPlayerRank(plugin, player2, "Employee");
 						}
 						tools.msgOnlinePlayers(company.getName() + " has bought out " + targetCompany.getName() + "!");
+						economy.withdrawPlayer(player.getName(), targetCompanyPrice);
 					}
 					break;
 				}

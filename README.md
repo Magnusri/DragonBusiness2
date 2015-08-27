@@ -1,14 +1,6 @@
 # DragonBusiness2
 
 ToDo:
-
-/c hiring on:off
-
-  Visually shows on /c info that x company is hiring new employees
-  
-/c hiring
-
-  Lists companies which are hiring
   
 /c apply <company>
 

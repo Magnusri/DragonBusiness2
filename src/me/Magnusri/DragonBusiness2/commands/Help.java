@@ -26,29 +26,51 @@ public class Help {
 		player.sendMessage(ChatColor.GOLD + "For information on a command, do /c help <command>");
 		player.sendMessage(ChatColor.DARK_AQUA + " /c create <companyname>");
 		player.sendMessage(ChatColor.RED + "  - Cost: $" + config.getCreateCost());
+		
 		if (db.getPlayer(player).getRank().equals("CEO"))
 			player.sendMessage(ChatColor.DARK_AQUA + " /c disband");
+		
 		if (db.getPlayer(player).getRank().equals("CEO"))
 			player.sendMessage(ChatColor.RED + "  - Cost: $" + config.getDisbandCost());
-		player.sendMessage(ChatColor.DARK_AQUA + " /c invite <playername>");
-		player.sendMessage(ChatColor.DARK_AQUA + " /c fire <playername>");
+		
+		if (db.getPlayer(player).getRank().equals("Leader") || db.getPlayer(player).getRank().equals("CEO"))
+			player.sendMessage(ChatColor.DARK_AQUA + " /c invite <playername>");
+		
+		if (db.getPlayer(player).getRank().equals("Leader") || db.getPlayer(player).getRank().equals("CEO"))
+			player.sendMessage(ChatColor.DARK_AQUA + " /c fire <playername>");
+		
 		if (db.getPlayer(player).getRank().equals("CEO"))
 			player.sendMessage(ChatColor.DARK_AQUA + " /c changedesc <new description>");
+		
 		if (db.getPlayer(player).getRank().equals("CEO"))
 			player.sendMessage(ChatColor.DARK_AQUA + " /c promote <playername>");
+		
 		if (db.getPlayer(player).getRank().equals("CEO"))
 			player.sendMessage(ChatColor.DARK_AQUA + " /c demote <playername>");
-		player.sendMessage(ChatColor.DARK_AQUA + " /c deposit <amount>");
+		
+		if (!db.getPlayer(player).getRank().equals("none"))
+			player.sendMessage(ChatColor.DARK_AQUA + " /c deposit <amount>");
+		
 		if (db.getPlayer(player).getRank().equals("CEO"))
 			player.sendMessage(ChatColor.DARK_AQUA + " /c hiring <on/off>");
-		player.sendMessage(ChatColor.DARK_AQUA + " /c hiring ");
-		if (config.isSellingInvEnabled()) player.sendMessage(ChatColor.DARK_AQUA + " /c sell");
-			player.sendMessage(ChatColor.DARK_AQUA + " /c top");
+		
+		if (db.getPlayer(player).getRank().equals("Leader") || db.getPlayer(player).getRank().equals("CEO"))
+			player.sendMessage(ChatColor.DARK_AQUA + " /c hiring ");
+		
+		if (config.isSellingInvEnabled() && !db.getPlayer(player).getRank().equals("none")) 
+			player.sendMessage(ChatColor.DARK_AQUA + " /c sell");
+		
+		player.sendMessage(ChatColor.DARK_AQUA + " /c top");
+		
 		player.sendMessage(ChatColor.DARK_AQUA + " /c info");
 		player.sendMessage(ChatColor.DARK_AQUA + " /c pinfo");
-		player.sendMessage(ChatColor.DARK_AQUA + " /c leave");
+		
+		if (!db.getPlayer(player).getRank().equals("none"))
+			player.sendMessage(ChatColor.DARK_AQUA + " /c leave");
+		
 		if (db.getPlayer(player).getRank().equals("CEO"))
 			player.sendMessage(ChatColor.DARK_AQUA + " /c makeceo <playername>");
+		
 		player.sendMessage(ChatColor.AQUA + "--- DragonBusiness 2.0 Help ---");
 		return true;
 	}
@@ -115,13 +137,13 @@ public class Help {
 		return true;
 	}
 	public boolean info() {
-		player.sendMessage(ChatColor.AQUA + " - /c info <Optional:companyname>");
-		player.sendMessage(ChatColor.WHITE + "Displays information about your, or target company.");
+		player.sendMessage(ChatColor.AQUA + " - /c info <optional:companyname>");
+		player.sendMessage(ChatColor.WHITE + "Displays information about yours, or the company specified.");
 		return true;
 	}
 	public boolean pinfo() {
-		player.sendMessage(ChatColor.AQUA + " - /c pinfo <playername>");
-		player.sendMessage(ChatColor.WHITE + "Displays information about the player specified.");
+		player.sendMessage(ChatColor.AQUA + " - /c pinfo <optional:playername>");
+		player.sendMessage(ChatColor.WHITE + "Displays information about you, or the player specified.");
 		return true;
 	}
 	public boolean leave() {

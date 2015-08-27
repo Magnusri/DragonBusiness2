@@ -48,6 +48,10 @@ public class CmdExecutor {
 						help.deposit();
 					if (args[1].equals("top"))
 						help.top();
+					if (args[1].equals("hiring"))
+						help.hiring();
+					if (args[1].equals("sell"))
+						help.sell();
 					if (args[1].equals("info"))
 						help.info();
 					if (args[1].equals("pinfo"))

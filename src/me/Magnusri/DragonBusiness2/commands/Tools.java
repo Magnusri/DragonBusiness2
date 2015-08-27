@@ -134,7 +134,7 @@ public class Tools {
 		DBCompany company = db.getCompany(dbplayer.getCompanyid());
 		
 		dbplayer.setEarned(dbplayer.getEarned() + amount);
-		doPlayerLevel(player);
+		doPlayerLevel(dbplayer);
 		
 		List<DBPlayer> players = db.getPlayerListInCompany(company.getName());
 		
@@ -144,6 +144,7 @@ public class Tools {
 			double payout = amount * ((double)players.get(i).getLevel() / (double)100.0);
 			economy.depositPlayer(players.get(i).getName(), payout);
 			moneyforco -= payout;
+			doPlayerLevel(players.get(i));
 			msgPlayerByName(players.get(i).getName(), ChatColor.GREEN + "You earned " + payout + " from the last company sale!");
 		}
 		
@@ -152,9 +153,8 @@ public class Tools {
 		return true;
 	}
 	
-	public boolean doPlayerLevel(Player player){
+	public boolean doPlayerLevel(DBPlayer dbplayer){
 		
-		DBPlayer dbplayer = db.getPlayer(player);
 		DBCompany company = db.getCompany(dbplayer.getCompanyid());
 		
 		double percentage = (dbplayer.getEarned() / company.getValue()) * 100;

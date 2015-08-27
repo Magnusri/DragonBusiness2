@@ -36,3 +36,6 @@ ToDo:
 
   Removes a job from the db
 
+/c market
+
+  Lists companies on the market

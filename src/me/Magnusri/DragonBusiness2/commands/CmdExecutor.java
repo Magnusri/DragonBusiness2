@@ -5,6 +5,7 @@ import me.Magnusri.DragonBusiness2.DBSystem.DBHandler;
 import me.Magnusri.DragonBusiness2.DBSystem.DBPlayer;
 import net.milkbowl.vault.economy.Economy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -24,6 +25,8 @@ public class CmdExecutor {
 		
 		tools = new Tools(db, player, plugin, economy);
 		config = new Config(plugin);
+		
+		db.insertPlayer(plugin, player);
 		
 		plugin.reloadConfig();
 		
@@ -52,6 +55,12 @@ public class CmdExecutor {
 						help.top();
 					if (args[1].equals("hiring"))
 						help.hiring();
+					if (args[1].equals("applications"))
+						help.applications();
+					if (args[1].equals("application"))
+						help.application();
+					if (args[1].equals("apply"))
+						help.apply();
 					if (args[1].equals("market"))
 						help.market();
 					if (args[1].equals("buyout"))
@@ -413,6 +422,150 @@ public class CmdExecutor {
 					
 				}
 				break;
+			case "applications":
+				if (db.getPlayer(player).getRank().equals("none")){
+					if (!db.getPlayer(player).getApplication().equals("none"))
+						player.sendMessage(ChatColor.AQUA + "You have applied to join " + ChatColor.DARK_AQUA + db.getPlayer(player).getApplication());
+					else
+						player.sendMessage(ChatColor.AQUA + "You do not have any applications pending.");
+					break;
+				}
+				if (!db.getPlayer(player).getRank().equals("CEO") && !db.getPlayer(player).getRank().equals("Leader")){
+					player.sendMessage(ChatColor.RED + "Only CEO and Leaders can see applications!");
+					break;
+				}
+				if (args.length != 1){
+					help = new Help(plugin, player, tools, db);
+					help.applications();
+					break;
+				} else {
+					DBPlayer dbPlayer = db.getPlayer(player);
+					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
+					
+					List<DBPlayer> playersWithApplicationToCompany = new ArrayList<DBPlayer>();
+					boolean applicationExists = false;
+					
+					for (DBPlayer application : db.getPlayerList()){
+						if (application.getApplication().equals(dbCompany.getName())){
+							playersWithApplicationToCompany.add(application);
+							applicationExists = true;
+						}
+					}
+					
+					if (applicationExists){
+						player.sendMessage(ChatColor.AQUA + "--- "+ "Applications" + " ---");
+						for (DBPlayer application : playersWithApplicationToCompany){
+							player.sendMessage(ChatColor.DARK_AQUA + " " + application.getName());
+						}
+						player.sendMessage(ChatColor.AQUA + "--- "+ "Applications" + " ---");
+					} else {
+						player.sendMessage(ChatColor.RED + "There are no applications.");
+					}
+				}
+				break;
+			case "application":
+				if (args.length == 2){
+					if (args[1].equals("cancel")){
+						DBPlayer dbPlayer = db.getPlayer(player.getName());
+						if (!dbPlayer.getApplication().equals("none")){
+							db.setPlayerApplication(plugin, dbPlayer, "none");
+							player.sendMessage(ChatColor.RED + "Your application has been canceled");
+						} else {
+							
+						}
+						break;
+					}
+				}
+				if (db.getPlayer(player).getRank().equals("none")){
+					help = new Help(plugin, player, tools, db);
+					help.ERRORnotInCo();
+					break;
+				}
+				if (!db.getPlayer(player).getRank().equals("CEO") && !db.getPlayer(player).getRank().equals("Leader")){
+					player.sendMessage(ChatColor.RED + "Only CEO and Leaders can see applications!");
+					break;
+				}
+				if (args.length == 3){
+					if (args[2].equals("accept")){
+						String playerName = args[1];
+						DBPlayer targetPlayer = db.getPlayer(playerName);
+						
+						if (targetPlayer.getApplication().equals(db.getCompany(db.getPlayer(player).getCompanyid()).getName())){
+							
+							String company = targetPlayer.getApplication();
+							
+							tools.msgPlayerByName(playerName, ChatColor.AQUA + "Your application was accepted!");
+							tools.msgPlayerByName(playerName, ChatColor.AQUA + "You joined " + company + "!");
+							
+							db.addPlayerToCompany(plugin, targetPlayer, company);
+							db.setPlayerInvite(plugin, playerName, "none");
+							db.setPlayerRank(plugin, targetPlayer, "Employee");
+							db.setPlayerApplication(plugin, targetPlayer, "none");
+							
+							tools.msgOnlinePlayers(ChatColor.AQUA + targetPlayer.getName() + " has been hired by " + company + "!");
+						}
+						break;
+					}
+					if (args[2].equals("decline")){
+						
+						String playerName = args[1];
+						DBPlayer targetPlayer = db.getPlayer(playerName);
+						
+						if (targetPlayer.getApplication().equals(db.getCompany(db.getPlayer(player).getCompanyid()).getName())){
+							
+							String company = targetPlayer.getApplication();
+							
+							tools.msgPlayerByName(playerName, ChatColor.AQUA + "Your application to join " + company + " was declined!");
+							player.sendMessage(ChatColor.AQUA + "You declined " + playerName + "'s application.");
+							
+							db.setPlayerApplication(plugin, targetPlayer, "none");
+						} else {
+							player.sendMessage(ChatColor.RED + playerName + " has not submitted any application for your company.");
+						}
+						break;
+					}
+					help = new Help(plugin, player, tools, db);
+					help.application();
+				}
+				if (args.length == 1 || args.length < 3){
+					help = new Help(plugin, player, tools, db);
+					help.application();
+					break;
+				}
+				break;
+			case "apply":
+				if (db.getPlayer(player).getApplication().equals("none")){
+					if (!db.getPlayer(player).getRank().equals("none")){
+						player.sendMessage(ChatColor.RED + "You are already in a company!");
+						break;
+					}
+					
+					if (args.length == 2){
+						String company = args[1];
+						if (db.getCompany(company) == null){
+							player.sendMessage(ChatColor.RED + "This company " + company + " does not exist!");
+							break;
+						}
+						
+						player.sendMessage(ChatColor.AQUA + "You sent an application to " + company + "!");
+						
+						db.setPlayerApplication(plugin, db.getPlayer(player), company);
+						for (DBPlayer dbplayer : db.getPlayerListInCompany(company)){
+							if (dbplayer.getRank().equals("CEO") || dbplayer.getRank().equals("Leader")){
+								tools.msgPlayerByName(dbplayer.getName(), ChatColor.AQUA + player.getName() + " has applied to join your company!");
+								tools.msgPlayerByName(dbplayer.getName(), ChatColor.AQUA + " /c application " + player.getName() + " accept, or");
+								tools.msgPlayerByName(dbplayer.getName(), ChatColor.AQUA + " /c application " + player.getName() + " decline.");
+							}
+						}
+					} else {
+						help = new Help(plugin, player, tools, db);
+						help.apply();
+					}
+				} else {
+					help = new Help(plugin, player, tools, db);
+					help.ERRORapplicationInPlace();
+				}
+				break;
 			case "deposit":
 				if (db.getPlayer(player).getRank().equals("none")){
 					help = new Help(plugin, player, tools, db);
@@ -609,7 +762,7 @@ public class CmdExecutor {
 					db.addPlayerToCompany(plugin, db.getPlayer(player), company);
 					db.setPlayerInvite(plugin, player.getName(), "none");
 					db.setPlayerRank(plugin, db.getPlayer(player), "Employee");
-					tools.msgPlayersInCo(company, ChatColor.AQUA + player.getName() + " joined the company!");
+					tools.msgOnlinePlayers(ChatColor.AQUA + player.getName() + " has been hired by " + company + "!");
 				} else {
 					help = new Help(plugin, player, tools, db);
 					help.ERRORnoInvitesPending();
@@ -664,6 +817,7 @@ public class CmdExecutor {
 						db.removePlayerFromCompany(plugin, player.getName());
 						db.removePlayerRank(plugin, player.getName());
 						player.sendMessage(ChatColor.GOLD + "You left the company");
+						tools.msgPlayersInCo(db.getCompany(db.getPlayer(player).getCompanyid()).getName(), ChatColor.AQUA + player.getName() + " has left the company.");
 					} else {
 						player.sendMessage(ChatColor.RED + "A CEO cannot leave his company! Please disband it, ");
 						player.sendMessage(ChatColor.RED + "  or make someone else the new CEO first!");

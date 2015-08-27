@@ -57,6 +57,16 @@ public class Help {
 		if (db.getPlayer(player).getRank().equals("Leader") || db.getPlayer(player).getRank().equals("CEO"))
 			player.sendMessage(ChatColor.DARK_AQUA + " /c hiring ");
 		
+		player.sendMessage(ChatColor.DARK_AQUA + " /c apply");
+		
+		player.sendMessage(ChatColor.DARK_AQUA + " /c application cancel");
+		
+		if (db.getPlayer(player).getRank().equals("Leader") || db.getPlayer(player).getRank().equals("CEO"))
+			player.sendMessage(ChatColor.DARK_AQUA + " /c application <playername> accept/decline ");
+		
+		if (db.getPlayer(player).getRank().equals("Leader") || db.getPlayer(player).getRank().equals("CEO"))
+			player.sendMessage(ChatColor.DARK_AQUA + " /c applications ");
+		
 		if (db.getPlayer(player).getRank().equals("Leader") || db.getPlayer(player).getRank().equals("CEO"))
 			player.sendMessage(ChatColor.DARK_AQUA + " /c market ");
 		
@@ -64,7 +74,6 @@ public class Help {
 			player.sendMessage(ChatColor.DARK_AQUA + " /c sell");
 		
 		player.sendMessage(ChatColor.DARK_AQUA + " /c top");
-		
 		player.sendMessage(ChatColor.DARK_AQUA + " /c info");
 		player.sendMessage(ChatColor.DARK_AQUA + " /c pinfo");
 		
@@ -174,8 +183,35 @@ public class Help {
 		return true;
 	}
 	public boolean buyout() {
-		player.sendMessage(ChatColor.AQUA + " - /c buyout <companyname");
+		player.sendMessage(ChatColor.AQUA + " - /c buyout <companyname>");
 		player.sendMessage(ChatColor.WHITE + "Buyout the chosen company. This will cost you $" + config.getBuyoutEmployeePrice() + " per employee in that company.");
+		return true;
+	}
+	public boolean applications() {
+		player.sendMessage(ChatColor.AQUA + " - /c applications");
+		if (db.getPlayer(player).getRank().equals("CEO") || db.getPlayer(player).getRank().equals("Leader"))
+			player.sendMessage(ChatColor.WHITE + "See the applications that has been submitted to join your company.");
+		else
+			player.sendMessage(ChatColor.WHITE + "Check what company you have applied to join.");
+		return true;
+	}
+	public boolean ERRORapplicationInPlace() {
+		player.sendMessage(ChatColor.RED + "You already have an application pending!");
+		player.sendMessage(ChatColor.RED + "If you want to apply for another company, you must /c application cancel, first.");
+		return true;
+	}
+	public boolean application() {
+		if (db.getPlayer(player).getRank().equals("CEO") || db.getPlayer(player).getRank().equals("Leader"))
+			player.sendMessage(ChatColor.AQUA + " - /c application <playername> decline/accept");
+		if (db.getPlayer(player).getRank().equals("CEO") || db.getPlayer(player).getRank().equals("Leader"))
+			player.sendMessage(ChatColor.WHITE + "Accept or decline an application to join your company.");
+		player.sendMessage(ChatColor.AQUA + " - /c application cancel");
+		player.sendMessage(ChatColor.WHITE + "Cancel your active application to join a company.");
+		return true;
+	}
+	public boolean apply() {
+		player.sendMessage(ChatColor.AQUA + " - /c apply <companyname>");
+		player.sendMessage(ChatColor.WHITE + "Send an application to join a company.");
 		return true;
 	}
 }

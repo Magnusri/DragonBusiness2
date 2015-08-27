@@ -9,13 +9,14 @@ public class DBPlayer {
 	String rank;
 	int companyid;
 	String pendingInvite;
+	String application;
 	int level;
 	Double earned;
 	
 	DBHandler db;
 	Plugin plugin;
 	
-	public DBPlayer(Plugin plugin, DBHandler db, int id, String uuid, String name, String rank,int companyid, String pendingInvite, Double earned, int level) {
+	public DBPlayer(Plugin plugin, DBHandler db, int id, String uuid, String name, String rank,int companyid, String pendingInvite, String application, Double earned, int level) {
 		super();
 		this.id = id;
 		this.uuid = uuid;
@@ -27,6 +28,7 @@ public class DBPlayer {
 		this.earned = earned;
 		this.db = db;
 		this.plugin = plugin;
+		this.application = application;
 	}
 
 	public String toString(){
@@ -100,8 +102,12 @@ public class DBPlayer {
 		this.level = level;
 		db.setPlayerLevel(plugin, getName(), level);
 	}
-	
-	
-	
-	
+
+	public String getApplication() {
+		return application;
+	}
+
+	public void setApplication(String application) {
+		this.application = application;
+	}
 }

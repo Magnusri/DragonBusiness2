@@ -196,6 +196,47 @@ public class DBHandler {
 			  return true;
 	  }
 	  
+	  public boolean setPlayerApplication(Plugin plugin, DBPlayer player, String application){
+		  
+		  boolean playerInDB = false;
+		  
+		  for (DBPlayer dbPlayer : getPlayerList()){
+			  if (dbPlayer.getName().equals(player.getName())){
+				  playerInDB = true;
+			  }
+		  }
+		  
+		  if (!playerInDB){
+			  insertPlayer(plugin, plugin.getServer().getPlayer(player.getUuid()));
+		  }
+		  
+		  
+		  try {
+				Class.forName("com.mysql.jdbc.Driver");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		      
+		      try {
+				connect = DriverManager
+						  .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
+							  + "user=dragonbusiness&password=dragonbusiness123");
+				  
+				  preparedStatement = connect
+				          .prepareStatement("UPDATE player SET player_application=? WHERE player_name=?");
+				  
+				  preparedStatement.setString(1, application);
+				  preparedStatement.setString(2, player.getName());
+				  
+				  preparedStatement.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		      
+		      close();
+			  return true;
+	  }
+	  
 	  public boolean setPlayerEarned(Plugin plugin, String player, double newValue){
 		  
 		  boolean playerInDB = false;
@@ -570,10 +611,11 @@ public class DBHandler {
 			  String rank = resultSet.getString("player_rank");
 			  int companyid = resultSet.getInt("company_company_id");
 			  String pendingInvite = resultSet.getString("player_pendingInvite");
+			  String application = resultSet.getString("player_application");
 			  Double earned = resultSet.getDouble("player_earned");
 			  int level = resultSet.getInt("player_level");
 			  
-			  dbPlayer = new DBPlayer(plugin, this, id, uuid, name, rank, companyid, pendingInvite, earned, level);
+			  dbPlayer = new DBPlayer(plugin, this, id, uuid, name, rank, companyid, pendingInvite, application, earned, level);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -615,10 +657,11 @@ public class DBHandler {
 			  String rank = resultSet.getString("player_rank");
 			  int companyid = resultSet.getInt("company_company_id");
 			  String pendingInvite = resultSet.getString("player_pendingInvite");
+			  String application = resultSet.getString("player_application");
 			  Double earned = resultSet.getDouble("player_earned");
 			  int level = resultSet.getInt("player_level");
 			  
-			  dbPlayer = new DBPlayer(plugin, this, id, uuid, name, rank, companyid, pendingInvite, earned, level);
+			  dbPlayer = new DBPlayer(plugin, this, id, uuid, name, rank, companyid, pendingInvite, application, earned, level);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -845,10 +888,11 @@ public class DBHandler {
 				  String rank = resultSet.getString("player_rank");
 				  int companyid = resultSet.getInt("company_company_id");
 				  String pendingInvite = resultSet.getString("player_pendingInvite");
+				  String application = resultSet.getString("player_application");
 				  Double earned = resultSet.getDouble("player_earned");
 				  int level = resultSet.getInt("player_level");
 				  
-				  DBPlayer dbPlayer = new DBPlayer(plugin, this, id, uuid, name, rank, companyid, pendingInvite, earned, level);
+				  DBPlayer dbPlayer = new DBPlayer(plugin, this, id, uuid, name, rank, companyid, pendingInvite, application, earned, level);
 				  dbPlayerList.add(dbPlayer);
 				}
 			} catch (SQLException e) {

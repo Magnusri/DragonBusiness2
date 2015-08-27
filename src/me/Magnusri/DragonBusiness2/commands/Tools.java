@@ -274,6 +274,7 @@ public class Tools {
         if(companyValue <= 0){
             // DO BANKRUPT
         	// WARN ALL ONLINE THAT THIS CO WENT BANKRUPT
+        	msgOnlinePlayers("The company " + company + " just went bankrupt, and is now available on the market!");
         	db.setCompanyBankrupt(plugin, company, true);
         }
 		

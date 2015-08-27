@@ -35,3 +35,7 @@ ToDo:
 /c buyout
 
   Buys a company that is bankrupt. $100 for each employee that that company has. CEO pays for it.
+
+
+Impliment decay
+

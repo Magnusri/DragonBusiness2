@@ -23,50 +23,47 @@ public class Help {
 	}
 	public boolean all(){
 		player.sendMessage(ChatColor.AQUA + "--- DragonBusiness 2.0 Help ---");
-		player.sendMessage(ChatColor.WHITE + "For information on a command, do /c help <command>");
-		player.sendMessage(ChatColor.GOLD + " - /c create <companyname>");
-		player.sendMessage(ChatColor.RED + "    - Cost: $" + config.getCreateCost());
+		player.sendMessage(ChatColor.GOLD + "For information on a command, do /c help <command>");
+		player.sendMessage(ChatColor.DARK_AQUA + " /c create <companyname>");
+		player.sendMessage(ChatColor.RED + "  - Cost: $" + config.getCreateCost());
 		if (db.getPlayer(player).getRank().equals("CEO"))
-			player.sendMessage(ChatColor.GOLD + " - /c disband");
+			player.sendMessage(ChatColor.DARK_AQUA + " /c disband");
 		if (db.getPlayer(player).getRank().equals("CEO"))
-			player.sendMessage(ChatColor.RED + "    - Cost: $" + config.getDisbandCost());
-		player.sendMessage(ChatColor.GOLD + " - /c invite <playername>");
-		player.sendMessage(ChatColor.GOLD + " - /c fire <playername>");
+			player.sendMessage(ChatColor.RED + "  - Cost: $" + config.getDisbandCost());
+		player.sendMessage(ChatColor.DARK_AQUA + " /c invite <playername>");
+		player.sendMessage(ChatColor.DARK_AQUA + " /c fire <playername>");
 		if (db.getPlayer(player).getRank().equals("CEO"))
-			player.sendMessage(ChatColor.GOLD + " - /c changedesc <new description>");
+			player.sendMessage(ChatColor.DARK_AQUA + " /c changedesc <new description>");
 		if (db.getPlayer(player).getRank().equals("CEO"))
-			player.sendMessage(ChatColor.GOLD + " - /c promote <playername>");
+			player.sendMessage(ChatColor.DARK_AQUA + " /c promote <playername>");
 		if (db.getPlayer(player).getRank().equals("CEO"))
-			player.sendMessage(ChatColor.GOLD + " - /c demote <playername>");
-		player.sendMessage(ChatColor.GOLD + " - /c deposit <amount>");
+			player.sendMessage(ChatColor.DARK_AQUA + " /c demote <playername>");
+		player.sendMessage(ChatColor.DARK_AQUA + " /c deposit <amount>");
 		if (db.getPlayer(player).getRank().equals("CEO"))
-			player.sendMessage(ChatColor.GOLD + " - /c hiring <on/off>");
-		player.sendMessage(ChatColor.GOLD + " - /c hiring ");
-		if (config.isSellingInvEnabled()) player.sendMessage(ChatColor.GOLD + " - /c sell");
-			player.sendMessage(ChatColor.GOLD + " - /c top");
-		player.sendMessage(ChatColor.GOLD + " - /c info");
-		player.sendMessage(ChatColor.GOLD + " - /c pinfo");
-		player.sendMessage(ChatColor.GOLD + " - /c leave");
+			player.sendMessage(ChatColor.DARK_AQUA + " /c hiring <on/off>");
+		player.sendMessage(ChatColor.DARK_AQUA + " /c hiring ");
+		if (config.isSellingInvEnabled()) player.sendMessage(ChatColor.DARK_AQUA + " /c sell");
+			player.sendMessage(ChatColor.DARK_AQUA + " /c top");
+		player.sendMessage(ChatColor.DARK_AQUA + " /c info");
+		player.sendMessage(ChatColor.DARK_AQUA + " /c pinfo");
+		player.sendMessage(ChatColor.DARK_AQUA + " /c leave");
 		if (db.getPlayer(player).getRank().equals("CEO"))
-			player.sendMessage(ChatColor.GOLD + " - /c makeceo <playername>");
+			player.sendMessage(ChatColor.DARK_AQUA + " /c makeceo <playername>");
 		player.sendMessage(ChatColor.AQUA + "--- DragonBusiness 2.0 Help ---");
 		return true;
 	}
 	public boolean createCo(){
-		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
-		player.sendMessage(ChatColor.GOLD + " - /c create <companyname>");
+		player.sendMessage(ChatColor.AQUA + " - /c create <companyname>");
 		player.sendMessage(ChatColor.WHITE + "Creates a new company with the specified name. Cost: $" + config.getCreateCost());
 		return true;
 	}
 	public boolean disbandCo() {
-		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
-		player.sendMessage(ChatColor.GOLD + " - /c disband");
+		player.sendMessage(ChatColor.AQUA + " /c disband");
 		player.sendMessage(ChatColor.WHITE + "Disbands your company. This is permanent, and only for CEOs. Cost: $" + config.getDisbandCost());
 		return true;
 	}
 	public boolean invite() {
-		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
-		player.sendMessage(ChatColor.GOLD + " - /c invite <playername>");
+		player.sendMessage(ChatColor.AQUA + " - /c invite <playername>");
 		player.sendMessage(ChatColor.WHITE + "Invites a player to join your company. Only for CEOs and Leaders.");
 		return true;
 	}
@@ -83,79 +80,66 @@ public class Help {
 		return true;
 	}
 	public boolean fire() {
-		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
-		player.sendMessage(ChatColor.GOLD + " - /c fire <playername>");
+		player.sendMessage(ChatColor.AQUA + " - /c fire <playername>");
 		player.sendMessage(ChatColor.WHITE + "Fires a player from your company. Only for CEOs and Leaders.");
 		return true;
 	}
 	public boolean deposit() {
-		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
-		player.sendMessage(ChatColor.GOLD + " - /c deposit <amount>");
+		player.sendMessage(ChatColor.AQUA + " - /c deposit <amount>");
 		player.sendMessage(ChatColor.WHITE + "Deposits an amount of money into the company you are in.");
 		return true;
 	}
 	public boolean promote() {
-		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
-		player.sendMessage(ChatColor.GOLD + " - /c promote <playername>");
+		player.sendMessage(ChatColor.AQUA + " - /c promote <playername>");
 		player.sendMessage(ChatColor.WHITE + "Promotes an Employee to Leader. This allows him/her to use more company commands.");
 		return true;
 	}
 	public boolean makeceo() {
-		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
-		player.sendMessage(ChatColor.GOLD + " - /c makeceo <playername>");
+		player.sendMessage(ChatColor.AQUA + " - /c makeceo <playername>");
 		player.sendMessage(ChatColor.WHITE + "Resign your position as CEO, and pass it on to a new player.");
 		return true;
 	}
 	public boolean changedesc() {
-		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
-		player.sendMessage(ChatColor.GOLD + " - /c changedesc <the new company description>");
+		player.sendMessage(ChatColor.AQUA + " - /c changedesc <the new company description>");
 		player.sendMessage(ChatColor.WHITE + "Changes the company description! Accepts spaced sentences!");
 		return true;
 	}
 	public boolean demote() {
-		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
-		player.sendMessage(ChatColor.GOLD + " - /c demote <playername>");
+		player.sendMessage(ChatColor.AQUA + " - /c demote <playername>");
 		player.sendMessage(ChatColor.WHITE + "Demotes a players Leader rank, and makes him/her an Employee.");
 		return true;
 	}
 	public boolean top() {
-		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
-		player.sendMessage(ChatColor.GOLD + " - /c top");
+		player.sendMessage(ChatColor.AQUA + " - /c top");
 		player.sendMessage(ChatColor.WHITE + "Displays the top 10 companies on the server.");
 		return true;
 	}
 	public boolean info() {
-		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
-		player.sendMessage(ChatColor.GOLD + " - /c info <Optional:companyname>");
+		player.sendMessage(ChatColor.AQUA + " - /c info <Optional:companyname>");
 		player.sendMessage(ChatColor.WHITE + "Displays information about your, or target company.");
 		return true;
 	}
 	public boolean pinfo() {
-		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
-		player.sendMessage(ChatColor.GOLD + " - /c pinfo <playername>");
+		player.sendMessage(ChatColor.AQUA + " - /c pinfo <playername>");
 		player.sendMessage(ChatColor.WHITE + "Displays information about the player specified.");
 		return true;
 	}
 	public boolean leave() {
-		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
-		player.sendMessage(ChatColor.GOLD + " - /c leave");
+		player.sendMessage(ChatColor.AQUA + " - /c leave");
 		player.sendMessage(ChatColor.WHITE + "Leave the company you are in.");
 		return true;
 	}
 	public boolean sell() {
-		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
-		player.sendMessage(ChatColor.GOLD + " - /c sell");
+		player.sendMessage(ChatColor.AQUA + " - /c sell");
 		player.sendMessage(ChatColor.WHITE + "Sell items on behalf of your company.");
 		return true;
 	}
 	public boolean hiring() {
-		player.sendMessage(ChatColor.AQUA + "--- Command syntax: ---");
 		if (db.getPlayer(player).getRank().equals("CEO"))
-			player.sendMessage(ChatColor.GOLD + " - /c hiring <on/off>");
+			player.sendMessage(ChatColor.AQUA + " - /c hiring <on/off>");
 		if (db.getPlayer(player).getRank().equals("CEO"))
 			player.sendMessage(ChatColor.WHITE + "Choose if your company should appear as hiring.");
-		player.sendMessage(ChatColor.AQUA + " - ");
-		player.sendMessage(ChatColor.GOLD + " - /c hiring");
+		player.sendMessage(ChatColor.AQUA + " - /c hiring");
 		player.sendMessage(ChatColor.WHITE + "Show a list of companies that are hiring.");
 		return true;
 	}

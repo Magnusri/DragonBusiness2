@@ -1,16 +1,8 @@
 # DragonBusiness2
 
 ToDo:
-  
-/c apply <company>
 
-  Let the company know you are interested in joining
-    > Need to add a message which notifies the CEO/ Leader of new application
-    
-/c applications
 
-  Shows people who have applied to the company
-  
 /c jobs
 
   Lists jobs and their companies
@@ -28,18 +20,4 @@ ToDo:
 
   Removes a job from the db
 
-
-
 Implement decay
-
-
-New Feature:
-
-Add:
-
-$10 (config?) * Amount of employees
-
-To company value daily
-
-
-

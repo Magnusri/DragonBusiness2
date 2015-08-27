@@ -403,19 +403,13 @@ public class CmdExecutor {
 					player.sendMessage(ChatColor.AQUA + "--- " + dbCompany.getName() + " ---");
 					if (dbCompany.getBankrupt())
 						player.sendMessage(ChatColor.RED + "This company is bankrupt, and available on the open market!");
-<<<<<<< HEAD
-					player.sendMessage(ChatColor.GOLD + "CEO: "+ChatColor.WHITE + tools.getCEOInCo(dbCompany).getName());
-					player.sendMessage(ChatColor.GOLD + "Description: "+ ChatColor.WHITE + dbCompany.getInfo());
-					if (dbCompany.isHiring())
-						player.sendMessage(ChatColor.GOLD + "Hiring: "+ ChatColor.WHITE + "Yes");
-					if (!dbCompany.isHiring())
-						player.sendMessage(ChatColor.GOLD + "Hiring: "+ ChatColor.WHITE + "No");
-					player.sendMessage(ChatColor.GOLD + "Value: " +ChatColor.WHITE + "$" + dbCompany.getValue());
-=======
 					player.sendMessage(ChatColor.DARK_AQUA + "CEO: "+ChatColor.WHITE + tools.getCEOInCo(dbCompany).getName());
 					player.sendMessage(ChatColor.DARK_AQUA + "Description: "+ ChatColor.WHITE + dbCompany.getInfo());
+					if (dbCompany.isHiring())
+						player.sendMessage(ChatColor.DARK_AQUA + "Hiring: "+ ChatColor.WHITE + "Yes");
+					if (!dbCompany.isHiring())
+						player.sendMessage(ChatColor.DARK_AQUA + "Hiring: "+ ChatColor.WHITE + "No");
 					player.sendMessage(ChatColor.DARK_AQUA + "Value: " +ChatColor.WHITE + "$" + dbCompany.getValue());
->>>>>>> origin/master
 					if (tools.getLeadersInCo(dbCompany).size() > 0){
 						player.sendMessage(ChatColor.DARK_AQUA + "Leaders: "+ChatColor.WHITE + tools.getLeadersInCo(dbCompany).toString());
 					}

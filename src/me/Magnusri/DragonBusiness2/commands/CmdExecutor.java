@@ -389,16 +389,27 @@ public class CmdExecutor {
 				} else {
 					DBPlayer dbPlayer = db.getPlayer(player);
 					DBCompany dbCompany = db.getCompany(dbPlayer.getCompanyid());
-					
 					List<DBCompany> bankruptCompanies = db.getCompanyList();
 					
-					player.sendMessage(ChatColor.AQUA + "--- "+ "Market" + " ---");
+					boolean bankrupt = false;
+					
 					for (DBCompany bankruptDBCompany : bankruptCompanies){
 						if (bankruptDBCompany.getBankrupt()){
-							player.sendMessage(ChatColor.DARK_AQUA + " " + bankruptDBCompany.getName());
+							bankrupt = true;
 						}
 					}
-					player.sendMessage(ChatColor.AQUA + "--- "+ "Market" + " ---");
+					
+					if (bankrupt){
+						player.sendMessage(ChatColor.AQUA + "--- "+ "Market" + " ---");
+						for (DBCompany bankruptDBCompany : bankruptCompanies){
+							if (bankruptDBCompany.getBankrupt()){
+								player.sendMessage(ChatColor.DARK_AQUA + " " + bankruptDBCompany.getName());
+							}
+						}
+						player.sendMessage(ChatColor.AQUA + "--- "+ "Market" + " ---");
+					} else {
+						player.sendMessage(ChatColor.RED + "There are no companies on the market at the moment.");
+					}
 					
 				}
 				break;

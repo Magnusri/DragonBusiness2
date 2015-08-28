@@ -14,13 +14,15 @@ public class Config {
 	double buyoutEmployeePrice;
 	boolean milestonesEnabled;
 	boolean sellingInvEnabled;
+	boolean companyDecayEnabled;
+	String decayTime;
 	double[] milestones;
 	String[] pricelist;
 	
 	Plugin plugin;
 	FileConfiguration config;
 	
-	public Config(double createCost, double disbandCost, double depositFee, boolean milestonesEnabled, boolean sellingInvEnabled, double[] milestones, String[] pricelist, double bonusAmount, double buyoutEmployeePrice, Plugin plugin) {
+	public Config(double createCost, double disbandCost, double depositFee, boolean milestonesEnabled, boolean sellingInvEnabled, double[] milestones, String[] pricelist, double bonusAmount, double buyoutEmployeePrice, boolean companyDecayEnabled, String decayTime, Plugin plugin) {
 		
 		//LOAD CONFIGS FROM FILE HERE, IF NO FILE; SET DEFAULTS.
 		
@@ -30,6 +32,8 @@ public class Config {
 		this.depositFee = depositFee;
 		this.milestonesEnabled = milestonesEnabled;
 		this.sellingInvEnabled = sellingInvEnabled;
+		this.companyDecayEnabled = companyDecayEnabled;
+		this.decayTime = decayTime;
 		this.milestones = milestones;
 		this.pricelist = pricelist;
 		this.bonusAmount = bonusAmount;
@@ -44,7 +48,7 @@ public class Config {
 		this.config = plugin.getConfig();
 		
 		//LOAD CONFIGS FROM FILE HERE, IF NO FILE; SET DEFAULTS.
-		if (!plugin.getConfig().contains("configSet")){
+		if (!plugin.getConfig().contains("config.configSet")){
 			
 			config.set("config.createCost", 1000);
 			config.set("config.disbandCost", 200);
@@ -52,7 +56,10 @@ public class Config {
 			config.set("config.buyoutEmployeePrice", 100);
 			config.set("config.milestonesEnabled", true);
 			config.set("config.sellingInvEnabled", true);
+			config.set("config.companyDecayEnabled", true);
+			config.set("config.decayTime", "14:00");
 			config.set("config.bonusAmount", 20);
+			config.set("config.configSet", true);
 
 			ArrayList<Double> milestonesList = new ArrayList<>();
 			milestonesList.add((double) 5000);
@@ -85,6 +92,8 @@ public class Config {
 		this.buyoutEmployeePrice = config.getDouble("config.buyoutEmployeePrice");
 		this.milestonesEnabled = config.getBoolean("config.milestonesEnabled");
 		this.sellingInvEnabled = config.getBoolean("config.sellingInvEnabled");
+		this.companyDecayEnabled = config.getBoolean("config.companyDecayEnabled");
+		this.decayTime = config.getString("config.decayTime");
 		this.bonusAmount = config.getDouble("config.bonusAmount");
 		
 		List<Double> list = config.getDoubleList("config.milestones");
@@ -105,6 +114,7 @@ public class Config {
 	public void setBonusAmount(double bonusAmount) {
 		this.bonusAmount = bonusAmount;
 		config.set("config.bonusAmount", bonusAmount);
+		plugin.saveConfig();
 	}
 	
 	public double getCreateCost() {
@@ -114,6 +124,7 @@ public class Config {
 	public void setCreateCost(float createCost) {
 		this.createCost = createCost;
 		config.set("config.createCost", createCost);
+		plugin.saveConfig();
 	}
 
 	public double getDepositFee() {
@@ -123,6 +134,7 @@ public class Config {
 	public void setDepositFee(float depositFee) {
 		this.depositFee = depositFee;
 		config.set("config.depositFee", depositFee);
+		plugin.saveConfig();
 	}
 
 	public double getDisbandCost() {
@@ -132,6 +144,7 @@ public class Config {
 	public void setDisbandCost(float disbandCost) {
 		this.disbandCost = disbandCost;
 		config.set("config.disbandCost", disbandCost);
+		plugin.saveConfig();
 	}
 	public boolean isMilestonesEnabled() {
 		return milestonesEnabled;
@@ -139,6 +152,7 @@ public class Config {
 	public void setMilestonesEnabled(boolean milestonesEnabled) {
 		this.milestonesEnabled = milestonesEnabled;
 		config.set("config.milestonesEnabled", milestonesEnabled);
+		plugin.saveConfig();
 	}
 	public double[] getMilestones() {
 		return milestones;
@@ -149,17 +163,38 @@ public class Config {
 	public void setSellingInvEnabled(boolean sellingInvEnabled) {
 		this.sellingInvEnabled = sellingInvEnabled;
 		config.set("config.sellingInvEnabled", sellingInvEnabled);
+		plugin.saveConfig();
 	}
 	public String[] getPricelist() {
 		return pricelist;
 	}
 	public void setPricelist(String[] pricelist) {
 		this.pricelist = pricelist;
+		config.set("config.pricelist", pricelist);
+		plugin.saveConfig();
 	}
 	public double getBuyoutEmployeePrice() {
 		return buyoutEmployeePrice;
 	}
 	public void setBuyoutEmployeePrice(double buyoutEmployeePrice) {
 		this.buyoutEmployeePrice = buyoutEmployeePrice;
+		config.set("config.buyoutEmployeePrice", buyoutEmployeePrice);
+		plugin.saveConfig();
+	}
+	public boolean isCompanyDecayEnabled() {
+		return companyDecayEnabled;
+	}
+	public void setCompanyDecayEnabled(boolean companyDecayEnabled) {
+		this.companyDecayEnabled = companyDecayEnabled;
+		config.set("config.companyDecayEnabled", companyDecayEnabled);
+		plugin.saveConfig();
+	}
+	public String getDecayTime() {
+		return decayTime;
+	}
+	public void setDecayTime(String decayTime) {
+		this.decayTime = decayTime;
+		config.set("config.decayTime", decayTime);
+		plugin.saveConfig();
 	}
 }

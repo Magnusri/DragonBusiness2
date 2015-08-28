@@ -1,7 +1,10 @@
 package me.Magnusri.DragonBusiness2;
 
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
+import me.Magnusri.DragonBusiness2.DBSystem.DBCompany;
 import me.Magnusri.DragonBusiness2.DBSystem.DBHandler;
 import me.Magnusri.DragonBusiness2.EventHandlers.InventoryClosedHandler;
 import me.Magnusri.DragonBusiness2.commands.CmdExecutor;
@@ -11,6 +14,7 @@ import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -22,6 +26,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 public class DragonBusiness2 extends JavaPlugin implements Listener{
 	
@@ -30,6 +35,7 @@ public class DragonBusiness2 extends JavaPlugin implements Listener{
 	public DBHandler db;
 	public Config config;
 	public Tools tools;
+	public int lastDecayDate = 0;
 	
 	public static Permission permission = null;
     public static Economy economy = null;
@@ -79,6 +85,34 @@ public class DragonBusiness2 extends JavaPlugin implements Listener{
 		
 		config = new Config(this);
 		db = new DBHandler(this);
+		tools = new Tools(db, this, economy);
+		
+		BukkitScheduler scheduler = this.getServer().getScheduler();
+        scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
+            @Override
+            public void run() {
+            	
+            	Date dt = new Date();  // current time
+            	int nowDate = dt.getDate();
+            	int nowHours = dt.getHours();
+            	int nowMinutes = dt.getMinutes();
+            	
+            	String decayTime = config.getDecayTime();
+            	
+            	int doHours = Integer.parseInt(decayTime.split(":")[0]);
+            	int doMinutes = Integer.parseInt(decayTime.split(":")[1]);
+            	
+            	if (nowHours == doHours && nowMinutes == doMinutes && lastDecayDate != nowDate && config.isCompanyDecayEnabled()){
+            		List<DBCompany> companies = db.getCompanyList();
+            		
+            		for (DBCompany company : companies){
+            			tools.doCompanyDecay(company.getId());
+            		}
+            		
+            		lastDecayDate = nowDate;
+            	}
+            }
+        }, 0L, 200L);
 	}
 	
 	@Override
@@ -114,7 +148,7 @@ public class DragonBusiness2 extends JavaPlugin implements Listener{
 		if (cmd.getName().equalsIgnoreCase("company") && player.hasPermission("DragonBusiness2.player")){
 			
 			CmdExecutor exec = new CmdExecutor(this, player, cmd, allArgs, db, economy);
-			tools = new Tools(db, player, this, economy);
+			tools = new Tools(db, this, economy);
 		} else {
 			player.sendMessage("You do not have permission to use this command!");
 		}

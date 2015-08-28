@@ -18,27 +18,17 @@ public class Tools {
 	
 	DBHandler db;
 	Plugin plugin;
-	Player player;
 	Config config;
 	Economy economy;
 	
 	public Tools (DBHandler db, Plugin plugin, Economy economy){
 		this.db = db;
 		this.plugin = plugin;
-		this.player = player;
 		this.config = new Config(plugin);
 		this.economy = economy;
 	}
 	
-	public Tools (DBHandler db, Player player, Plugin plugin, Economy economy){
-		this.db = db;
-		this.plugin = plugin;
-		this.player = player;
-		this.config = new Config(plugin);
-		this.economy = economy;
-	}
-	
-	public boolean isPlayerInCompany(){
+	public boolean isPlayerInCompany(Player player){
 		ArrayList<DBPlayer> playerList = db.getPlayerList();
 		
 		for (DBPlayer dbplayer : playerList){
@@ -238,44 +228,45 @@ public class Tools {
 		return false;
 	}
 
-	public boolean doCompanyDecay(String company, double oldValue, double newValue) {
-		
-		double companyValue = db.getCompany(company).getValue();
+	public boolean doCompanyDecay(int companyId) {
+
+		DBCompany company = db.getCompany(companyId);
+		double companyValue = company.getValue();
 		
 		if(companyValue < 1000 && companyValue >= 0){
             //for every 1 day - $10
-			db.setCompanyValue(plugin, company, companyValue - 10);
+			db.setCompanyValue(plugin, company.getName(), companyValue - 10);
         }
         if(companyValue < 10000 && companyValue > 1000){
             //for every 1 day - $100
-			db.setCompanyValue(plugin, company, companyValue - 100);
+			db.setCompanyValue(plugin, company.getName(), companyValue - 100);
         }
         if(companyValue < 100000 && companyValue > 10000){
             //for every 1 day - $1000
-			db.setCompanyValue(plugin, company, companyValue - 1000);
+			db.setCompanyValue(plugin, company.getName(), companyValue - 1000);
         }
         if(companyValue < 1000000 && companyValue > 100000){
             //for every 1 day - $10000
-			db.setCompanyValue(plugin, company, companyValue - 10000);
+			db.setCompanyValue(plugin, company.getName(), companyValue - 10000);
         }
         if(companyValue < 10000000 && companyValue > 1000000){
             //for every 1 day - $100000
-			db.setCompanyValue(plugin, company, companyValue - 100000);
+			db.setCompanyValue(plugin, company.getName(), companyValue - 100000);
         }   
         if(companyValue < 100000000 && companyValue > 10000000){
             //for every 1 day - $1000000
-			db.setCompanyValue(plugin, company, companyValue - 1000000);
+			db.setCompanyValue(plugin, company.getName(), companyValue - 1000000);
         }   
         if(companyValue < 1000000000 && companyValue > 100000000){
             //for every 1 day - $10000000
-			db.setCompanyValue(plugin, company, companyValue - 10000000);
+			db.setCompanyValue(plugin, company.getName(), companyValue - 10000000);
         }       
  
         if(companyValue <= 0){
             // DO BANKRUPT
         	// WARN ALL ONLINE THAT THIS CO WENT BANKRUPT
         	msgOnlinePlayers("The company " + company + " just went bankrupt, and is now available on the market!");
-        	db.setCompanyBankrupt(plugin, company, true);
+        	db.setCompanyBankrupt(plugin, company.getName(), true);
         }
 		
 		return false;

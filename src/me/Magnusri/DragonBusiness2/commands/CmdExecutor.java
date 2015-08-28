@@ -23,7 +23,7 @@ public class CmdExecutor {
 	
 	public CmdExecutor(Plugin plugin, Player player, Command cmd, String[] args, DBHandler db, Economy economy){
 		
-		tools = new Tools(db, player, plugin, economy);
+		tools = new Tools(db, plugin, economy);
 		config = new Config(plugin);
 		
 		db.insertPlayer(plugin, player);
@@ -858,7 +858,7 @@ public class CmdExecutor {
 				}
 				break;
 			case "create":
-				if (tools.isPlayerInCompany()){
+				if (tools.isPlayerInCompany(player)){
 					player.sendMessage(ChatColor.RED + "You are already in a company!");
 					break;
 				}

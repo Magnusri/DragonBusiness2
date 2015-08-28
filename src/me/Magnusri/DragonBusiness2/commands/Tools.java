@@ -1,5 +1,7 @@
 package me.Magnusri.DragonBusiness2.commands;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,13 +148,13 @@ public class Tools {
 		
 		for (int i = 0; i < players.size(); i++){
 			double payout = amount * ((double)players.get(i).getLevel() / (double)100.0);
-			economy.depositPlayer(players.get(i).getName(), payout);
+			economy.depositPlayer(players.get(i).getName(), round(payout, 2));
 			moneyforco -= payout;
 			doPlayerLevel(players.get(i));
-			msgPlayerByName(players.get(i).getName(), ChatColor.GREEN + "You earned " + payout + " from the last company sale!");
+			msgPlayerByName(players.get(i).getName(), ChatColor.GREEN + "You earned " + round(payout, 2) + " from the last company sale!");
 		}
 		
-		db.setCompanyValue(plugin, company.getName(), company.getValue() + moneyforco);
+		db.setCompanyValue(plugin, company.getName(), company.getValue() + round(moneyforco, 2));
 		
 		return true;
 	}
@@ -226,6 +228,14 @@ public class Tools {
 			}
 		}
 		return false;
+	}
+	
+	public double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    BigDecimal bd = new BigDecimal(value);
+	    bd = bd.setScale(places, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
 	}
 
 	public boolean doCompanyDecay(int companyId) {

@@ -71,7 +71,7 @@ public class InventoryClosedHandler implements Listener {
 		
 		if (itemsSold){
 			localPlayer.sendMessage(ChatColor.GREEN + "Items were sold!");
-			plugin.tools.playerIncome(localPlayer, income);
+			plugin.tools.playerIncome(localPlayer, plugin.tools.round(income, 2));
 		} else {
 			localPlayer.sendMessage("No items could be sold!");
 		}

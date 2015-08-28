@@ -19,3 +19,17 @@ ToDo:
 /c jobs remove <ID>
 
   Removes a job from the db
+
+
+Add a command to show how much players within your company have earned
+
+/c ptop or /c earned or /c employees
+
+Shows:
+
+
+HEADER
+
+<EARNED> <PLAYER>
+
+In Highest to lowest

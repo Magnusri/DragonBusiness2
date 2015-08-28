@@ -19,5 +19,3 @@ ToDo:
 /c jobs remove <ID>
 
   Removes a job from the db
-
-Implement decay

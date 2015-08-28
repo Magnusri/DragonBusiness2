@@ -29,6 +29,7 @@ Shows:
 
 
 HEADER
+
 EARNED PLAYER
 
 In Highest to lowest

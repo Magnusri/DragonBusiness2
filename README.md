@@ -30,6 +30,6 @@ Shows:
 
 HEADER
 
-<EARNED> <PLAYER>
+EARNED PLAYER
 
 In Highest to lowest

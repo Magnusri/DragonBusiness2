@@ -29,7 +29,9 @@ Shows:
 
 
 HEADER
-
 EARNED PLAYER
 
 In Highest to lowest
+
+
+Extra /c help commands

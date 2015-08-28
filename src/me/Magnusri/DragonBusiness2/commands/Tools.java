@@ -156,6 +156,10 @@ public class Tools {
 		
 		db.setCompanyValue(plugin, company.getName(), company.getValue() + round(moneyforco, 2));
 		
+		if (company.getBankrupt() && (company.getValue() + round(moneyforco, 2)) > 1000){
+			db.setCompanyBankrupt(plugin, company.getName(), false);
+		}
+		
 		return true;
 	}
 	
@@ -242,41 +246,52 @@ public class Tools {
 
 		DBCompany company = db.getCompany(companyId);
 		double companyValue = company.getValue();
+		double decay = 0;
 		
 		if(companyValue < 1000 && companyValue >= 0){
             //for every 1 day - $10
-			db.setCompanyValue(plugin, company.getName(), companyValue - 10);
+			decay = 10;
+			db.setCompanyValue(plugin, company.getName(), companyValue - decay);
         }
         if(companyValue < 10000 && companyValue > 1000){
             //for every 1 day - $100
-			db.setCompanyValue(plugin, company.getName(), companyValue - 100);
+			decay = 100;
+			db.setCompanyValue(plugin, company.getName(), companyValue - decay);
         }
         if(companyValue < 100000 && companyValue > 10000){
             //for every 1 day - $1000
-			db.setCompanyValue(plugin, company.getName(), companyValue - 1000);
+			decay = 1000;
+			db.setCompanyValue(plugin, company.getName(), companyValue - decay);
         }
         if(companyValue < 1000000 && companyValue > 100000){
             //for every 1 day - $10000
-			db.setCompanyValue(plugin, company.getName(), companyValue - 10000);
+			decay = 10000;
+			db.setCompanyValue(plugin, company.getName(), companyValue - decay);
         }
         if(companyValue < 10000000 && companyValue > 1000000){
             //for every 1 day - $100000
-			db.setCompanyValue(plugin, company.getName(), companyValue - 100000);
+			decay = 100000;
+			db.setCompanyValue(plugin, company.getName(), companyValue - decay);
         }   
         if(companyValue < 100000000 && companyValue > 10000000){
             //for every 1 day - $1000000
-			db.setCompanyValue(plugin, company.getName(), companyValue - 1000000);
+			decay = 1000000;
+			db.setCompanyValue(plugin, company.getName(), companyValue - decay);
         }   
         if(companyValue < 1000000000 && companyValue > 100000000){
             //for every 1 day - $10000000
-			db.setCompanyValue(plugin, company.getName(), companyValue - 10000000);
+			decay = 10000000;
+			db.setCompanyValue(plugin, company.getName(), companyValue - decay);
         }       
  
-        if(companyValue <= 0){
+        if((companyValue - decay) <= 0){
             // DO BANKRUPT
         	// WARN ALL ONLINE THAT THIS CO WENT BANKRUPT
-        	msgOnlinePlayers("The company " + company + " just went bankrupt, and is now available on the market!");
-        	db.setCompanyBankrupt(plugin, company.getName(), true);
+        	if (!company.getBankrupt()){
+        		msgOnlinePlayers(ChatColor.RED + "The company " + company.getName() + " just went bankrupt,");
+        		msgOnlinePlayers(ChatColor.RED + "The company " + company.getName() + "and is now available on the market!");
+        		db.setCompanyBankrupt(plugin, company.getName(), true);
+        	}
         }
 		
 		return false;

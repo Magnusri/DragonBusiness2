@@ -84,7 +84,7 @@ public class DragonBusiness2 extends JavaPlugin implements Listener{
 		setupPermissions();
 		
 		config = new Config(this);
-		db = new DBHandler(this);
+		db = new DBHandler(this, config);
 		tools = new Tools(db, this, economy);
 		
 		BukkitScheduler scheduler = this.getServer().getScheduler();

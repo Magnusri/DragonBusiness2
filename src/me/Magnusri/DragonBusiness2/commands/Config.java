@@ -15,6 +15,7 @@ public class Config {
 	boolean milestonesEnabled;
 	boolean sellingInvEnabled;
 	boolean companyDecayEnabled;
+	String connectionString;
 	String decayTime;
 	double[] milestones;
 	String[] pricelist;
@@ -22,11 +23,14 @@ public class Config {
 	Plugin plugin;
 	FileConfiguration config;
 	
-	public Config(double createCost, double disbandCost, double depositFee, boolean milestonesEnabled, boolean sellingInvEnabled, double[] milestones, String[] pricelist, double bonusAmount, double buyoutEmployeePrice, boolean companyDecayEnabled, String decayTime, Plugin plugin) {
+	public Config(double createCost, double disbandCost, double depositFee, boolean milestonesEnabled, boolean sellingInvEnabled, double[] milestones, String[] pricelist, double bonusAmount, double buyoutEmployeePrice, boolean companyDecayEnabled, String decayTime, String connectionString, Plugin plugin) {
 		
 		//LOAD CONFIGS FROM FILE HERE, IF NO FILE; SET DEFAULTS.
 		
 		super();
+		this.connectionString = connectionString;
+		this.plugin = plugin;
+		
 		this.createCost = createCost;
 		this.disbandCost = disbandCost;
 		this.depositFee = depositFee;
@@ -37,7 +41,6 @@ public class Config {
 		this.milestones = milestones;
 		this.pricelist = pricelist;
 		this.bonusAmount = bonusAmount;
-		this.plugin = plugin;
 		this.buyoutEmployeePrice = buyoutEmployeePrice;
 	}
 	public Config(Plugin plugin) {
@@ -48,7 +51,7 @@ public class Config {
 		this.config = plugin.getConfig();
 		
 		//LOAD CONFIGS FROM FILE HERE, IF NO FILE; SET DEFAULTS.
-		if (!plugin.getConfig().contains("config.configSet")){
+		if (!plugin.getConfig().contains("config.configSet") || !config.getBoolean("config.configSet")){
 			
 			config.set("config.createCost", 1000);
 			config.set("config.disbandCost", 200);
@@ -60,6 +63,7 @@ public class Config {
 			config.set("config.decayTime", "14:00");
 			config.set("config.bonusAmount", 20);
 			config.set("config.configSet", true);
+			config.set("config.connectionString", "jdbc:mysql://SERVER?user=USERNAME&password=PASSWORD");
 
 			ArrayList<Double> milestonesList = new ArrayList<>();
 			milestonesList.add((double) 5000);
@@ -93,6 +97,7 @@ public class Config {
 		this.milestonesEnabled = config.getBoolean("config.milestonesEnabled");
 		this.sellingInvEnabled = config.getBoolean("config.sellingInvEnabled");
 		this.companyDecayEnabled = config.getBoolean("config.companyDecayEnabled");
+		this.connectionString = config.getString("config.connectionString");
 		this.decayTime = config.getString("config.decayTime");
 		this.bonusAmount = config.getDouble("config.bonusAmount");
 		
@@ -195,6 +200,14 @@ public class Config {
 	public void setDecayTime(String decayTime) {
 		this.decayTime = decayTime;
 		config.set("config.decayTime", decayTime);
+		plugin.saveConfig();
+	}
+	public String getConnectionString() {
+		return connectionString;
+	}
+	public void setConnectionString(String connectionString) {
+		this.connectionString = connectionString;
+		config.set("config.connectionString", connectionString);
 		plugin.saveConfig();
 	}
 }

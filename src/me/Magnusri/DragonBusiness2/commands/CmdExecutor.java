@@ -55,6 +55,8 @@ public class CmdExecutor {
 						help.top();
 					if (args[1].equals("hiring"))
 						help.hiring();
+					if (args[1].equals("buyout"))
+						help.buyout();
 					if (args[1].equals("applications"))
 						help.applications();
 					if (args[1].equals("application"))
@@ -330,6 +332,11 @@ public class CmdExecutor {
 					int targetCompanyEmployees = db.getPlayerListInCompany(targetCompany.getName()).size();
 					double targetCompanyPrice = config.getBuyoutEmployeePrice() * (double)targetCompanyEmployees;
 					
+					if (targetCompany.getId() == db.getPlayer(player).getCompanyid()){
+						player.sendMessage(ChatColor.RED + "You cannot buyout your own company!");
+						break;
+					}
+					
 					if (!targetCompany.getBankrupt()){
 						player.sendMessage(ChatColor.RED + "This company is not bankrupt, or on the market!");
 						break;
@@ -350,6 +357,11 @@ public class CmdExecutor {
 					
 					if (!targetCompany.getBankrupt()){
 						player.sendMessage(ChatColor.RED + "This company is not bankrupt, or on the market!");
+						break;
+					}
+					
+					if (targetCompany.getId() == db.getPlayer(player).getCompanyid()){
+						player.sendMessage(ChatColor.RED + "You cannot buyout your own company!");
 						break;
 					}
 					

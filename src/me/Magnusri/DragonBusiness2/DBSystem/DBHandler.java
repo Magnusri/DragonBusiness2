@@ -12,19 +12,28 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import me.Magnusri.DragonBusiness2.commands.Config;
+
 
 public class DBHandler {
 	
 	public Plugin plugin;
+	public Config config;
 	
-	public DBHandler(Plugin plugin){
+	private String connectionString;
+	
+	public DBHandler(Plugin plugin, Config config){
 		this.plugin = plugin;
+		this.config = config;
+		
+		this.connectionString = config.getConnectionString();
 	}
 	
 	private Connection connect = null;
-	  private Statement statement = null;
-	  private PreparedStatement preparedStatement = null;
-	  private ResultSet resultSet = null;
+	private Statement statement = null;
+	private PreparedStatement preparedStatement = null;
+	private ResultSet resultSet = null;
+	  
 	  
 	  public boolean insertPlayer(Plugin plugin, Player player, Double earned){
 		  
@@ -42,8 +51,7 @@ public class DBHandler {
 	      
 	      try {
 			connect = DriverManager
-					  .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+					  .getConnection(connectionString);
 			  
 			  preparedStatement = connect
 			          .prepareStatement("INSERT INTO player (player_uuid, player_name, player_rank, player_earned) VALUES (?, ?, 'none', ?)");
@@ -90,8 +98,7 @@ public class DBHandler {
 		      
 		      try {
 				connect = DriverManager
-						  .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+						  .getConnection(connectionString);
 				  
 				  preparedStatement = connect
 				          .prepareStatement("UPDATE player SET company_company_id=? WHERE player_uuid=?");
@@ -131,8 +138,7 @@ public class DBHandler {
 		      
 		      try {
 				connect = DriverManager
-						  .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+						  .getConnection(connectionString);
 				  
 				  preparedStatement = connect
 				          .prepareStatement("UPDATE player SET player_rank=? WHERE player_uuid=?");
@@ -178,8 +184,7 @@ public class DBHandler {
 		      
 		      try {
 				connect = DriverManager
-						  .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+						  .getConnection(connectionString);
 				  
 				  preparedStatement = connect
 				          .prepareStatement("UPDATE player SET player_pendingInvite=? WHERE player_name=?");
@@ -219,8 +224,7 @@ public class DBHandler {
 		      
 		      try {
 				connect = DriverManager
-						  .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+						  .getConnection(connectionString);
 				  
 				  preparedStatement = connect
 				          .prepareStatement("UPDATE player SET player_application=? WHERE player_name=?");
@@ -259,8 +263,7 @@ public class DBHandler {
 		      
 		      try {
 				connect = DriverManager
-						  .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+						  .getConnection(connectionString);
 				  
 				  preparedStatement = connect
 				          .prepareStatement("UPDATE player SET player_earned=? WHERE player_name=?");
@@ -306,8 +309,7 @@ public class DBHandler {
 		      
 		      try {
 				connect = DriverManager
-						  .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+						  .getConnection(connectionString);
 				  
 				  preparedStatement = connect
 				          .prepareStatement("UPDATE player SET player_level=? WHERE player_name=?");
@@ -334,8 +336,7 @@ public class DBHandler {
 		      
 		      try {
 				connect = DriverManager
-						  .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+						  .getConnection(connectionString);
 				  
 				  preparedStatement = connect
 				          .prepareStatement("UPDATE company SET company_value=? WHERE company_name=?");
@@ -362,8 +363,7 @@ public class DBHandler {
 		      
 		      try {
 				connect = DriverManager
-						  .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+						  .getConnection(connectionString);
 				  
 				  preparedStatement = connect
 				          .prepareStatement("UPDATE company SET company_bankrupt=? WHERE company_name=?");
@@ -393,8 +393,7 @@ public class DBHandler {
 		      
 		      try {
 				connect = DriverManager
-						  .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+						  .getConnection(connectionString);
 				  
 				  preparedStatement = connect
 				          .prepareStatement("UPDATE company SET company_hiring=? WHERE company_name=?");
@@ -424,8 +423,7 @@ public class DBHandler {
 		      
 		      try {
 				connect = DriverManager
-						  .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+						  .getConnection(connectionString);
 				  
 				  preparedStatement = connect
 				          .prepareStatement("UPDATE company SET company_info=? WHERE company_name=?");
@@ -455,8 +453,7 @@ public class DBHandler {
 		      
 		      try {
 				connect = DriverManager
-						  .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+						  .getConnection(connectionString);
 				  
 				  preparedStatement = connect
 				          .prepareStatement("UPDATE player SET company_company_id=NULL WHERE player_name=?");
@@ -482,8 +479,7 @@ public class DBHandler {
 		      
 		      try {
 				connect = DriverManager
-						  .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+						  .getConnection(connectionString);
 				  
 				  preparedStatement = connect
 				          .prepareStatement("UPDATE player SET player_rank='none' WHERE player_name=?");
@@ -507,8 +503,7 @@ public class DBHandler {
 		}
 	      
 	      try {
-			connect = DriverManager.getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+			connect = DriverManager.getConnection(connectionString);
 			  
 			  preparedStatement = connect.prepareStatement("DELETE FROM company WHERE company_id=?");
 			  
@@ -549,8 +544,7 @@ public class DBHandler {
 	      
 	      try {
 			connect = DriverManager
-					  .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+					  .getConnection(connectionString);
 			  
 			  preparedStatement = connect
 			          .prepareStatement("INSERT INTO company (company_name, company_value, company_info) VALUES (?, ?, ?)");
@@ -589,8 +583,7 @@ public class DBHandler {
 		
 		try {
 			connect = DriverManager
-			          .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+			          .getConnection(connectionString);
 			  preparedStatement = connect.prepareStatement("select * from player where player_uuid=?");
 
 			  preparedStatement.setString(1, player.getUniqueId().toString());
@@ -635,8 +628,7 @@ public class DBHandler {
 		
 		try {
 			connect = DriverManager
-			          .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+			          .getConnection(connectionString);
 			  preparedStatement = connect.prepareStatement("select * from player where player_name=?");
 
 			  preparedStatement.setString(1, playerName);
@@ -681,8 +673,7 @@ public class DBHandler {
 		
 		try {
 			connect = DriverManager
-			          .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+			          .getConnection(connectionString);
 			  preparedStatement = connect.prepareStatement("select * from company where company_name=?");
 
 			  preparedStatement.setString(1, companyName);
@@ -732,8 +723,7 @@ public class DBHandler {
 		
 		try {
 			connect = DriverManager
-			          .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+			          .getConnection(connectionString);
 			  preparedStatement = connect.prepareStatement("select * from company where company_id=?");
 
 			  preparedStatement.setInt(1, companyID);
@@ -784,8 +774,7 @@ public class DBHandler {
 		  ArrayList<DBCompany> companyList = null;
 		try {
 			connect = DriverManager
-			          .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+			          .getConnection(connectionString);
 
 			  statement = connect.createStatement();
 			  
@@ -810,8 +799,7 @@ public class DBHandler {
 		  ArrayList<DBCompany> companyList = null;
 		try {
 			connect = DriverManager
-			          .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+			          .getConnection(connectionString);
 
 			  statement = connect.createStatement();
 			  
@@ -836,8 +824,7 @@ public class DBHandler {
 		  ArrayList<DBPlayer> playerList = null;
 		try {
 			connect = DriverManager
-			          .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+			          .getConnection(connectionString);
 
 			  statement = connect.createStatement();
 			  
@@ -862,8 +849,7 @@ public class DBHandler {
 		  ArrayList<DBPlayer> playerList = null;
 		try {
 			connect = DriverManager
-			          .getConnection("jdbc:mysql://mc.dragontechmc.com/dragonbusiness?"
-							  + "user=dragonbusiness&password=dragonbusiness123");
+			          .getConnection(connectionString);
 
 			preparedStatement = connect.prepareStatement("select * from player where company_company_id = (select company_id from company where company_name = ?)");
 			  

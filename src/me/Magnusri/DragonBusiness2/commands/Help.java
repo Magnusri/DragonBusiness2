@@ -57,6 +57,9 @@ public class Help {
 		if (db.getPlayer(player).getRank().equals("Leader") || db.getPlayer(player).getRank().equals("CEO"))
 			player.sendMessage(ChatColor.DARK_AQUA + " /c hiring ");
 		
+		if (db.getPlayer(player).getRank().equals("CEO"))
+			player.sendMessage(ChatColor.DARK_AQUA + " /c buyout <companyname>");
+		
 		player.sendMessage(ChatColor.DARK_AQUA + " /c apply");
 		
 		player.sendMessage(ChatColor.DARK_AQUA + " /c application cancel");

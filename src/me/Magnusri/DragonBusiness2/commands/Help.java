@@ -62,13 +62,13 @@ public class Help {
 		
 		player.sendMessage(ChatColor.DARK_AQUA + " /c apply");
 		
-		player.sendMessage(ChatColor.DARK_AQUA + " /c application cancel");
+		player.sendMessage(ChatColor.DARK_AQUA + " /c app cancel");
 		
 		if (db.getPlayer(player).getRank().equals("Leader") || db.getPlayer(player).getRank().equals("CEO"))
-			player.sendMessage(ChatColor.DARK_AQUA + " /c application <playername> accept/decline ");
+			player.sendMessage(ChatColor.DARK_AQUA + " /c app <playername> accept/decline ");
 		
 		if (db.getPlayer(player).getRank().equals("Leader") || db.getPlayer(player).getRank().equals("CEO"))
-			player.sendMessage(ChatColor.DARK_AQUA + " /c applications ");
+			player.sendMessage(ChatColor.DARK_AQUA + " /c apps ");
 		
 		if (db.getPlayer(player).getRank().equals("Leader") || db.getPlayer(player).getRank().equals("CEO"))
 			player.sendMessage(ChatColor.DARK_AQUA + " /c market ");
@@ -191,7 +191,7 @@ public class Help {
 		return true;
 	}
 	public boolean applications() {
-		player.sendMessage(ChatColor.AQUA + " - /c applications");
+		player.sendMessage(ChatColor.AQUA + " - /c apps");
 		if (db.getPlayer(player).getRank().equals("CEO") || db.getPlayer(player).getRank().equals("Leader"))
 			player.sendMessage(ChatColor.WHITE + "See the applications that has been submitted to join your company.");
 		else
@@ -200,15 +200,15 @@ public class Help {
 	}
 	public boolean ERRORapplicationInPlace() {
 		player.sendMessage(ChatColor.RED + "You already have an application pending!");
-		player.sendMessage(ChatColor.RED + "If you want to apply for another company, you must /c application cancel, first.");
+		player.sendMessage(ChatColor.RED + "If you want to apply for another company, you must /c app cancel, first.");
 		return true;
 	}
 	public boolean application() {
 		if (db.getPlayer(player).getRank().equals("CEO") || db.getPlayer(player).getRank().equals("Leader"))
-			player.sendMessage(ChatColor.AQUA + " - /c application <playername> decline/accept");
+			player.sendMessage(ChatColor.AQUA + " - /c app <playername> decline/accept");
 		if (db.getPlayer(player).getRank().equals("CEO") || db.getPlayer(player).getRank().equals("Leader"))
 			player.sendMessage(ChatColor.WHITE + "Accept or decline an application to join your company.");
-		player.sendMessage(ChatColor.AQUA + " - /c application cancel");
+		player.sendMessage(ChatColor.AQUA + " - /c app cancel");
 		player.sendMessage(ChatColor.WHITE + "Cancel your active application to join a company.");
 		return true;
 	}

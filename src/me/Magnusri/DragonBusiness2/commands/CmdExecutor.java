@@ -434,7 +434,7 @@ public class CmdExecutor {
 					
 				}
 				break;
-			case "applications":
+			case "apps":
 				if (db.getPlayer(player).getRank().equals("none")){
 					if (!db.getPlayer(player).getApplication().equals("none"))
 						player.sendMessage(ChatColor.AQUA + "You have applied to join " + ChatColor.DARK_AQUA + db.getPlayer(player).getApplication());
@@ -475,7 +475,7 @@ public class CmdExecutor {
 					}
 				}
 				break;
-			case "application":
+			case "app":
 				if (args.length == 2){
 					if (args[1].equals("cancel")){
 						DBPlayer dbPlayer = db.getPlayer(player.getName());
@@ -723,7 +723,7 @@ public class CmdExecutor {
 						player.sendMessage(ChatColor.DARK_AQUA + "Leaders: "+ChatColor.WHITE + tools.getLeadersInCo(dbCompany).toString());
 					}
 					if (tools.getEmployeesInCo(dbCompany).size() > 0){
-						player.sendMessage(ChatColor.GOLD + "Employees: "+ChatColor.WHITE + tools.getEmployeesInCo(dbCompany).toString());
+						player.sendMessage(ChatColor.DARK_AQUA + "Employees: "+ChatColor.WHITE + tools.getEmployeesInCo(dbCompany).toString());
 					}
 					player.sendMessage(ChatColor.AQUA + "--- " + dbCompany.getName() + " ---");
 					

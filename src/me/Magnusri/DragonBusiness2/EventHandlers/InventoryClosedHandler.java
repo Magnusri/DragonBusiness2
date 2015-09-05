@@ -30,7 +30,7 @@ public class InventoryClosedHandler implements Listener {
 		}
 		Player localPlayer = (Player)event.getPlayer();
 		Inventory localInventory = localPlayer.getInventory();
-		if (event.getInventory() == null) {
+		if (event.getInventory() == null || event.getInventory().getTitle() == null) {
 			return;
 		}
 		if (!event.getInventory().getTitle().equals("Sell Items")){

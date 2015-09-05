@@ -911,7 +911,7 @@ public class CmdExecutor {
 					player.sendMessage(ChatColor.GOLD + "  - Your rank:");
 					player.sendMessage(ChatColor.WHITE + "    - " + db.getPlayer(player).getRank());
 					player.sendMessage(ChatColor.AQUA + "---");
-					db.setPlayerEarned(plugin, player.getName(), db.getPlayer(player).getEarned() + 1000.0);
+					db.setPlayerEarned(plugin, player.getName(), db.getPlayer(player).getEarned() + config.getCreateCost());
 					tools.doPlayerLevel(db.getPlayer(player));
 					tools.msgOnlinePlayers(ChatColor.AQUA + player.getName() + " just created the company " + ChatColor.GOLD + args[1] + "!");
 					economy.withdrawPlayer(player.getName(), config.getCreateCost());

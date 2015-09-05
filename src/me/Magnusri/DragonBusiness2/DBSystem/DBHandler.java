@@ -864,6 +864,32 @@ public class DBHandler {
 	      return playerList;
 	  }
 	  
+	  public ArrayList<DBPlayer> getOrderedPlayerListInCompany(String company){
+		  
+		  try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		  
+		  ArrayList<DBPlayer> playerList = null;
+		try {
+			connect = DriverManager
+			          .getConnection(connectionString);
+
+			preparedStatement = connect.prepareStatement("select * from player where company_company_id = (select company_id from company where company_name = ? ORDER BY player.player_earned DESC)");
+			  
+			  preparedStatement.setString(1, company);
+			  
+			  resultSet = preparedStatement.executeQuery();
+			  playerList = makePlayerList(resultSet);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	      close();
+	      return playerList;
+	  }
+	  
 	  private ArrayList<DBPlayer> makePlayerList(ResultSet resultSet){
 		  	ArrayList<DBPlayer> dbPlayerList = new ArrayList<DBPlayer>();
 		    try {

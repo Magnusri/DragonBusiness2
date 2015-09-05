@@ -673,10 +673,24 @@ public class CmdExecutor {
 				player.sendMessage(ChatColor.AQUA + "--- Top 10 Companies ---");
 				int counter = 1;
 				for (DBCompany dbCompany : db.getTopCompanyList()){
-					player.sendMessage(ChatColor.DARK_AQUA + "" + counter + ". " + dbCompany.getName() + ChatColor.WHITE + " - $" + dbCompany.getValue());
+					player.sendMessage(ChatColor.DARK_AQUA + "" + counter + ". " + dbCompany.getName() + ChatColor.WHITE + " - $" + tools.round(dbCompany.getValue(), 2));
 					counter++;
 				}
 				player.sendMessage(ChatColor.AQUA + "--- Top 10 Companies ---");
+				break;
+			case "employees":
+				if (db.getPlayer(player).getRank().equals("none")){
+					help = new Help(plugin, player, tools, db);
+					help.ERRORnotInCo();
+					break;
+				}
+				player.sendMessage(ChatColor.AQUA + "--- Your companies' employees ---");
+				int employeeCounter = 1;
+				for (DBPlayer dbPlayer : db.getOrderedPlayerListInCompany(db.getCompany(db.getPlayer(player).getCompanyid()).getName())){
+					player.sendMessage(ChatColor.DARK_AQUA + "" + employeeCounter + ". " + dbPlayer.getName() + ChatColor.WHITE + " - $" + tools.round(dbPlayer.getEarned(), 2));
+					employeeCounter++;
+				}
+				player.sendMessage(ChatColor.AQUA + "--- Your companies' employees ---");
 				break;
 			case "info":
 				if (args.length == 1){
@@ -698,7 +712,7 @@ public class CmdExecutor {
 						player.sendMessage(ChatColor.DARK_AQUA + "Hiring: "+ ChatColor.WHITE + "Yes");
 					if (!dbCompany.isHiring())
 						player.sendMessage(ChatColor.DARK_AQUA + "Hiring: "+ ChatColor.WHITE + "No");
-					player.sendMessage(ChatColor.DARK_AQUA + "Value: " +ChatColor.WHITE + "$" + dbCompany.getValue());
+					player.sendMessage(ChatColor.DARK_AQUA + "Value: " +ChatColor.WHITE + "$" + tools.round(dbCompany.getValue(), 2));
 					if (tools.getLeadersInCo(dbCompany).size() > 0){
 						player.sendMessage(ChatColor.DARK_AQUA + "Leaders: "+ChatColor.WHITE + tools.getLeadersInCo(dbCompany).toString());
 					}

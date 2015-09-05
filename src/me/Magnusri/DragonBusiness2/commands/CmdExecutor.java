@@ -435,6 +435,7 @@ public class CmdExecutor {
 				}
 				break;
 			case "apps":
+			case "applications":
 				if (db.getPlayer(player).getRank().equals("none")){
 					if (!db.getPlayer(player).getApplication().equals("none"))
 						player.sendMessage(ChatColor.AQUA + "You have applied to join " + ChatColor.DARK_AQUA + db.getPlayer(player).getApplication());
@@ -476,6 +477,7 @@ public class CmdExecutor {
 				}
 				break;
 			case "app":
+			case "application":
 				if (args.length == 2){
 					if (args[1].equals("cancel")){
 						DBPlayer dbPlayer = db.getPlayer(player.getName());

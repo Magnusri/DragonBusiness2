@@ -51,6 +51,9 @@ public class Help {
 		if (!db.getPlayer(player).getRank().equals("none"))
 			player.sendMessage(ChatColor.DARK_AQUA + " /c deposit <amount>");
 		
+		if (!db.getPlayer(player).getRank().equals("none"))
+			player.sendMessage(ChatColor.DARK_AQUA + " /c employees");
+		
 		if (db.getPlayer(player).getRank().equals("CEO"))
 			player.sendMessage(ChatColor.DARK_AQUA + " /c hiring <on/off>");
 		
@@ -215,6 +218,11 @@ public class Help {
 	public boolean apply() {
 		player.sendMessage(ChatColor.AQUA + " - /c apply <companyname>");
 		player.sendMessage(ChatColor.WHITE + "Send an application to join a company.");
+		return true;
+	}
+	public boolean employees() {
+		player.sendMessage(ChatColor.AQUA + " - /c employees");
+		player.sendMessage(ChatColor.WHITE + "Shows you all employees in your company");
 		return true;
 	}
 }

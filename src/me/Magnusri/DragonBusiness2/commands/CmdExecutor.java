@@ -53,6 +53,8 @@ public class CmdExecutor {
 						help.deposit();
 					if (args[1].equals("top"))
 						help.top();
+					if (args[1].equals("employees"))
+						help.employees();
 					if (args[1].equals("hiring"))
 						help.hiring();
 					if (args[1].equals("buyout"))

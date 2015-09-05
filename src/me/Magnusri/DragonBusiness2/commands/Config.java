@@ -10,6 +10,7 @@ public class Config {
 	double createCost;
 	double disbandCost;
 	double depositFee;
+	boolean depositEnabled;
 	double bonusAmount;
 	double buyoutEmployeePrice;
 	boolean milestonesEnabled;
@@ -23,7 +24,7 @@ public class Config {
 	Plugin plugin;
 	FileConfiguration config;
 	
-	public Config(double createCost, double disbandCost, double depositFee, boolean milestonesEnabled, boolean sellingInvEnabled, double[] milestones, String[] pricelist, double bonusAmount, double buyoutEmployeePrice, boolean companyDecayEnabled, String decayTime, String connectionString, Plugin plugin) {
+	public Config(double createCost, double disbandCost, double depositFee, boolean milestonesEnabled, boolean sellingInvEnabled, double[] milestones, String[] pricelist, double bonusAmount, double buyoutEmployeePrice, boolean companyDecayEnabled, String decayTime, boolean depositEnabled, String connectionString, Plugin plugin) {
 		
 		//LOAD CONFIGS FROM FILE HERE, IF NO FILE; SET DEFAULTS.
 		
@@ -37,6 +38,7 @@ public class Config {
 		this.milestonesEnabled = milestonesEnabled;
 		this.sellingInvEnabled = sellingInvEnabled;
 		this.companyDecayEnabled = companyDecayEnabled;
+		this.depositEnabled = depositEnabled;
 		this.decayTime = decayTime;
 		this.milestones = milestones;
 		this.pricelist = pricelist;
@@ -59,6 +61,7 @@ public class Config {
 			config.set("config.buyoutEmployeePrice", 100);
 			config.set("config.milestonesEnabled", true);
 			config.set("config.sellingInvEnabled", true);
+			config.set("config.depositEnabled", true);
 			config.set("config.companyDecayEnabled", true);
 			config.set("config.decayTime", "14:00");
 			config.set("config.bonusAmount", 20);
@@ -97,6 +100,7 @@ public class Config {
 		this.milestonesEnabled = config.getBoolean("config.milestonesEnabled");
 		this.sellingInvEnabled = config.getBoolean("config.sellingInvEnabled");
 		this.companyDecayEnabled = config.getBoolean("config.companyDecayEnabled");
+		this.depositEnabled = config.getBoolean("config.depositEnabled");
 		this.connectionString = config.getString("config.connectionString");
 		this.decayTime = config.getString("config.decayTime");
 		this.bonusAmount = config.getDouble("config.bonusAmount");
@@ -209,5 +213,11 @@ public class Config {
 		this.connectionString = connectionString;
 		config.set("config.connectionString", connectionString);
 		plugin.saveConfig();
+	}
+	public boolean isDepositEnabled() {
+		return depositEnabled;
+	}
+	public void setDepositEnabled(boolean depositEnabled) {
+		this.depositEnabled = depositEnabled;
 	}
 }

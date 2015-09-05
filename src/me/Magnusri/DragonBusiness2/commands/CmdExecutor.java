@@ -583,6 +583,11 @@ public class CmdExecutor {
 				}
 				break;
 			case "deposit":
+				if (!config.depositEnabled){
+					player.sendMessage(ChatColor.RED + "This command has been disabled!");
+					break;
+				}
+				
 				if (db.getPlayer(player).getRank().equals("none")){
 					help = new Help(plugin, player, tools, db);
 					help.ERRORnotInCo();
@@ -606,7 +611,7 @@ public class CmdExecutor {
 					
 					double oldValue = db.getCompany(dbCompany.getName()).getValue();
 					
-					double newValue = oldValue + (Double.parseDouble(args[1]) - (Double.parseDouble(args[1]) * config.getDepositFee()));
+					double newValue = oldValue + (Double.parseDouble(args[1]) - (Double.parseDouble(args[1]) * (config.getDepositFee() / 100)));
 					
 					if (config.isMilestonesEnabled()){
 						tools.doMilestones(dbCompany.getName(), oldValue, newValue);

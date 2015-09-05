@@ -48,7 +48,7 @@ public class Help {
 		if (db.getPlayer(player).getRank().equals("CEO"))
 			player.sendMessage(ChatColor.DARK_AQUA + " /c demote <playername>");
 		
-		if (!db.getPlayer(player).getRank().equals("none"))
+		if (!db.getPlayer(player).getRank().equals("none") && config.depositEnabled)
 			player.sendMessage(ChatColor.DARK_AQUA + " /c deposit <amount>");
 		
 		if (!db.getPlayer(player).getRank().equals("none"))
@@ -125,8 +125,13 @@ public class Help {
 		return true;
 	}
 	public boolean deposit() {
-		player.sendMessage(ChatColor.AQUA + " - /c deposit <amount>");
-		player.sendMessage(ChatColor.WHITE + "Deposits an amount of money into the company you are in.");
+		if (config.depositEnabled){
+			player.sendMessage(ChatColor.AQUA + " - /c deposit <amount>");
+			player.sendMessage(ChatColor.WHITE + "Deposits an amount of money into the company you are in.");
+		} else {
+			player.sendMessage(ChatColor.RED + "This command is disabled.");
+		}
+		
 		return true;
 	}
 	public boolean promote() {

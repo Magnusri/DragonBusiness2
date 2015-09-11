@@ -250,37 +250,37 @@ public class Tools {
 		
 		if(companyValue < 1000 && companyValue >= 0){
             //for every 1 day - $10
-			decay = 10;
+			decay = 5;
 			db.setCompanyValue(plugin, company.getName(), companyValue - decay);
         }
         if(companyValue < 10000 && companyValue > 1000){
             //for every 1 day - $100
-			decay = 100;
+			decay = 50;
 			db.setCompanyValue(plugin, company.getName(), companyValue - decay);
         }
         if(companyValue < 100000 && companyValue > 10000){
             //for every 1 day - $1000
-			decay = 1000;
+			decay = 500;
 			db.setCompanyValue(plugin, company.getName(), companyValue - decay);
         }
         if(companyValue < 1000000 && companyValue > 100000){
             //for every 1 day - $10000
-			decay = 10000;
+			decay = 5000;
 			db.setCompanyValue(plugin, company.getName(), companyValue - decay);
         }
         if(companyValue < 10000000 && companyValue > 1000000){
             //for every 1 day - $100000
-			decay = 100000;
+			decay = 50000;
 			db.setCompanyValue(plugin, company.getName(), companyValue - decay);
         }   
         if(companyValue < 100000000 && companyValue > 10000000){
             //for every 1 day - $1000000
-			decay = 1000000;
+			decay = 500000;
 			db.setCompanyValue(plugin, company.getName(), companyValue - decay);
         }   
         if(companyValue < 1000000000 && companyValue > 100000000){
             //for every 1 day - $10000000
-			decay = 10000000;
+			decay = 5000000;
 			db.setCompanyValue(plugin, company.getName(), companyValue - decay);
         }       
  

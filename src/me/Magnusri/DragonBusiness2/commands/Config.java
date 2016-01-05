@@ -16,6 +16,7 @@ public class Config {
 	boolean milestonesEnabled;
 	boolean sellingInvEnabled;
 	boolean companyDecayEnabled;
+	boolean incomeLevelsEnabled;
 	String connectionString;
 	String decayTime;
 	double[] milestones;
@@ -24,7 +25,7 @@ public class Config {
 	Plugin plugin;
 	FileConfiguration config;
 	
-	public Config(double createCost, double disbandCost, double depositFee, boolean milestonesEnabled, boolean sellingInvEnabled, double[] milestones, String[] pricelist, double bonusAmount, double buyoutEmployeePrice, boolean companyDecayEnabled, String decayTime, boolean depositEnabled, String connectionString, Plugin plugin) {
+	public Config(double createCost, double disbandCost, double depositFee, boolean milestonesEnabled, boolean sellingInvEnabled, double[] milestones, String[] pricelist, double bonusAmount, double buyoutEmployeePrice, boolean companyDecayEnabled, String decayTime, boolean depositEnabled, boolean incomeLevelsEnabled, String connectionString, Plugin plugin) {
 		
 		//LOAD CONFIGS FROM FILE HERE, IF NO FILE; SET DEFAULTS.
 		
@@ -38,6 +39,7 @@ public class Config {
 		this.milestonesEnabled = milestonesEnabled;
 		this.sellingInvEnabled = sellingInvEnabled;
 		this.companyDecayEnabled = companyDecayEnabled;
+		this.incomeLevelsEnabled = incomeLevelsEnabled;
 		this.depositEnabled = depositEnabled;
 		this.decayTime = decayTime;
 		this.milestones = milestones;
@@ -61,8 +63,9 @@ public class Config {
 			config.set("config.buyoutEmployeePrice", 100);
 			config.set("config.milestonesEnabled", true);
 			config.set("config.sellingInvEnabled", true);
-			config.set("config.depositEnabled", true);
-			config.set("config.companyDecayEnabled", true);
+			config.set("config.depositEnabled", false);
+			config.set("config.companyDecayEnabled", false);
+			config.set("config.incomeLevelsEnabled", false);
 			config.set("config.decayTime", "14:00");
 			config.set("config.bonusAmount", 20);
 			config.set("config.configSet", true);
@@ -92,7 +95,7 @@ public class Config {
 			plugin.saveConfig();
 		}
 		
-		//READ OUT THE CONFIG
+		//READ THE CONFIG
 		this.createCost = config.getDouble("config.createCost");
 		this.disbandCost = config.getDouble("config.disbandCost");
 		this.depositFee = config.getDouble("config.depositFee");
@@ -100,6 +103,7 @@ public class Config {
 		this.milestonesEnabled = config.getBoolean("config.milestonesEnabled");
 		this.sellingInvEnabled = config.getBoolean("config.sellingInvEnabled");
 		this.companyDecayEnabled = config.getBoolean("config.companyDecayEnabled");
+		this.incomeLevelsEnabled = config.getBoolean("config.incomeLevelsEnabled");
 		this.depositEnabled = config.getBoolean("config.depositEnabled");
 		this.connectionString = config.getString("config.connectionString");
 		this.decayTime = config.getString("config.decayTime");
@@ -167,6 +171,9 @@ public class Config {
 		return milestones;
 	}
 	public boolean isSellingInvEnabled() {
+		return sellingInvEnabled;
+	}
+	public boolean isIncomeLevelsEnabled() {
 		return sellingInvEnabled;
 	}
 	public void setSellingInvEnabled(boolean sellingInvEnabled) {

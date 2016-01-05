@@ -147,7 +147,14 @@ public class Tools {
 		double moneyforco = amount;
 		
 		for (int i = 0; i < players.size(); i++){
-			double payout = amount * ((double)players.get(i).getLevel() / (double)100.0);
+			
+			double payout = 0.0;
+			
+			if (config.isIncomeLevelsEnabled())
+				payout = amount * ((double)players.get(i).getLevel() / (double)100.0);
+			else
+				payout = ((amount * 20) / 100) / players.size();
+			
 			economy.depositPlayer(players.get(i).getName(), round(payout, 2));
 			moneyforco -= payout;
 			doPlayerLevel(players.get(i));
